@@ -1,0 +1,123 @@
+client/
+├── public/
+│   ├── images/
+│   ├── icons/
+│   └── favicon.ico
+│
+├── src/
+│   ├── app/
+│   │   ├── store.ts             # Redux store
+│   │   ├── provider.tsx
+│   │   ├── router.tsx
+│   │   └── queryClient.ts
+│   │
+│   ├── assets/
+│   │   ├── images/
+│   │   ├── svg/
+│   │   └── fonts/
+│   │
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── Button/
+│   │   │   ├── Input/
+│   │   │   ├── Modal/
+│   │   │   ├── Table/
+│   │   │   ├── Card/
+│   │   │   ├── Loader/
+│   │   │   └── Chart/
+│   │   ├── common/
+│   │   │   ├── Navbar/
+│   │   │   ├── Sidebar/
+│   │   │   ├── Footer/
+│   │   │   └── PageHeader/
+│   │   └── shared/
+│   │       ├── ProtectedRoute.tsx
+│   │       ├── RoleGuard.tsx
+│   │       └── ErrorBoundary.tsx
+│   │
+│   ├── layouts/
+│   │   ├── MainLayout.tsx
+│   │   ├── StudentLayout.tsx
+│   │   ├── TeacherLayout.tsx
+│   │   ├── ParentLayout.tsx
+│   │   ├── AdminLayout.tsx
+│   │   └── AuthLayout.tsx
+│   │
+│   ├── redux/                    # Redux folder
+│   │   ├── slices/
+│   │   │   ├── authSlice.ts
+│   │   │   ├── courseSlice.ts
+│   │   │   ├── chatSlice.ts
+│   │   │   ├── studentSlice.ts
+│   │   │   ├── teacherSlice.ts
+│   │   │   └── notificationSlice.ts
+│   │   └── hooks.ts              # Custom Redux hooks
+│   │
+│   ├── features/
+│   │   ├── auth/
+│   │   │   ├── pages/
+│   │   │   ├── components/
+│   │   │   ├── services/
+│   │   │   ├── api/
+│   │   │   └── types.ts
+│   │   ├── courses/
+│   │   │   ├── pages/
+│   │   │   ├── components/
+│   │   │   ├── services/
+│   │   │   ├── api/
+│   │   │   └── types.ts
+│   │   ├── teachers/
+│   │   ├── students/
+│   │   ├── parents/
+│   │   ├── assistants/
+│   │   ├── quizzes/
+│   │   ├── assignments/
+│   │   ├── analytics/
+│   │   ├── live-classes/
+│   │   ├── payments/
+│   │   ├── notifications/
+│   │   └── chat/
+│   │       ├── components/
+│   │       ├── hooks/
+│   │       ├── services/
+│   │       └── socket/
+│   │
+│   ├── hooks/
+│   │   ├── useAuth.ts
+│   │   ├── useDebounce.ts
+│   │   ├── useSocket.ts
+│   │   └── usePagination.ts
+│   │
+│   ├── services/
+│   │   ├── axios.ts
+│   │   ├── socket.ts
+│   │   ├── storage.ts
+│   │   └── logger.ts
+│   │
+│   ├── constants/
+│   │   ├── roles.ts
+│   │   ├── routes.ts
+│   │   └── config.ts
+│   │
+│   ├── utils/
+│   │   ├── validators.ts
+│   │   ├── formatters.ts
+│   │   ├── helpers.ts
+│   │   └── permissions.ts
+│   │
+│   ├── styles/
+│   │   ├── globals.css
+│   │   ├── variables.css
+│   │   └── theme.css
+│   │
+│   ├── types/
+│   │   ├── user.ts
+│   │   ├── course.ts
+│   │   └── chat.ts
+│   │
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
