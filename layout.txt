@@ -1,0 +1,21 @@
+1️⃣ Main Layouts
+
+AuthLayout ✅
+
+
+استخدام: Login, Signup, Forgot Password
+المكونات: 
+
+Left Side: Branding + Illustration
+Right Side: Form
+
+
+
+
+
+MainLayout
+
+
+Navbar (Top)
+Sidebar (Left)
+Main Content Area (Center)
