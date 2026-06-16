@@ -1,13 +1,25 @@
 const mongoose=require('mongoose');
+const { hashPassword } = require('../../shared/utils/hashHelper');
 const userSchema=new mongoose.Schema({
-    FName:{type:String,required:[true,"Frist Name IS Required"]},
+    FName:{type:String,required:[true,"First Name IS Required"]},
     LName:{type:String,required:[true,"Last Name IS Required"]},
-    Email:{type:String,required:[true,'Email Is Required'],uniqe:[true,"This Email Aleady Exist"]},
+    Email:{type:String,required:[true,'Email Is Required'],unique:[true,"This Email Already Exist"]},
     SSN:{type:String,required:[true,"The SSN is Required"],unique:[true,"THis SSN is Already Exist"]},
-    Password:{type:String,required:[true,"The Password is Required"]},
-    ConfirmPassword:{type:String,required:[true,"The Confirm Password is Required"]},
+    Password:{type:String,required:[true,"The Password is Required"],select:false},
     Phone:{type:String,required:[true,"The Phone is Required"]},
     Avatar:{type:String},
-    role:{type:String,enum:['Student','Parent',"Teacher",'Admin'],required:[true,"THe Role is Required"]},
+    Role:{type:String,enum:['Student','Parent',"Teacher",'Admin'],required:[true,"THe Role is Required"]},
+    RefreshToken:{type:String,default:null,select:false},
+},{timestamps:true})
+userSchema.pre('save',async function (next){
+    if(!this.isModified('Password'))
+        return next();
+    try{
+        this.Password=await hashPassword(this.Password);
+        next();
+    }
+    catch(error){
+        next(error);
+    }
 })
 module.exports=mongoose.model('User',userSchema);
