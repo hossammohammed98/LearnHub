@@ -6,4 +6,4 @@ class EnrollmentService extends BaseService {
     super(EnrollmentRepository);
   }
 }
-module.exports = EnrollmentService;
+module.exports =new EnrollmentService();

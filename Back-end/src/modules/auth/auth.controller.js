@@ -1,6 +1,8 @@
 const catchAsyncHandler=require('../../shared/utils/catchAsyncHandler')
 const ApiResponse=require('../../shared/core/ApiResponse');
 const authService=require('./auth.service');
+const ApiError = require('../../shared/core/ApiError');
+const crypto=require('crypto');
 //Register
 exports.register=catchAsyncHandler(async(req,res,next)=>{
     const result=await authService.register(req.body);
@@ -41,4 +43,26 @@ exports.logout=catchAsyncHandler(async(req,res,next)=>{
     secure: process.env.NODE_ENV === 'production'
     });
     return new ApiResponse.success(res,"The user Log Out Successfully",null,200);
+})
+//verify Email
+exports.verifyEmail=catchAsyncHandler((req,res,next)=>{
+    const {token}=req.body;
+    if(!token)
+        return next(new ApiError(400,"The Verification Token Is Missing"));
+    const result=await authService.verifyEmail(token);
+    return new ApiResponse.success(res,"The Email verification Successfully",result,200);
+})
+//ask to reset password
+exports.forgetPassword=catchAsyncHandler(async(req,res,next)=>{
+    const {Email}=req.body;
+    await authService.forgetPassword(Email);
+    return new ApiResponse.success(res,'إذا كان البريد الإلكتروني مسجلاً لدينا، ستتلقى رابطاً لإعادة التعيين قريباً.',null,200);
+})
+//the user reset password
+exports.resetPassword=catchAsyncHandler(async(req,res,next)=>{
+    const {token,newPassword}=req.body;
+    if(!token||!newPassword)
+        return next(new ApiError(400,"The ResetPassword Token or New Password Is Missing"));
+    const result=await authService.resetPassword(token,newPassword);
+    return new ApiResponse.success(res,'تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.',null,200);
 })

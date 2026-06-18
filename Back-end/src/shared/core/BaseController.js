@@ -34,3 +34,4 @@ class BaseController {
         return new ApiResponse.success(res, "this item is going to the hell ", data);
     })
 }
+module.exports=BaseController;

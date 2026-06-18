@@ -6,4 +6,4 @@ class ChapterController extends BaseController{
         super(ChapterService);
     }
 }
-module.exports=ChapterController;
+module.exports=new ChapterController();

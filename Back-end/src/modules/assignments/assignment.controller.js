@@ -6,4 +6,4 @@ class AssignmentController extends BaseController{
         super(AssignmentService);
     }
 }
-module.exports=AssignmentController;
+module.exports=new AssignmentController();

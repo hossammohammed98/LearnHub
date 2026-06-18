@@ -5,4 +5,4 @@ class AssignmentRepository extends BaseRepository{
         super(Assignment);
     }
 }
-module.exports = AssignmentRepository;
+module.exports =new AssignmentRepository();

@@ -5,4 +5,4 @@ class ChapterRepository extends BaseRepository{
         super(Chapter);
     }
 }
-module.exports = ChapterRepository;
+module.exports =new ChapterRepository();

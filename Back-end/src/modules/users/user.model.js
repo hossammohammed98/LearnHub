@@ -10,6 +10,11 @@ const userSchema=new mongoose.Schema({
     Avatar:{type:String},
     Role:{type:String,enum:['Student','Parent',"Teacher",'Admin'],required:[true,"THe Role is Required"]},
     RefreshToken:{type:String,default:null,select:false},
+    isVerified:{type:Boolean,default:false},
+    verificationToken:String,
+    verificationTokenExpires:Date,
+    passwordResetToken:String,
+    passwordResetTokenExpires:String,
 },{timestamps:true})
 userSchema.pre('save',async function (next){
     if(!this.isModified('Password'))
