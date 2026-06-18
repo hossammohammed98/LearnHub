@@ -5,4 +5,4 @@ class EnrollmentRepository extends BaseRepository{
         super(Enrollment);
     }
 }
-module.exports = EnrollmentRepository;
+module.exports =new EnrollmentRepository();

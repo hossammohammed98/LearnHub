@@ -5,4 +5,4 @@ class AssistantRepository extends BaseRepository{
         super(Assistant);
     }
 }
-module.exports = AssistantRepository;
+module.exports =new AssistantRepository();

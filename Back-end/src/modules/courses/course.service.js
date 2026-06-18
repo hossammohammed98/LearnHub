@@ -6,4 +6,4 @@ class CourseService extends BaseService {
     super(CourseRepository);
   }
 }
-module.exports = CourseService;
+module.exports =new CourseService();

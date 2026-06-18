@@ -6,4 +6,4 @@ class ChapterService extends BaseService {
     super(ChapterRepository);
   }
 }
-module.exports = ChapterService;
+module.exports =new ChapterService();

@@ -6,4 +6,4 @@ class AssistantService extends BaseService {
     super(AssistantRepository);
   }
 }
-module.exports = AssistantService;
+module.exports =new AssistantService();

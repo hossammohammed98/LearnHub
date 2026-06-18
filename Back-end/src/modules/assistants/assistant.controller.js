@@ -6,4 +6,4 @@ class AssistantController extends BaseController{
         super(AssistantService);
     }
 }
-module.exports=AssistantController;
+module.exports=new AssistantController();

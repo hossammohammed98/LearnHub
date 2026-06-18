@@ -6,4 +6,4 @@ class EnrollmentController extends BaseController{
         super(EnrollmentService);
     }
 }
-module.exports=EnrollmentController;
+module.exports=new EnrollmentController();

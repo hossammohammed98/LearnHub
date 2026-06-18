@@ -6,4 +6,4 @@ class AssignmentService extends BaseService {
     super(AssignmentRepository);
   }
 }
-module.exports = AssignmentService;
+module.exports =new AssignmentService();
