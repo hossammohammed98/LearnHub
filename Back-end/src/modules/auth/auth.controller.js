@@ -45,7 +45,7 @@ exports.logout=catchAsyncHandler(async(req,res,next)=>{
     return new ApiResponse.success(res,"The user Log Out Successfully",null,200);
 })
 //verify Email
-exports.verifyEmail=catchAsyncHandler((req,res,next)=>{
+exports.verifyEmail=catchAsyncHandler(async(req,res,next)=>{
     const {token}=req.body;
     if(!token)
         return next(new ApiError(400,"The Verification Token Is Missing"));

@@ -2,7 +2,7 @@ const chatService=require('../modules/chat/chat.service');
 module.exports=(io,socket,redisClient)=>{
     socket.on('join_chat',async (chatId)=>{
         try{
-        const hasAccess=await chatService.isH(String(chatId),socket.user.id);
+        const hasAccess=await chatService.isUserInChat(String(chatId),socket.user.id);
         if(!hasAccess)
             return socket.emit('error','Unauthorized access to this chat')
         socket.join(String(chatId));

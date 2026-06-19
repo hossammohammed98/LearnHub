@@ -6,4 +6,4 @@ class LessonService extends BaseService {
     super(LessonRepository);
   }
 }
-module.exports = LessonService;
+module.exports =new LessonService();

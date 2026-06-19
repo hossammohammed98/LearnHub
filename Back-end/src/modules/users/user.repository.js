@@ -5,4 +5,4 @@ class UserRepository extends BaseRepository{
         super(User);
     }
 }
-module.exports = UserRepository;
+module.exports =new UserRepository();

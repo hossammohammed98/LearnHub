@@ -6,4 +6,4 @@ class UserController extends BaseController{
         super(userService);
     }
 }
-module.exports=UserController;
+module.exports=new UserController();

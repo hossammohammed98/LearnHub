@@ -5,4 +5,4 @@ class StudentRepository extends BaseRepository{
         super(Student);
     }
 }
-module.exports = StudentRepository;
+module.exports =new StudentRepository();

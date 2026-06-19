@@ -5,4 +5,4 @@ class LessonRepository extends BaseRepository{
         super(Lesson);
     }
 }
-module.exports = LessonRepository;
+module.exports =new LessonRepository();

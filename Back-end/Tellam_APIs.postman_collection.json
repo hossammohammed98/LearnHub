@@ -1,0 +1,121 @@
+{
+  "info": {
+    "name": "Tellam - Complete API Suite",
+    "description": "Comprehensive collection for the Tellam backend infrastructure spanning all 10 system resource modules with complete request payload bodies built directly from the Mongoose schemas.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01. Auth Module",
+      "description": "Public and protected session management routes based on the User model schema.",
+      "item": [
+        { "name": "Register User", "request": { "method": "POST", "url": "{{base_url}}/auth/register", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"FName\": \"Ahmed\",\n  \"LName\": \"Hassan\",\n  \"Email\": \"ahmed@example.com\",\n  \"SSN\": \"12345678901234\",\n  \"Password\": \"SecurePass123!\",\n  \"Phone\": \"01234567890\",\n  \"Role\": \"Teacher\",\n  \"Avatar\": \"https://example.com/avatar.png\"\n}" } } },
+        { "name": "Login User", "request": { "method": "POST", "url": "{{base_url}}/auth/login", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Email\": \"ahmed@example.com\",\n  \"Password\": \"SecurePass123!\"\n}" } } },
+        { "name": "Refresh Token", "request": { "method": "GET", "url": "{{base_url}}/auth/refresh-token", "header": [] } },
+        { "name": "Logout User", "request": { "method": "POST", "url": "{{base_url}}/auth/logout", "header": [] } },
+        { "name": "Verify Email", "request": { "method": "GET", "url": { "raw": "{{base_url}}/auth/verify-email?token=YOUR_VERIFICATION_TOKEN", "host": ["{{base_url}}"], "path": ["auth", "verify-email"], "query": [{ "key": "token", "value": "YOUR_VERIFICATION_TOKEN" }] } } },
+        { "name": "Forgot Password", "request": { "method": "POST", "url": "{{base_url}}/auth/forgot-password", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Email\": \"ahmed@example.com\"\n}" } } },
+        { "name": "Reset Password", "request": { "method": "POST", "url": "{{base_url}}/auth/reset-password", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"token\": \"YOUR_RESET_TOKEN\",\n  \"newPassword\": \"MyBrandNewPassword123!\"\n}" } } }
+      ]
+    },
+    {
+      "name": "02. Assignments Module",
+      "description": "Endpoints managing student assignments tied to lessons.",
+      "item": [
+        { "name": "Get All Assignments", "request": { "method": "GET", "url": "{{base_url}}/assignments", "header": [] } },
+        { "name": "Create Assignment", "request": { "method": "POST", "url": "{{base_url}}/assignments", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"LessonId\": \"YOUR_LESSON_MONGO_ID\",\n  \"Title\": \"Math Chapter 1 Practice Work\",\n  \"Content\": \"Please resolve problems 1 to 10 on page 44.\",\n  \"Attachment\": \"https://example.com/files/assignment1.pdf\"\n}" } } },
+        { "name": "Get Assignment By ID", "request": { "method": "GET", "url": "{{base_url}}/assignments/:id", "header": [] } },
+        { "name": "Update Assignment", "request": { "method": "PATCH", "url": "{{base_url}}/assignments/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Title\": \"Updated Assignment Title\",\n  \"Content\": \"Updated content instructions...\",\n  \"Attachment\": \"https://example.com/files/updated-file.pdf\"\n}" } } },
+        { "name": "Delete Assignment", "request": { "method": "DELETE", "url": "{{base_url}}/assignments/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "03. Assistants Module",
+      "description": "Endpoints managing Assistant profiles linked to Instructors.",
+      "item": [
+        { "name": "Get All Assistants", "request": { "method": "GET", "url": "{{base_url}}/assistants", "header": [] } },
+        { "name": "Create Assistant Account", "request": { "method": "POST", "url": "{{base_url}}/assistants", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"TeacherId\": \"YOUR_TEACHER_MONGO_ID\",\n  \"Email\": \"assistant_name@domain.com\",\n  \"Password\": \"AssistantSecurePass123\"\n}" } } },
+        { "name": "Get Assistant By ID", "request": { "method": "GET", "url": "{{base_url}}/assistants/:id", "header": [] } },
+        { "name": "Update Assistant Profiles", "request": { "method": "PATCH", "url": "{{base_url}}/assistants/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Email\": \"updated_assistant_email@domain.com\",\n  \"Password\": \"ChangedPassword456!\"\n}" } } },
+        { "name": "Delete Assistant", "request": { "method": "DELETE", "url": "{{base_url}}/assistants/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "04. Chapters Module",
+      "description": "Endpoints managing modular structural Chapters inside Courses.",
+      "item": [
+        { "name": "Get All Chapters", "request": { "method": "GET", "url": "{{base_url}}/chapters", "header": [] } },
+        { "name": "Create Chapter", "request": { "method": "POST", "url": "{{base_url}}/chapters", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"CourseId\": \"YOUR_COURSE_MONGO_ID\",\n  \"Title\": \"Chapter 1: Foundations of Algebra\"\n}" } } },
+        { "name": "Get Chapter By ID", "request": { "method": "GET", "url": "{{base_url}}/chapters/:id", "header": [] } },
+        { "name": "Update Chapter", "request": { "method": "PATCH", "url": "{{base_url}}/chapters/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Title\": \"Chapter 1: Advanced Foundations of Algebra\"\n}" } } },
+        { "name": "Delete Chapter", "request": { "method": "DELETE", "url": "{{base_url}}/chapters/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "05. Courses Module",
+      "description": "High-level course nodes tracking titles and descriptions.",
+      "item": [
+        { "name": "Get All Courses", "request": { "method": "GET", "url": "{{base_url}}/courses", "header": [] } },
+        { "name": "Create Course Catalog", "request": { "method": "POST", "url": "{{base_url}}/courses", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"TeacherId\": \"YOUR_TEACHER_MONGO_ID\",\n  \"Title\": \"Introduction to Pure Mathematics\",\n  \"Description\": \"A comprehensive preparatory course covering algebra, calculus, and mathematical deduction models.\"\n}" } } },
+        { "name": "Get Course Details By ID", "request": { "method": "GET", "url": "{{base_url}}/courses/:id", "header": [] } },
+        { "name": "Update Course Meta", "request": { "method": "PATCH", "url": "{{base_url}}/courses/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Title\": \"Advanced Pure Mathematics Suite\",\n  \"Description\": \"Updated course deep diving into complex metrics and systems.\"\n}" } } },
+        { "name": "Delete Course Profile", "request": { "method": "DELETE", "url": "{{base_url}}/courses/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "06. Lessons Module",
+      "description": "Individual lecture modules containing title and resource text arrays.",
+      "item": [
+        { "name": "Get All Lessons Reference", "request": { "method": "GET", "url": "{{base_url}}/lessons", "header": [] } },
+        { "name": "Create Modular Lesson", "request": { "method": "POST", "url": "{{base_url}}/lessons", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"ChapterId\": \"YOUR_CHAPTER_MONGO_ID\",\n  \"Title\": \"Lesson 1.1: Systems of Linear Equations\",\n  \"Content\": \"Today we cover the substitution method and Gaussian elimination strategies.\"\n}" } } },
+        { "name": "Get Lesson Data By ID", "request": { "method": "GET", "url": "{{base_url}}/lessons/:id", "header": [] } },
+        { "name": "Update Lesson Content", "request": { "method": "PATCH", "url": "{{base_url}}/lessons/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Title\": \"Lesson 1.1: Matrix Refactoring and Linear Systems\",\n  \"Content\": \"Updated markdown block covering advanced matrix operations.\"\n}" } } },
+        { "name": "Delete Explicit Lesson", "request": { "method": "DELETE", "url": "{{base_url}}/lessons/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "07. Parents Module",
+      "description": "Parent monitoring data tracks pointing to central user profile documents.",
+      "item": [
+        { "name": "Get All Registered Parents", "request": { "method": "GET", "url": "{{base_url}}/parents", "header": [] } },
+        { "name": "Create Parent Profile", "request": { "method": "POST", "url": "{{base_url}}/parents", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"UserId\": \"YOUR_USER_MONGO_ID_WITH_ROLE_PARENT\",\n  \"ChildrenNumber\": 2\n}" } } },
+        { "name": "Get Parent By ID Reference", "request": { "method": "GET", "url": "{{base_url}}/parents/:id", "header": [] } },
+        { "name": "Update Parent Connection", "request": { "method": "PATCH", "url": "{{base_url}}/parents/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"ChildrenNumber\": 3\n}" } } },
+        { "name": "Delete Parent Entry Data", "request": { "method": "DELETE", "url": "{{base_url}}/parents/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "08. Quizzes Module",
+      "description": "Evaluation quizzes linked to course nodes.",
+      "item": [
+        { "name": "Get All Quizzes", "request": { "method": "GET", "url": "{{base_url}}/quizzes", "header": [] } },
+        { "name": "Create Evaluation Quiz", "request": { "method": "POST", "url": "{{base_url}}/quizzes", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"CourseId\": \"YOUR_COURSE_MONGO_ID\",\n  \"Title\": \"Mid-Term Calculus Checkpoint\",\n  \"Content\": \"{\\\"questions\\\": [{\\\"q\\\": \\\"Derive f(x) = 3x^2\\\", \\\"a\\\": \\\"6x\\\"}]}\"\n}" } } },
+        { "name": "Get Specific Quiz Template", "request": { "method": "GET", "url": "{{base_url}}/quizzes/:id", "header": [] } },
+        { "name": "Update Quiz Parameters", "request": { "method": "PATCH", "url": "{{base_url}}/quizzes/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"Title\": \"Pop-Quiz Calculus Review\",\n  \"Content\": \"Updated test content JSON payload matrix...\"\n}" } } },
+        { "name": "Delete Quiz Module", "request": { "method": "DELETE", "url": "{{base_url}}/quizzes/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "09. Students Module",
+      "description": "Student profiles linking a base User record to a tracking Parent record.",
+      "item": [
+        { "name": "Get All Registered Students", "request": { "method": "GET", "url": "{{base_url}}/students", "header": [] } },
+        { "name": "Create Core Student Object", "request": { "method": "POST", "url": "{{base_url}}/students", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"UserId\": \"YOUR_USER_MONGO_ID_WITH_ROLE_STUDENT\",\n  \"ParentId\": \"YOUR_PARENT_MODULE_MONGO_ID_OPTIONAL\"\n}" } } },
+        { "name": "Get Student Record By ID", "request": { "method": "GET", "url": "{{base_url}}/students/:id", "header": [] } },
+        { "name": "Update Student Profile Data", "request": { "method": "PATCH", "url": "{{base_url}}/students/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"ParentId\": \"UPDATED_OR_NEW_PARENT_MONGO_ID\"\n}" } } },
+        { "name": "Remove Student Access Account", "request": { "method": "DELETE", "url": "{{base_url}}/students/:id", "header": [] } }
+      ]
+    },
+    {
+      "name": "10. Teachers Module",
+      "description": "Faculty profile nodes tracking administrative base users with Teacher privileges.",
+      "item": [
+        { "name": "Get Active Teachers Registry", "request": { "method": "GET", "url": "{{base_url}}/teachers", "header": [] } },
+        { "name": "Instantiate Teacher Account", "request": { "method": "POST", "url": "{{base_url}}/teachers", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"UserId\": \"YOUR_USER_MONGO_ID_WITH_ROLE_TEACHER\"\n}" } } },
+        { "name": "Get Teacher Record By ID", "request": { "method": "GET", "url": "{{base_url}}/teachers/:id", "header": [] } },
+        { "name": "Update Instructor Data Profile", "request": { "method": "PATCH", "url": "{{base_url}}/teachers/:id", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"UserId\": \"RESET_OR_REPLACE_USER_MONGO_ID\"\n}" } } },
+        { "name": "Remove Teacher Registry Entry", "request": { "method": "DELETE", "url": "{{base_url}}/teachers/:id", "header": [] } }
+      ]
+    }
+  ]
+}
