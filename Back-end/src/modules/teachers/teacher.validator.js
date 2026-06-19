@@ -1,11 +1,11 @@
-const zod = require('zod');
+const z = require('zod');
 
-const createTeacher = zod.object({
-    UserId:zod.string({required_error:"The UserId is required"})
+const createTeacher = z.object({
+    UserId:z.string({required_error:"The UserId is required"})
 });
 
-const updateTeacher = zod.object({
-    UserId:zod.string()
+const updateTeacher = z.object({
+    UserId:z.string()
 });
 
 exports.validateId = z.object({

@@ -6,4 +6,4 @@ class QuizService extends BaseService {
     super(QuizRepository);
   }
 }
-module.exports = QuizService;
+module.exports =new QuizService();

@@ -6,4 +6,4 @@ class QuizController extends BaseController{
         super(QuizService);
     }
 }
-module.exports=QuizController;
+module.exports=new QuizController();

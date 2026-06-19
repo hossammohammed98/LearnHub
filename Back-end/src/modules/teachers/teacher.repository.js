@@ -6,4 +6,4 @@ class TeacherRepository extends BaseRepository{
         super(Teacher);
     }
 }
-module.exports = TeacherRepository;
+module.exports =new TeacherRepository();

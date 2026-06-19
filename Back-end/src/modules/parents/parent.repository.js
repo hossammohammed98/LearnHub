@@ -5,4 +5,4 @@ class ParentRepository extends BaseRepository{
         super(Parent);
     }
 }
-module.exports = ParentRepository;
+module.exports =new ParentRepository();

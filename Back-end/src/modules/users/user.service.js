@@ -6,4 +6,4 @@ class UserService extends BaseService {
     super(userRepository);
   }
 }
-module.exports = UserService;
+module.exports =new UserService();
