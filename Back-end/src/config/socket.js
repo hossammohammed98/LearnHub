@@ -9,7 +9,11 @@ exports.initSocket=async(server)=>{
         process.exit(1);
     }
     const pubClient=createClient({
-        url:process.env.REDIS_URL|| 'redis://127.0.0.1:6379'
+        url:process.env.REDIS_URL|| 'redis://127.0.0.1:6379',
+        socket:{
+            keepAlive:50000,
+            connectTimeout:10000,
+        }
     });
     pubClient.on('error', (err) => {
         console.error('⚠️ Redis Pub Error:', err.message);

@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken')
-exports.createAccessToken=(payload)=>{
+exports.createRefreshToken=(payload)=>{
    const token=jwt.sign(
    payload,
    process.env.SECRET_REFRESH_KEY
