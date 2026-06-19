@@ -16,16 +16,16 @@ const app=express();
 
 app.use(express.json());
 
-app.use('api/v1/auth',authRoute);
-app.use('api/v1/assignment',assignmentRoute);
-app.use('api/v1/chapter',chapterRoute);
+app.use('/api/v1/auth',authRoute);
+app.use('/api/v1/assignment',assignmentRoute);
+app.use('/api/v1/chapter',chapterRoute);
 // app.use('api/v1/chat',chatRoute);
-app.use('api/v1/course',courseRoute);
-app.use('api/v1/lesson',lessonRoute);
-app.use('api/v1/parent',parentRoute);
-app.use('api/v1/quizzes',quizzesRoute);
-app.use('api/v1/student',studentRoute);
-app.use('api/v1/teacher',teacherRoute);
+app.use('/api/v1/course',courseRoute);
+app.use('/api/v1/lesson',lessonRoute);
+app.use('/api/v1/parent',parentRoute);
+app.use('/api/v1/quizzes',quizzesRoute);
+app.use('/api/v1/student',studentRoute);
+app.use('/api/v1/teacher',teacherRoute);
 
 app.use(globalErrorHandler);
 

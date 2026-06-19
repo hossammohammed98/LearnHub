@@ -16,15 +16,11 @@ const userSchema=new mongoose.Schema({
     passwordResetToken:String,
     passwordResetTokenExpires:String,
 },{timestamps:true})
-userSchema.pre('save',async function (next){
+userSchema.pre('save',async function (){
     if(!this.isModified('Password'))
-        return next();
-    try{
-        this.Password=await hashPassword(this.Password);
-        next();
-    }
-    catch(error){
-        next(error);
-    }
+        return ;
+    
+    this.Password=await hashPassword(this.Password);
+  
 })
 module.exports=mongoose.model('User',userSchema);
