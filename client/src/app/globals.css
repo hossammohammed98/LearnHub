@@ -9,7 +9,7 @@
   --color-surface-bg: #f8fafc;       /* Soft site background (Ghost White) */
 
   /* 3. Border Radius */
-  --radius-lg: 12px;                /* Cards and input fields */
+  --radius-lg: 30px;                /* Cards and input fields */
   --radius-md: 8px;                 /* Buttons */
 
   /* 4. Shadows (Level 1 & Level 2) */
