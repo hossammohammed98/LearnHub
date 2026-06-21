@@ -1,6 +1,10 @@
-import { redirect } from "next/navigation";
+import SideBar from "@/components/common/SideBar";
+// import { redirect } from "next/navigation";
 
 export default function HomePage() {
   // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
-  redirect("/login");
+  return(
+  <SideBar/>
+)
+  // redirect("/login");
 }
