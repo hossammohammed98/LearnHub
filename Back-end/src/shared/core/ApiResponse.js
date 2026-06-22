@@ -6,7 +6,7 @@ class ApiResponse{
             statusCode,
             message,
             data,
-            timeStamp:new Date.toISOString()
+            timeStamp:new Date().toISOString()
         });
     }
     static created(res,message,data=null){
@@ -15,7 +15,7 @@ class ApiResponse{
             statusCode:201,
             message,
             data,
-            timeStamp:new Date.toISOString()
+            timeStamp:new Date().toISOString()
         })    
     }
 }
