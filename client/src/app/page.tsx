@@ -5,15 +5,18 @@ import Progress from "@/components/ui/Progress";
 import CurrentCourse from "@/features/student/components/CurrentCourse";
 import TeacherNavBar from "@/features/teacher/TeacherNavBar";
 import CourseDescription from '../features/student/components/CourseDescription';
-import StudentNavBar from "@/features/student/components/StudentNavBar";
+import StudentNavBar from "@/features/student/components/StudentDashboard";
 import Calender from "@/features/student/components/Calender";
+import CalenderItem from "@/features/student/components/CalenderItem";
+import HeroSection from "@/features/student/components/HeroSection";
+import StudentDashboard from "@/features/student/components/StudentDashboard";
 
 export default function HomePage() {
   // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
   // redirect("/login");
   return (
     <>   
-     {/* <StudentNavBar></StudentNavBar> */}
+     <StudentDashboard></StudentDashboard>
 
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
@@ -39,7 +42,13 @@ export default function HomePage() {
           <ButtonInit >متابعة التعلم</ButtonInit>
         </>
       </CourseDescription> */}
-      <Calender></Calender>
+      {/* <Calender> 
+        <>
+        <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
+        <CalenderItem title={'إدارة الموارد البشرية'} day="غداً" hour={'، 10:00 م'}></CalenderItem>
+        </>
+      </Calender> */}
+      {/* <HeroSection userName="أحمد"></HeroSection> */}
 
     </>
 
