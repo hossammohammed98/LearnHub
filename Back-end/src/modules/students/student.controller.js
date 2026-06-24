@@ -6,4 +6,4 @@ class StudentController extends BaseController{
         super(StudentService);
     }
 }
-module.exports=StudentController;
+module.exports=new StudentController();
