@@ -1,9 +1,12 @@
 const express=require('express')
 const globalErrorHandler=require('./middlewares/errorHandler.middleware')
+<<<<<<< HEAD
 const rateLimiter = require('./middlewares/rateLimiter');
 ////////////////////////////
 const security = require('./middlewares/security');
 const cors = require('./middlewares/cors');   // ← Updated import
+=======
+>>>>>>> 42509cd3910fcbccda4b6c1603e14292e3d8d0f4
 
 const authRoute=require('./modules/auth/auth.route');
 const assignmentRoute=require('./modules/assignments/assignment.route');
@@ -18,6 +21,7 @@ const teacherRoute=require('./modules/teachers/teacher.route');
 
 const app=express();
 
+<<<<<<< HEAD
 app.use(security.create());
 app.use(cors.create());   // ← Added (using our new middleware)
 
@@ -47,6 +51,11 @@ const apiLimiter = rateLimiter.create({
 });
 
 app.use(apiLimiter)
+=======
+app.use(express.json());
+
+app.use('/api/v1/auth',authRoute);
+>>>>>>> 42509cd3910fcbccda4b6c1603e14292e3d8d0f4
 app.use('/api/v1/assignment',assignmentRoute);
 app.use('/api/v1/chapter',chapterRoute);
 // app.use('api/v1/chat',chatRoute);

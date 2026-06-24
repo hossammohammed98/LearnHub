@@ -1,12 +1,23 @@
 @import "tailwindcss";
 
 @theme {
+<<<<<<< HEAD
   --font-sans: "Cairo", sans-serif;
   --color-primary: #091426;          /* Courses and dark backgrounds */
   --color-brand-navy: #1e293b;       /* Slate navy for UI elements and dark sections */
   --color-brand-success: #10b981;    /* Buttons, inputs, success states (Emerald Green) */
   --color-brand-warning: #f59e0b;    /* Alerts and highlights (Amber) */
   --color-surface-bg: #f8fafc;       /* Soft site background (Ghost White) */
+=======
+  --font-sans: "IBM Plex Sans Arabic", sans-serif;
+  --color-primary: #091426;          /* Courses and dark backgrounds */
+  --color-brand-navy: #1e293b;       /* Slate navy for UI elements and dark sections */
+  --color-brand-success: #006C49;    /* Buttons, inputs, success states (Emerald Green) */
+  --color-brand-warning: #f59e0b;    /* Alerts and highlights (Amber) */
+  --color-surface-bg: #f8fafc;       /* Soft site background (Ghost White) */
+  --color-brand-gray:#45474C;
+
+>>>>>>> 42509cd3910fcbccda4b6c1603e14292e3d8d0f4
 
   /* 3. Border Radius */
   --radius-lg: 12px;                /* Cards and input fields */
