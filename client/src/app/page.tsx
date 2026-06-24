@@ -10,13 +10,15 @@ import Calender from "@/features/student/components/Calender";
 import CalenderItem from "@/features/student/components/CalenderItem";
 import HeroSection from "@/features/student/components/HeroSection";
 import StudentDashboard from "@/features/student/components/StudentDashboard";
+import ConversationItem from "@/features/chat/components/ConversationItem";
+import ChatLayout from "@/features/chat/components/ChatLayout";
 
 export default function HomePage() {
   // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
   // redirect("/login");
   return (
     <>   
-     <StudentDashboard></StudentDashboard>
+     {/* <StudentDashboard></StudentDashboard> */}
 
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
@@ -49,7 +51,7 @@ export default function HomePage() {
         </>
       </Calender> */}
       {/* <HeroSection userName="أحمد"></HeroSection> */}
-
+       <ChatLayout></ChatLayout>
     </>
 
   )
