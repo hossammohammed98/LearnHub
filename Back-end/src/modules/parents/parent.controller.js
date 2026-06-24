@@ -6,4 +6,4 @@ class ParentController extends BaseController{
         super(ParentService);
     }
 }
-module.exports=ParentController;
+module.exports=new ParentController();

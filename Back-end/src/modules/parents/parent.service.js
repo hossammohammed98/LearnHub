@@ -6,4 +6,4 @@ class ParentService extends BaseService {
     super(ParentRepository);
   }
 }
-module.exports = ParentService;
+module.exports =new ParentService();

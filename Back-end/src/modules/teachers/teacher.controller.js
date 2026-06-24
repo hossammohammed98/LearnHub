@@ -6,4 +6,4 @@ class TeacherController extends BaseController{
         super(TeacherService);
     }
 }
-module.exports=TeacherController;
+module.exports=new TeacherController();

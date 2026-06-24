@@ -1,17 +1,17 @@
-const zod = require("zod");
+const z = require("zod");
 
-const createParent = zod.object({
-  UserId: zod.string({ required_error: "The UserId is required" }),
-  ChildrenNumber: zod
+const createParent = z.object({
+  UserId: z.string({ required_error: "The UserId is required" }),
+  ChildrenNumber: z
     .number()
     .int("ChildrenNumber must be an integer")
     .min(0, "ChildrenNumber cannot be negative")
     .default(0)
 });
 
-const updateParent = zod.object({
-  UserId: zod.string(),
-  ChildrenNumber: zod
+const updateParent = z.object({
+  UserId: z.string(),
+  ChildrenNumber: z
     .number()
     .int("ChildrenNumber must be an integer")
     .min(0, "ChildrenNumber cannot be negative")

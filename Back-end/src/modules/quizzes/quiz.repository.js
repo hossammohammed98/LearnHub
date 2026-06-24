@@ -5,4 +5,4 @@ class QuizRepository extends BaseRepository{
         super(Quiz);
     }
 }
-module.exports = QuizRepository;
+module.exports =new QuizRepository();

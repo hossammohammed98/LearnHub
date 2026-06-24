@@ -1,5 +1,6 @@
 const User=require('../users/user.model')
 exports.createUser=async (data)=>{
+    console.log("repository")
     return await User.create(data);
 }
 exports.findUserByEmailWithPassword=async (email)=>{
