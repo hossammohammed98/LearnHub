@@ -5,8 +5,9 @@ import Progress from "@/components/ui/Progress";
 import CurrentCourse from "@/features/student/components/CurrentCourse";
 import TeacherNavBar from "@/features/teacher/TeacherNavBar";
 import CourseDescription from '../features/student/components/CourseDescription';
-import StudentNavBar from "@/features/student/components/StudentNavBar";
+import StudentNavBar from "@/features/student/components/StudentDashboard";
 import Calender from "@/features/student/components/Calender";
+
 import SectionHeader from "@/features/landingpage/component/SectionHeader";
 import Hero from "@/features/landingpage/component/Hero";
 import FeaturesSection from "@/features/landingpage/component/FeaturesSection";
@@ -18,12 +19,19 @@ import Footer from "@/features/landingpage/component/Footer";
 import LandingPage from "./landingpage/LandingPage";
 import SideBar from "@/components/common/SideBar";
 
+import CalenderItem from "@/features/student/components/CalenderItem";
+import HeroSection from "@/features/student/components/HeroSection";
+import StudentDashboard from "@/features/student/components/StudentDashboard";
+import ConversationItem from "@/features/chat/components/ConversationItem";
+import ChatLayout from "@/features/chat/components/ChatLayout";
+
+
 export default function HomePage() {
   // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
   // redirect("/login");
   return (
     <>   
-     {/* <StudentNavBar></StudentNavBar> */}
+     {/* <StudentDashboard></StudentDashboard> */}
 
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
@@ -60,6 +68,15 @@ export default function HomePage() {
         {/* <Footer></Footer> */}
         {/* <LandingPage></LandingPage> */}
         <SideBar></SideBar>
+
+      {/* <Calender> 
+        <>
+        <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
+        <CalenderItem title={'إدارة الموارد البشرية'} day="غداً" hour={'، 10:00 م'}></CalenderItem>
+        </>
+      </Calender> */}
+      {/* <HeroSection userName="أحمد"></HeroSection> */}
+       <ChatLayout></ChatLayout>
     </>
 
   )
