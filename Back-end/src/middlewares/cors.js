@@ -6,13 +6,13 @@ dotenv.config();
 class CorsMiddleware {
     constructor() {
         this.defaultOptions = {
-            origin: process.env.FRONTEND_URL 
-                ? [process.env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:5173']
+            origin: process.env.CLIENT_URL
+                ? [process.env.CLIENT_URL, 'http://localhost:3000']
                 : true, // Allow all origins in development
             
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-            credentials: true,                    // Allow cookies & auth headers
+            credentials: true,                    
             maxAge: 86400,                        // Cache preflight request for 24 hours
         };
     }

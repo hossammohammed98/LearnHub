@@ -1,10 +1,6 @@
-<<<<<<< HEAD
+import SideBar from "@/components/common/SideBar";
+import ChatLayout from "@/features/chat/components/ChatLayout";
 import { redirect } from "next/navigation";
-
-export default function HomePage() {
-  // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
-  redirect("/login");
-=======
 import Badge from "@/components/ui/Badge";
 import ButtonInit from "@/components/ui/ButtonInit";
 import MetricCard from "@/components/ui/MetricCard";
@@ -24,13 +20,11 @@ import CtaBanner from "@/features/landingpage/component/CtaBanner";
 import Navbar from "@/features/landingpage/component/Navbar";
 import Footer from "@/features/landingpage/component/Footer";
 import LandingPage from "./landingpage/LandingPage";
-import SideBar from "@/components/common/SideBar";
 
 import CalenderItem from "@/features/student/components/CalenderItem";
 import HeroSection from "@/features/student/components/HeroSection";
 import StudentDashboard from "@/features/student/components/StudentDashboard";
 import ConversationItem from "@/features/chat/components/ConversationItem";
-import ChatLayout from "@/features/chat/components/ChatLayout";
 
 
 export default function HomePage() {
@@ -88,5 +82,4 @@ export default function HomePage() {
 
   )
 
->>>>>>> 42509cd3910fcbccda4b6c1603e14292e3d8d0f4
 }
