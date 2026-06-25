@@ -1,12 +1,29 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useRef } from 'react'
 import ChatHeader from './ChatHeader'
 import MessageBubble from './MessageBubble'
 import ChatInput from './ChatInput'
+import { useChatRoom } from '../hooks/useChatRoom';
 interface ChatWindowProps {
     selectedChatId: string | null;
     onBack: () => void;
 }
 function ChatWindow({ selectedChatId, onBack }: ChatWindowProps) {
+    const {
+        messages,
+        isLoading,
+        uploadProgress,
+        sendTextMessage,
+        sendFileMessage
+    } = useChatRoom(selectedChatId);
+
+    const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        if (scrollAnchorRef.current) {
+            scrollAnchorRef.current.scrollIntoView({ behavior: 'smooth' })
+        }
+    }, [messages])
+
     if (!selectedChatId) {
         return (
             <div className='hidden md:flex flex-1 h-full items-center justify-center bg-[#F4F7F9]'>
@@ -19,10 +36,37 @@ function ChatWindow({ selectedChatId, onBack }: ChatWindowProps) {
         <div className='flex-1 flex flex-col h-full bg-[#F4F7F9]'>
             <ChatHeader userName="أ. أحمد الشناوي" imgUrl="/images/login.jpg" active={true} onBack={onBack} />
             <div className='flex-1 overflow-y-auto p-6 flex flex-col gap-4'>
-                <MessageBubble messageText="السلام عليكم يا بطل، كيف حالك؟" myMessage={false} time="١٠:١٥ ص" imgUrl="/images/login.jpg" />
-                <MessageBubble messageText="وعليكم السلام يا مستر. الحمد لله، بدأت فيها بالفعل" myMessage={true} time="١٠:١٧ ص" />
+                {isLoading ? (
+                    <div className="flex flex-col flex-1 items-center justify-center gap-2 text-slate-400 text-sm">
+                        <span className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></span>
+                        <span>جاري تحميل الرسائل...</span>
+                    </div>
+                ) : (
+                    messages.map((msg) => (
+                        <MessageBubble
+                            key={msg.id}
+                            messageText={msg.messageText}
+                            myMessage={msg.myMessage}
+                            time={msg.time}
+                            imgUrl="/images/login.jpg"
+                        />
+                    ))
+                )}
+                {uploadProgress > 0 && (
+                    <div className="self-start bg-emerald-50 border border-emerald-100 text-emerald-800 rounded-xl px-4 py-2 text-xs flex items-center gap-3 shadow-sm animate-pulse">
+                        <span className="w-2.5 h-2.5 bg-emerald-600 rounded-full animate-ping" />
+                        <span>جاري رفع الملف المرفق:</span>
+                        <span className="font-bold">{uploadProgress}%</span>
+                    </div>
+                )}
+
+                <div ref={scrollAnchorRef} />
             </div>
-            <ChatInput placeholder="اكتب رسالتك هنا..." />
+            <ChatInput
+                placeholder="اكتب رسالتك هنا..."
+                onSendText={sendTextMessage}
+                onSendFile={sendFileMessage}
+            />
         </div>
     )
 }
