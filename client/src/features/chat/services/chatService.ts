@@ -4,7 +4,7 @@ import { Conversation, Message, UploadFileResponse } from "../types";
 export const chatService={
     getRooms: async(): Promise<Conversation[]> => {
         try{
-            const response=await apiClient.get<{data:Conversation[]}>('/chats');
+            const response=await apiClient.get<{data:Conversation[]}>('/api/v1/chat/getAllChats');
             return response.data.data;
         }
         catch(error:any){
@@ -14,7 +14,7 @@ export const chatService={
     },
     getRoomMessages:async(roomId:string):Promise<Message[]>=>{
         try{
-            const response =await apiClient.get<{data:Message[]}>(`/chatMessage/${roomId}`)
+            const response =await apiClient.get<{data:Message[]}>(`/api/v1/chat/getChatMessage/${roomId}`)
             return response.data.data;
         }
         catch(error:any){
@@ -25,7 +25,7 @@ export const chatService={
     uploadChatFile:async(file:File,roomId:string,onProgress?:(progress:number)=>void):Promise<UploadFileResponse>=>{
         try{
             const response =await apiClient.post<{data:UploadFileResponse}>(
-                `/uploadChatFile/${roomId}`,
+                `/api/v1/chat/uploadChatFile/${roomId}`,
                 FormData,{
                     headers:{
                         'Content-Type':'multipart/form-data',

@@ -1,3 +1,6 @@
+import SideBar from "@/components/common/SideBar";
+import ChatLayout from "@/features/chat/components/ChatLayout";
+
 import { redirect } from "next/navigation";
 import Badge from "@/components/ui/Badge";
 import ButtonInit from "@/components/ui/ButtonInit";
@@ -23,11 +26,9 @@ import CtaBanner from "@/features/landingpage/component/CtaBanner";
 import Navbar from "@/features/landingpage/component/Navbar";
 import Footer from "@/features/landingpage/component/Footer";
 import LandingPage from "./landingpage/LandingPage";
-import SideBar from "@/components/common/SideBar";
 
 // مكونات الشات
 import ConversationItem from "@/features/chat/components/ConversationItem";
-import ChatLayout from "@/features/chat/components/ChatLayout";
 
 // مكونات أولياء الأمور (Parent Portal)
 
@@ -85,6 +86,8 @@ export default function HomePage() {
       {/* <HeroSection userName="أحمد"></HeroSection> */}
       
       <ChatLayout></ChatLayout>
+
+  
 
       {/* ميزات أولياء الأمور (آخر تحديث) */}
       {/* <StatCard/> */}

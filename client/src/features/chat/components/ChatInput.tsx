@@ -21,6 +21,7 @@ function ChatInput({ placeholder = 'اكتب رسالتك هنا....', onSendFil
         setTextInput('');
         setShowEmojiPicker(false);
     };
+    
     const handleEmojiClick = (emojiData: EmojiClickData) => {
         setTextInput((prev) => prev + emojiData.emoji)
     }

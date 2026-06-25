@@ -8,4 +8,4 @@ class ChatService extends baseService {
     return await ChatRepository.isUserInChat(chatId, userId);
   }
 }
-module.exports = ChatService;
+module.exports = new ChatService();
