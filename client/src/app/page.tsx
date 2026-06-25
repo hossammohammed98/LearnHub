@@ -8,13 +8,13 @@ import CourseDescription from '../features/student/components/CourseDescription'
 import StudentNavBar from "@/features/student/components/StudentDashboard";
 import Calender from "@/features/student/components/Calender";
 
+
 import SectionHeader from "@/features/landingpage/component/SectionHeader";
 import Hero from "@/features/landingpage/component/Hero";
 import FeaturesSection from "@/features/landingpage/component/FeaturesSection";
 import StepsSection from "@/features/landingpage/component/StepsSection";
 import PricingSection from "@/features/landingpage/component/PricingSection";
 import CtaBanner from "@/features/landingpage/component/CtaBanner";
-import Navbar from "@/features/landingpage/component/Navbar";
 import Footer from "@/features/landingpage/component/Footer";
 import LandingPage from "./landingpage/LandingPage";
 import SideBar from "@/components/common/SideBar";
@@ -24,6 +24,22 @@ import HeroSection from "@/features/student/components/HeroSection";
 import StudentDashboard from "@/features/student/components/StudentDashboard";
 import ConversationItem from "@/features/chat/components/ConversationItem";
 import ChatLayout from "@/features/chat/components/ChatLayout";
+import SearchBar from "@/components/ui/SearchBar";
+import NotificationBell from "@/components/ui/NotificationBell";
+import StudentNavLinks from "@/features/student/components/StudentNavLinks";
+import LandingNavbar from "@/features/landingpage/component/LandingNavbar";
+import Navbar from "@/components/common/Navbar";
+import { Layout } from "lucide-react";
+import BrowseHeader from "@/features/BrowseCourses/components/BrowseHeader";
+import BrowseSidebar from "@/features/BrowseCourses/components/BrowesSidebar";
+import PathsHero from "@/features/BrowseCourses/components/PathsHero";
+import CategoryTabs from "@/features/BrowseCourses/components/CategoryTabs";
+import UXPathCard from "@/features/BrowseCourses/components/UXPathCard";
+import FeaturedPathCard from "@/features/BrowseCourses/components/FeaturedPathCard";
+import CreatePathCard from "@/features/BrowseCourses/components/CreatePathCard";
+import MarketingPathCard from "@/features/BrowseCourses/components/MarketingPathCard";
+import BrowseCourse from "./dashboard/BrowseCoursePage/BrowseCourse";
+import UploadPage from "./UploadVideosPage/UploadPage";
 
 
 export default function HomePage() {
@@ -67,7 +83,20 @@ export default function HomePage() {
         {/* <CtaBanner></CtaBanner> */}
         {/* <Footer></Footer> */}
         {/* <LandingPage></LandingPage> */}
-        <SideBar></SideBar>
+        {/* <SideBar></SideBar> */}
+        {/* <WelcomeBanner></WelcomeBanner> */}
+        {/* <CategoryFilters></CategoryFilters> */}
+        {/* <CoursePathCard title={"hi"} desc={"hello"} image={""} duration={0} coursesCount={0}></CoursePathCard> */}
+        {/* <BrowseHeader></BrowseHeader> */}
+        {/* <BrowseSidebar></BrowseSidebar> */}
+        {/* <PathsHero></PathsHero> */}
+        {/* <CategoryTabs></CategoryTabs> */}
+        {/* <UXPathCard></UXPathCard>
+        <FeaturedPathCard></FeaturedPathCard>
+        <CreatePathCard></CreatePathCard>
+        <MarketingPathCard></MarketingPathCard> */}
+        {/* <BrowseCourse></BrowseCourse> */}
+        {/* <UploadPage></UploadPage> */}
 
       {/* <Calender> 
         <>
@@ -76,7 +105,7 @@ export default function HomePage() {
         </>
       </Calender> */}
       {/* <HeroSection userName="أحمد"></HeroSection> */}
-       <ChatLayout></ChatLayout>
+       {/* <ChatLayout></ChatLayout> */}
     </>
 
   )

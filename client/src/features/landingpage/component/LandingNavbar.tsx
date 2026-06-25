@@ -3,7 +3,7 @@ import NotificationBell from '@/components/ui/NotificationBell';
 import { useState } from 'react';
 import Link from 'next/link';
 
-export default function Navbar() {
+export default function LandingNavbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
