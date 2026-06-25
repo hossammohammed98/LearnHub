@@ -19,7 +19,7 @@ export default function CurrentCourse({
   return (
     <div 
       style={containerStyle}
-      className="relative w-full max-w-[310px] h-[380px] bg-cover bg-center rounded-lg overflow-hidden shadow-sm flex flex-col justify-end p-4"
+      className="relative w-full min-h-[200px] sm:w-1/2 md:w-full bg-cover bg-center flex flex-col justify-end p-4"
     >
       <div className="relative z-10 flex flex-row gap-2 w-full justify-start items-center">
         {badge}

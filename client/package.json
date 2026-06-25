@@ -11,11 +11,13 @@
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
     "axios": "^1.18.0",
+    "emoji-picker-react": "^4.19.1",
     "lucide-react": "^1.21.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.79.0",
+    "socket.io-client": "^4.8.3",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
@@ -29,4 +31,8 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 42509cd3910fcbccda4b6c1603e14292e3d8d0f4
