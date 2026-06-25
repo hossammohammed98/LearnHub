@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
-
+import StoreProvider from "@/store/StoreProvider"; 
 
 const cairo = Cairo({
   subsets: ["arabic"],
@@ -25,9 +25,11 @@ export default function RootLayout({
       dir="rtl"
       className={`${cairo.variable} h-full antialiased`}
     >
-      {}
       <body className={`${cairo.className} min-h-full flex flex-col`}>
-        {children}
+        {/* تغليف الـ children هنا بيضمن إن الريدكس يشتغل في المشروع كله */}
+        <StoreProvider>
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );

@@ -4,17 +4,21 @@ import MetricCard from "@/components/ui/MetricCard";
 import Progress from "@/components/ui/Progress";
 import CurrentCourse from "@/features/student/components/CurrentCourse";
 import TeacherNavBar from "@/features/teacher/TeacherNavBar";
-import CourseDescription from '../features/student/components/CourseDescription';
+import CourseDescription from "../features/student/components/CourseDescription";
 import StudentNavBar from "@/features/student/components/StudentNavBar";
 import Calender from "@/features/student/components/Calender";
-
+import ParentPortal from "@/components/ui/ParentPortal";
+import statCard from "../features/parent/components/StateCad";
+import StatCard from "../features/parent/components/StateCard";
+import { ActivityCard } from "@/features/parent/components/ActivityCard";
+import { FamilyPerformance } from "@/features/parent/components/FamilyPerformance";
 export default function HomePage() {
   // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
 
   // redirect("/login");
   return (
-    <>   
-     {/* <StudentNavBar></StudentNavBar> */}
+    <>
+      {/* <StudentNavBar></StudentNavBar> */}
 
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
@@ -40,10 +44,20 @@ export default function HomePage() {
           <ButtonInit >متابعة التعلم</ButtonInit>
         </>
       </CourseDescription> */}
-      <Calender></Calender>
+      {/* <Calender></Calender> */}
 
+
+      {/* last update */}
+
+      {/* <StatCard/> */}
+      {/* <ActivityCard /> */}
+      {/* <ActivityCard/> */}
+      {/* Important Alerts */}
+      {/* Child */}
+      {/* ChildReportCard */}
+      
+      {/* component الشامل */}
+      <FamilyPerformance />
     </>
-
-  )
-
+  );
 }
