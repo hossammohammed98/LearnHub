@@ -27,7 +27,7 @@ export default function Progress({
       {showLabel && (
         <div className="flex flex-row-reverse justify-between items-center text-lg font-semibold text-slate-600">
           <span className="text-[#006C49]">{percentage}%</span>
-          <span className="text-black">معدل التقدم</span>
+          <span className="text-primary">معدل التقدم</span>
         </div>
       )}
 

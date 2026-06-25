@@ -5,4 +5,4 @@ class ChatController extends BaseController{
         super(BaseController);
     }
 }
-module.exports = ChatController;
+module.exports =new ChatController();

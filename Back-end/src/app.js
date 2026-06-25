@@ -1,6 +1,12 @@
 const express=require('express')
 const globalErrorHandler=require('./middlewares/errorHandler.middleware')
 
+const rateLimiter = require('./middlewares/rateLimiter');
+
+const security = require('./middlewares/security');
+const cors = require('./middlewares/cors');   
+
+
 const authRoute=require('./modules/auth/auth.route');
 const assignmentRoute=require('./modules/assignments/assignment.route');
 const chapterRoute=require('./modules/chapters/chapter.route');
@@ -14,9 +20,36 @@ const teacherRoute=require('./modules/teachers/teacher.route');
 
 const app=express();
 
+app.use(security.create());
+app.use(cors.create());   // ← Added (using our new middleware)
+
+
+// Global rate limiting (moderate)
+app.use(rateLimiter.create({
+    windowMs: 15 * 60 * 1000,
+    limit: 150
+}));
+
+// Stricter limiter for auth routes
+const authLimiter = rateLimiter.create({
+    windowMs: 60 * 60 * 1000,   // 1 hour
+    limit: 10,
+    message: 'Too many login attempts. Please try again later.'
+});
+
+
+
 app.use(express.json());
 
 app.use('/api/v1/auth',authRoute);
+
+const apiLimiter = rateLimiter.create({
+    windowMs: 15 * 60 * 1000,
+    limit: 300
+});
+
+app.use(apiLimiter)
+
 app.use('/api/v1/assignment',assignmentRoute);
 app.use('/api/v1/chapter',chapterRoute);
 // app.use('api/v1/chat',chatRoute);

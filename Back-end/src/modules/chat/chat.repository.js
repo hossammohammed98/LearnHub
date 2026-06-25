@@ -13,4 +13,4 @@ class ChatRepository extends BaseRepository{
             return true;
     }
 }
-module.exports = ChatRepository;
+module.exports =new ChatRepository();

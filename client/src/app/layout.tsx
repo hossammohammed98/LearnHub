@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { Cairo } from "next/font/google";
+import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+<<<<<<< HEAD
 import SideBar from "@/components/common/SideBar";
 import TeacherSideBar from "@/features/teacher/TeacherSideBar";
+=======
+import StoreProvider from "@/store/StoreProvider";
+>>>>>>> 11107d5fecd14a399dc3d15067863dc5e3f51fbd
 
-
-const cairo = Cairo({
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
-  weight: ["300", "400", "500", "700", "800"],
-  variable: "--font-cairo",
+  weight: ["200", "300", "400", "500", "600", "700"],
+  variable: "--font-ibm-plex-arabic",
 });
 
 export const metadata: Metadata = {
@@ -25,12 +28,11 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${cairo.variable} h-full antialiased`}
+      className={`${ibmPlexArabic.variable} h-full antialiased`}
     >
-      {}
-      <body className={`${cairo.className} min-h-full flex flex-col`}>
-        {children}
-
+      <body className={`${ibmPlexArabic.className} min-h-full flex flex-col`}>
+        {/* هنا بيضمن إن الريدكس يشتغل في المشروع كله تغليف الـ children */}
+        <StoreProvider>{children}</StoreProvider>
       </body>
     </html>
   );

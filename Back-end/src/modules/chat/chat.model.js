@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const chatSchema = mongoose.Schema({
-    type:{type:String,enum:['privet','group'],default:'privet'},
-    groupName:String,
-    lastMessage:{type:mongoose.Schema.Types.ObjectId}
+    type:{type:String,enum:['private','group'],default:'private'},
+    groupName:{type:String,default:null},
+    lastMessage:{type:mongoose.Schema.Types.ObjectId,ref:'Message'},
 },{timestamps:true});
 
 module.exports = mongoose.model('Chat',chatSchema);
