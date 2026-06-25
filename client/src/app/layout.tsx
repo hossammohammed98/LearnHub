@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import {IBM_Plex_Sans_Arabic} from 'next/font/google'
+import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
-import StoreProvider from "@/store/StoreProvider"; 
+import StoreProvider from "@/store/StoreProvider";
 
 const ibmPlexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
-  weight: [ "200", "300", "400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700"],
   variable: "--font-ibm-plex-arabic",
 });
 
@@ -25,17 +25,9 @@ export default function RootLayout({
       dir="rtl"
       className={`${ibmPlexArabic.variable} h-full antialiased`}
     >
-<<<<<<< HEAD
-      {}
       <body className={`${ibmPlexArabic.className} min-h-full flex flex-col`}>
-        {children}
-=======
-      <body className={`${cairo.className} min-h-full flex flex-col`}>
-        {/* تغليف الـ children هنا بيضمن إن الريدكس يشتغل في المشروع كله */}
-        <StoreProvider>
-          {children}
-        </StoreProvider>
->>>>>>> feature/auth
+        {/* هنا بيضمن إن الريدكس يشتغل في المشروع كله تغليف الـ children */}
+        <StoreProvider>{children}</StoreProvider>
       </body>
     </html>
   );
