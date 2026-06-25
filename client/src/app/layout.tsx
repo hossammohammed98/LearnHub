@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
+import SideBar from "@/components/common/SideBar";
+import TeacherSideBar from "@/features/teacher/TeacherSideBar";
 
 
 const cairo = Cairo({
@@ -28,6 +30,7 @@ export default function RootLayout({
       {}
       <body className={`${cairo.className} min-h-full flex flex-col`}>
         {children}
+
       </body>
     </html>
   );

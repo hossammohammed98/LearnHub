@@ -7,17 +7,19 @@ import TeacherNavBar from "@/features/teacher/TeacherNavBar";
 import CourseDescription from '../features/student/components/CourseDescription';
 import StudentNavBar from "@/features/student/components/StudentNavBar";
 import Calender from "@/features/student/components/Calender";
+import SideBar from "@/components/common/SideBar";
 
 export default function HomePage() {
   // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
   // redirect("/login");
   return (
+    
     <>   
-     {/* <StudentNavBar></StudentNavBar> */}
+     <StudentNavBar></StudentNavBar>
 
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
-      {/* <Badge variant="success">قيد التقدم</Badge> */}
+      <Badge variant="success">قيد التقدم</Badge>
       {/* <ButtonInit ButtonVariant="success">انشاء دوره جديده</ButtonInit> */}
       {/* <Progress value={40} showLabel={true}></Progress> */}
       {/* <CurrentCourse badge={ <Badge variant="success">قيد التقدم</Badge>} 
@@ -39,7 +41,7 @@ export default function HomePage() {
           <ButtonInit >متابعة التعلم</ButtonInit>
         </>
       </CourseDescription> */}
-      <Calender></Calender>
+      {/* <Calender></Calender> */}
 
     </>
 
