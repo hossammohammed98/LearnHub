@@ -41,12 +41,13 @@ export default function HomePage() {
   // redirect("/login");
 
   return (
+    
     <>   
       {/* <StudentDashboard></StudentDashboard> */}
       {/* <StudentNavBar></StudentNavBar> */}
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
-      {/* <Badge variant="success">قيد التقدم</Badge> */}
+      <Badge variant="success">قيد التقدم</Badge>
       {/* <ButtonInit ButtonVariant="success">انشاء دوره جديده</ButtonInit> */}
       {/* <Progress value={40} showLabel={true}></Progress> */}
       
