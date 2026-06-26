@@ -12,6 +12,7 @@ import statCard from "../features/parent/components/StateCad";
 import StatCard from "../features/parent/components/StateCard";
 import { ActivityCard } from "@/features/parent/components/ActivityCard";
 import { FamilyPerformance } from "@/features/parent/components/FamilyPerformance";
+
 export default function HomePage() {
   // تحويل المستخدم مباشرة إلى صفحة تسجيل الدخول
 
@@ -46,7 +47,6 @@ export default function HomePage() {
       </CourseDescription> */}
       {/* <Calender></Calender> */}
 
-
       {/* last update */}
 
       {/* <StatCard/> */}
@@ -55,9 +55,9 @@ export default function HomePage() {
       {/* Important Alerts */}
       {/* Child */}
       {/* ChildReportCard */}
-      
+
       {/* component الشامل */}
-      <FamilyPerformance />
+      {/* <FamilyPerformance /> */}
     </>
   );
 }
