@@ -6,7 +6,7 @@ class BaseController {
     constructor(service) {
         this.service = service;
     }
-    getAll = catchAsyncHandler(async(req, res, next) => {
+     getAll = catchAsyncHandler(async(req, res, next) => {
         const data = await this.service.getAll();
         return new ApiResponse.success(res, "The Data Returned Successfully", data);
     })

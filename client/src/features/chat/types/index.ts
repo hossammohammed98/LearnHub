@@ -17,6 +17,6 @@ export interface Message{
 }
 
 export interface UploadFileResponse{
-    fileUrl:string;
+    secureUrl:string;
     fileName:string;
 }

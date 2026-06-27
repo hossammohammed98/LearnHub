@@ -62,7 +62,7 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
                 socketRef.current.emit('send_message', {
                     roomId,
                     messageText: `📎 ملف مرفق: ${uploadResult.fileName}`,
-                    fileUrl: uploadResult.fileUrl,
+                    fileUrl: uploadResult.secureUrl,
                     type: 'file'
                 });
             }

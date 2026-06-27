@@ -19,7 +19,7 @@ const studentRoute=require('./modules/students/student.route');
 const teacherRoute=require('./modules/teachers/teacher.route');
 
 const app=express();
-
+app.set('trust proxy', 1);
 app.use(security.create());
 app.use(cors.create());   // ← Added (using our new middleware)
 
