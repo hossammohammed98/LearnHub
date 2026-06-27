@@ -34,19 +34,23 @@ import ConversationItem from "@/features/chat/components/ConversationItem";
 
 import { ActivityCard } from "@/features/parent/components/ActivityCard";
 import { FamilyPerformance } from "@/features/parent/components/FamilyPerformance";
+<<<<<<< HEAD
 import StatCard from "@/features/parent/components/StateCad";
+=======
+>>>>>>> feature/auth
 
 export default function HomePage() {
   // إذا كنت تريد تحويل المستخدم مباشرة لصفحة تسجيل الدخول، فك التعليق عن السطر التالي:
   // redirect("/login");
 
   return (
+    
     <>   
       {/* <StudentDashboard></StudentDashboard> */}
       {/* <StudentNavBar></StudentNavBar> */}
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
-      {/* <Badge variant="success">قيد التقدم</Badge> */}
+      <Badge variant="success">قيد التقدم</Badge>
       {/* <ButtonInit ButtonVariant="success">انشاء دوره جديده</ButtonInit> */}
       {/* <Progress value={40} showLabel={true}></Progress> */}
       
@@ -76,6 +80,7 @@ export default function HomePage() {
       
       <SideBar></SideBar>
 
+<<<<<<< HEAD
       {/* <Calender> 
         <>
           <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
@@ -88,14 +93,26 @@ export default function HomePage() {
       <ChatLayout></ChatLayout>
 
   
+=======
+      {/* last update */}
+>>>>>>> feature/auth
 
       {/* ميزات أولياء الأمور (آخر تحديث) */}
       {/* <StatCard/> */}
       {/* <ActivityCard /> */}
       {/* <ActivityCard/> */}
+<<<<<<< HEAD
       
       {/* المكون الشامل لأولياء الأمور */}
       <FamilyPerformance />
+=======
+      {/* Important Alerts */}
+      {/* Child */}
+      {/* ChildReportCard */}
+
+      {/* component الشامل */}
+      {/* <FamilyPerformance /> */}
+>>>>>>> feature/auth
     </>
   );
 }
