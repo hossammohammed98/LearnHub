@@ -1,11 +1,17 @@
 const jwt=require('jsonwebtoken')
+const cookie=require('cookie')
 const ApiError=require('../shared/core/ApiError')
 exports.socketAuth=(socket,next)=>{
-    const token=socket.handshake.auth.token||socket.handshake.headers['authorization'];
+    const headerCookie=socket.handshake.headers.cookie;
+
+    if(!headerCookie)
+        return next(new Error("cookies Missing"));
+    const parserCookie=cookie.parse(headerCookie);
+    const token=parserCookie.accessToken;
     if(!token)
-        return next(new ApiError(404,"Token Missing"));
+        return next(new Error("Token Missing"))
     try{
-    const decode=jwt.verify(token.replace('Bearer ',''),process.env.SECRET_ACCESS_KEY);
+    const decode=jwt.verify(token,process.env.SECRET_ACCESS_KEY);
     socket.user=decode;
     next();
     }
