@@ -5,7 +5,6 @@ const messageSchema = mongoose.Schema({
     chatId:{type:mongoose.Schema.Types.ObjectId,required:[true,"The UserId is required"],ref:'Chat'},
     content:{type:String ,required:[true,"The content is required"]},
     messageType:{type:String,enum:['text','file'],default:'text'},
-    fileUrl:{type:String,default:null},
     attachment: {
         fileUrl: { type: String, default: null },
         fileName: { type: String, default: null },

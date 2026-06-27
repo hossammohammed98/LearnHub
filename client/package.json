@@ -17,11 +17,8 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.79.0",
-<<<<<<< HEAD
     "socket.io-client": "^4.8.3",
-=======
     "recharts": "^3.8.1",
->>>>>>> feature/auth
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
