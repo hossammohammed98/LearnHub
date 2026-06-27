@@ -7,7 +7,7 @@ class ChatRepository extends BaseRepository{
         super(chatModel);
     }
     async isUserInChat(chatId,userId){
-        const chat = await chatMember.find({chatId:chatId});
+        const chat = await chatMember.findOne({chatId:chatId});
         if(!chat && chat.userId!==userId)
             return false;
         else

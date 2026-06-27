@@ -37,22 +37,24 @@ exports.initSocket=async(server)=>{
     io=new Server(server,{
         cors:{
             origin:process.env.CLIENT_URL,
-
+            credentials:true,
         },
         pingTimeout:60000,
         pingInterval:25000,
+        transports:['websocket'],
         adapter:createAdapter(pubClient,subClient)
     })
 
     io.use(socketAuth);
     io.on('connection',async (socket)=>{
+        console.log(`⚡ Connected: User [${socket.user.id}] established real-time sync channel.`);
         const userId=socket.user.id;
-        await pubClient.hSet('online_users',userId,socket.id);
+        await pubClient.hSet('online_users',String(userId),socket.id);
         io.emit('user_status_change',{userId:userId,status:'online'});
-        socket.join(userId);
+        socket.join(String(userId));
         registerChatHandlers(io, socket, pubClient);
         socket.on('disconnect',async ()=>{
-            await pubClient.hDel('online_users',userId)
+            await pubClient.hDel('online_users',String(userId))
             io.emit('user_status_change',{userId:userId,status:'offline'});
         })
     })
