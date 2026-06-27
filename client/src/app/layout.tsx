@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
-<<<<<<< HEAD
 import SideBar from "@/components/common/SideBar";
 import TeacherSideBar from "@/features/teacher/TeacherSideBar";
-=======
 import StoreProvider from "@/store/StoreProvider";
->>>>>>> 11107d5fecd14a399dc3d15067863dc5e3f51fbd
 
 const ibmPlexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
