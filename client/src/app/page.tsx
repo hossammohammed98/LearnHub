@@ -40,6 +40,7 @@ import CreatePathCard from "@/features/BrowseCourses/components/CreatePathCard";
 import MarketingPathCard from "@/features/BrowseCourses/components/MarketingPathCard";
 import BrowseCourse from "./dashboard/BrowseCoursePage/BrowseCourse";
 import UploadPage from "./UploadVideosPage/UploadPage";
+import AssistantsPage from "./AssistantsPage/AssistantPage";
 
 
 export default function HomePage() {
@@ -97,7 +98,7 @@ export default function HomePage() {
         <MarketingPathCard></MarketingPathCard> */}
         {/* <BrowseCourse></BrowseCourse> */}
         {/* <UploadPage></UploadPage> */}
-
+          <AssistantsPage></AssistantsPage>
       {/* <Calender> 
         <>
         <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
