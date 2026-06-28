@@ -9,18 +9,16 @@ interface FinalExamCardProps {
 export const FinalExamCard: React.FC<FinalExamCardProps> = ({ isCourseCompleted, onStartExam }) => {
   return (
     <div className="bg-[#0b2239] text-white p-5 rounded-2xl shadow-md text-center font-sans mt-auto border border-slate-800">
-      {/* الأيقونة العلوية (الوسام) */}
       <div className="bg-amber-500 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md shadow-amber-500/20">
         <Award className="w-6 h-6 text-[#0b2239]" />
       </div>
 
-      {/* النصوص */}
       <h3 className="text-lg font-bold mb-1">الاختبار النهائي</h3>
       <p className="text-xs text-slate-300 leading-relaxed mb-4">
         احصل على شهادتك بعد اجتياز هذا التقييم
       </p>
 
-      {/* الزر الديناميكي حسب حالة الإتمام */}
+            
       {isCourseCompleted ? (
         <button 
           onClick={onStartExam}

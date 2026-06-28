@@ -1,4 +1,4 @@
-import ProfileSettings from '@/features/settings/ProfileSettings';
+import ProfileSettings from '@/features/settings/SettingsSidebar';
 import  TeacherSideBar from '@/features/teacher/TeacherSideBar';
 
 function page() {

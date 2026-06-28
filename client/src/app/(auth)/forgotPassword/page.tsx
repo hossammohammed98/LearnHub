@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
+// 1. استيراد الأيقونات من مكتبة Lucide React
+import { GraduationCap, MailCheck } from "lucide-react"; 
 
 export default function ForgotPasswordPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -16,8 +18,11 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
+      {/* Header */}
       <div className="flex flex-col items-center gap-1 pt-2">
-        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white text-xl shadow-level-1"></div>
+        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white shadow-level-1">
+          <GraduationCap className="w-6 h-6" />
+        </div>
         <h1 className="text-lg font-bold text-primary">تعلَّم</h1>
         <p className="text-[11px] text-slate-400 font-medium tracking-wide">
           منصة تعلَّم | مستقبل التعليم الرقمي
@@ -62,20 +67,9 @@ export default function ForgotPasswordPage() {
         <>
           <div className="space-y-6">
             <div className="flex justify-center">
-              <div className="w-16 h-16 bg-brand-success/10 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 text-brand-success"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+              {/* 3. استبدال الـ SVG بأيقونة MailCheck لتأكيد الإرسال للبريد */}
+              <div className="w-16 h-16 bg-brand-success/10 rounded-full flex items-center justify-center text-brand-success">
+                <MailCheck className="w-8 h-8" />
               </div>
             </div>
 

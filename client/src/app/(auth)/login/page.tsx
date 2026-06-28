@@ -19,6 +19,31 @@ export default function LoginPage() {
     formState:{ errors, isSubmitting },
 }=useForm<LoginFormValues>({
   resolver: zodResolver(loginSchema),
+// 1. استيراد الأيقونة من مكتبة Lucide React
+import { GraduationCap } from "lucide-react";
+
+export default function LoginPage() {
+  return (
+    <div className="w-full max-w-md mx-auto space-y-6">
+      {/* Header */}
+      <div className="flex flex-col items-center gap-1 pt-2">
+        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white shadow-level-1">
+          <GraduationCap className="w-6 h-6" />
+        </div>
+        <h1 className="text-lg font-bold text-primary">تعلَّم</h1>
+        <p className="text-[11px] text-slate-400 font-medium tracking-wide">
+          منصة تعلَّم | مستقبل التعليم الرقمي
+        </p>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex border-b border-slate-100 text-xs font-medium justify-center gap-6">
+        <button
+          type="button"
+          className="pb-2 px-1 text-brand-success border-b-2 border-brand-success font-bold"
+        >
+          تسجيل الدخول
+        </button>
 
 })
 const onSubmit=async(data:LoginFormValues)=>{
@@ -63,6 +88,22 @@ return (
         إنشاء حساب
       </Link>
     </div>
+      {/* Title */}
+      <div className="text-right">
+        <h2 className="text-xl font-bold text-primary">دخول إلى حسابك</h2>
+        <p className="text-sm text-slate-400 mt-1">
+          أدخل بيانات حسابك للوصول إلى المنصة
+        </p>
+      </div>
+
+      {/* Form */}
+      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        <Input
+          name="email"
+          label="البريد الإلكتروني"
+          type="email"
+          placeholder="example@mail.com"
+        />
 
     <div className="text-right">
       <h2 className="text-xl font-bold text-primary">دخول إلى حسابك</h2>
@@ -121,3 +162,4 @@ return (
   </div>
 );
 }
+

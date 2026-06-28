@@ -1,6 +1,5 @@
 "use client";
 import React from 'react';
- //call the components 
 import { FamilyPerformance } from '@/features/parent/components/FamilyPerformance';
 
 export default function ParentDashboardPage() {

@@ -1,4 +1,3 @@
-// components/sections/StepsSection.tsx
 export default function StepsSection() {
   const steps = [
     { num: '1', title: 'أنشئ حسابك', desc: 'عملية تسجيل سريعة وآمنة للطلاب أو المعلمين.' },

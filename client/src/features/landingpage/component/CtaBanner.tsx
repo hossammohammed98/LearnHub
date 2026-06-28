@@ -1,4 +1,4 @@
-// components/sections/CtaBanner.tsx
+import Link from "next/link";
 export default function CtaBanner() {
   return (
     <section className="px-6 py-8 max-w-7xl mx-auto w-full" dir="rtl">
@@ -12,7 +12,11 @@ export default function CtaBanner() {
           </p>
           <div className="flex flex-row justify-center gap-3 pt-4">
             <button className="bg-black hover:bg-slate-900 text-white font-bold text-xs md:text-sm px-6 py-3 rounded-xl transition-all">
+              <Link
+                href="/login"
+              >
               ابدأ الآن مجاناً
+              </Link>
             </button>
             <button className="bg-white/70 hover:bg-white/90 text-slate-900 font-bold text-xs md:text-sm px-6 py-3 rounded-xl transition-all">
               استشارة تعليمية
