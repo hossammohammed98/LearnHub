@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation"; // لاستخدامه في التنقل بين مسارات Next.js
+import { useRouter } from "next/navigation"; 
 import { ActivityCard } from "./ActivityCard";
 import { StatCard } from "./StateCad";
 import { ChildReportCard } from "./ChildReportCard";
@@ -72,7 +72,7 @@ export function FamilyPerformance() {
       badgeText: "ممتاز",
       badgeType: "status" as const,
       progressValue: 96.2,
-      iconBgColor: "bg-[#56f0b1] text-[#006644]", // خلفية فسفورية وأيقونة داكنة كالصورة
+      iconBgColor: "bg-[#56f0b1] text-[#006644]", 
       icon: (
         <svg
           className="w-5 h-5"
@@ -108,7 +108,7 @@ export function FamilyPerformance() {
         </div>
 
         <button
-          onClick={() => router.push("/parent/add-child")} // عدل المسار حسب الرغبة
+          onClick={() => router.push("/parent/add-child")}  
           className="flex items-center gap-2 bg-[#006644] hover:bg-[#005236] text-white px-5 py-3 rounded-xl text-sm font-bold transition-all shadow-sm active:scale-95"
         >
           <svg

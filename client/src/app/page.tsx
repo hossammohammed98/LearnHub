@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import SideBar from "@/components/common/SideBar";
 import ChatLayout from "@/features/chat/components/ChatLayout";
 
@@ -31,29 +32,29 @@ import LandingPage from "./landingpage/LandingPage";
 import ConversationItem from "@/features/chat/components/ConversationItem";
 
 // مكونات أولياء الأمور (Parent Portal)
-
 import { ActivityCard } from "@/features/parent/components/ActivityCard";
 import { FamilyPerformance } from "@/features/parent/components/FamilyPerformance";
-<<<<<<< HEAD
-import StatCard from "@/features/parent/components/StateCad";
-=======
->>>>>>> feature/auth
+import StatCard from "@/features/parent/components/StateCad"; // Note: Check if filename is actually StateCad or StatCard
+import { CourseCard } from "@/features/BrowseCourses/component/CourseCard";
+import { CourseList } from "@/features/BrowseCourses/component/CourseList";
+import { Pagination } from "@/features/BrowseCourses/component/Pagination";
+import SidebarFilter from "@/features/BrowseCourses/component/SideBarFilter";
+import PromoBanner from "@/features/BrowseCourses/component/PromoBanner";
 
 export default function HomePage() {
   // إذا كنت تريد تحويل المستخدم مباشرة لصفحة تسجيل الدخول، فك التعليق عن السطر التالي:
   // redirect("/login");
 
   return (
-    
-    <>   
+    <>
       {/* <StudentDashboard></StudentDashboard> */}
       {/* <StudentNavBar></StudentNavBar> */}
       {/* <TeacherNavBar></TeacherNavBar> */}
       {/* <MetricCard ></MetricCard> */}
-      <Badge variant="success">قيد التقدم</Badge>
+      {/* <Badge variant="success">قيد التقدم</Badge> */}
       {/* <ButtonInit ButtonVariant="success">انشاء دوره جديده</ButtonInit> */}
       {/* <Progress value={40} showLabel={true}></Progress> */}
-      
+
       {/* <CurrentCourse badge={<Badge variant="success">قيد التقدم</Badge>} courseLevel={<Badge variant="neutral">مستوى متقدم</Badge>}></CurrentCourse> */}
 
       {/* <CourseDescription
@@ -66,7 +67,7 @@ export default function HomePage() {
           <ButtonInit>متابعة التعلم</ButtonInit>
         </>
       </CourseDescription> */}
-      
+
       {/* <Calender></Calender> */}
       {/* <SectionHeader title={"رحلة تعليمية ممتعة و احترافية مصممة خصيصا للمستقبل وتعتمد على الذكاء الاصطناعى لتخصيص تجربة كل طالب"}></SectionHeader> */}
       {/* <Navbar></Navbar> */}
@@ -77,42 +78,39 @@ export default function HomePage() {
       {/* <CtaBanner></CtaBanner> */}
       {/* <Footer></Footer> */}
       {/* <LandingPage></LandingPage> */}
-      
-      <SideBar></SideBar>
 
-<<<<<<< HEAD
+      {/* <SideBar></SideBar> */}
+
       {/* <Calender> 
         <>
           <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
           <CalenderItem title={'إدارة الموارد البشرية'} day="غداً" hour={'، 10:00 م'}></CalenderItem>
         </>
       </Calender> */}
-      
-      {/* <HeroSection userName="أحمد"></HeroSection> */}
-      
-      <ChatLayout></ChatLayout>
 
-  
-=======
-      {/* last update */}
->>>>>>> feature/auth
+      {/* <HeroSection userName="أحمد"></HeroSection> */}
+
+      {/* <ChatLayout></ChatLayout> */}
 
       {/* ميزات أولياء الأمور (آخر تحديث) */}
       {/* <StatCard/> */}
       {/* <ActivityCard /> */}
       {/* <ActivityCard/> */}
-<<<<<<< HEAD
-      
-      {/* المكون الشامل لأولياء الأمور */}
-      <FamilyPerformance />
-=======
       {/* Important Alerts */}
       {/* Child */}
       {/* ChildReportCard */}
 
-      {/* component الشامل */}
+      {/* المكون الشامل لأولياء الأمور */}
       {/* <FamilyPerformance /> */}
->>>>>>> feature/auth
+      {/* <div className="flex ">
+        <SidebarFilter />
+        <CourseCard />
+        <CourseCard />
+        <CourseCard /> */}
+        {/* <CourseCard /> */}
+      {/* </div>
+      <PromoBanner/> */}
+      {/* <Pagination /> */}
     </>
   );
 }

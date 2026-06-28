@@ -20,7 +20,7 @@ export interface CourseData {
   progress: number;
   units: Unit[];
 }
-
+//mock data --- waiting api
 export const mockCourse: CourseData = {
   id: "Tailwind",
   title:"learn tailwind in one hour",

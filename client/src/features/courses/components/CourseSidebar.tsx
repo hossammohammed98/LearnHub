@@ -17,7 +17,7 @@ export const CourseSidebar: React.FC<SidebarProps> = ({
   if (!course)
     return <div className="w-80 bg-white p-6 text-right">جاري التحميل...</div>;
 
-  // شرط فتح الاختبار النهائي: إذا كان شريط التقدم وصّل لـ 100%
+   
   const isCourseCompleted = course.progress === 100;
 
   return (
@@ -37,14 +37,14 @@ export const CourseSidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* 2. قائمة الوحدات والدروس (flex-1 لملء المساحة ودفع الكارت لأسفل) */}
+    
       <div className="flex-1 overflow-y-auto space-y-4 pr-1 custom-scrollbar">
         {course.units.map((unit) => (
           <div
             key={unit.id}
             className="border border-gray-100 rounded-xl overflow-hidden bg-gray-50/50"
           >
-            {/* عنوان الوحدة */}
+          
             <div className="p-4 bg-emerald-50/40 text-emerald-900 font-semibold flex items-center justify-between text-sm">
               <span className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4 text-emerald-600" />
@@ -52,7 +52,6 @@ export const CourseSidebar: React.FC<SidebarProps> = ({
               </span>
             </div>
 
-            {/* دروس الوحدة */}
             <div className="bg-white divide-y divide-gray-50">
               {unit.lessons.map((lesson) => {
                 const isActive = lesson.id === currentLessonId;
