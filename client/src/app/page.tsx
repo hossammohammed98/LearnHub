@@ -11,7 +11,6 @@ import Progress from "@/components/ui/Progress";
 import CurrentCourse from "@/features/student/components/CurrentCourse";
 import TeacherNavBar from "@/features/teacher/TeacherNavBar";
 import CourseDescription from "../features/student/components/CourseDescription";
-import StudentNavBar from "@/features/student/components/StudentNavBar";
 import StudentDashboard from "@/features/student/components/StudentDashboard";
 import Calender from "@/features/student/components/Calender";
 import CalenderItem from "@/features/student/components/CalenderItem";
@@ -34,85 +33,17 @@ import ConversationItem from "@/features/chat/components/ConversationItem";
 
 import { ActivityCard } from "@/features/parent/components/ActivityCard";
 import { FamilyPerformance } from "@/features/parent/components/FamilyPerformance";
-<<<<<<< HEAD
 import StatCard from "@/features/parent/components/StateCad";
-=======
->>>>>>> feature/auth
+
 
 export default function HomePage() {
   // إذا كنت تريد تحويل المستخدم مباشرة لصفحة تسجيل الدخول، فك التعليق عن السطر التالي:
-  // redirect("/login");
+  redirect("/register");
 
   return (
     
     <>   
-      {/* <StudentDashboard></StudentDashboard> */}
-      {/* <StudentNavBar></StudentNavBar> */}
-      {/* <TeacherNavBar></TeacherNavBar> */}
-      {/* <MetricCard ></MetricCard> */}
-      <Badge variant="success">قيد التقدم</Badge>
-      {/* <ButtonInit ButtonVariant="success">انشاء دوره جديده</ButtonInit> */}
-      {/* <Progress value={40} showLabel={true}></Progress> */}
-      
-      {/* <CurrentCourse badge={<Badge variant="success">قيد التقدم</Badge>} courseLevel={<Badge variant="neutral">مستوى متقدم</Badge>}></CurrentCourse> */}
-
-      {/* <CourseDescription
-        courseDescription="تعلّم كيفية بناء استراتيجيات قوية تعزز من كفاءة الأداء المؤسسي في البيئات التعليمية الحديثة والتقنيات الصاعدة."
-        courseName="الاستراتيجيات المتقدمة في إدارة المؤسسات الأكاديمية"
-        title="دورة القيادة التنفيذية"
-      >
-        <>
-          <Progress value={40} showLabel={true}></Progress>
-          <ButtonInit>متابعة التعلم</ButtonInit>
-        </>
-      </CourseDescription> */}
-      
-      {/* <Calender></Calender> */}
-      {/* <SectionHeader title={"رحلة تعليمية ممتعة و احترافية مصممة خصيصا للمستقبل وتعتمد على الذكاء الاصطناعى لتخصيص تجربة كل طالب"}></SectionHeader> */}
-      {/* <Navbar></Navbar> */}
-      {/* <Hero></Hero> */}
-      {/* <FeaturesSection></FeaturesSection> */}
-      {/* <StepsSection></StepsSection> */}
-      {/* <PricingSection></PricingSection> */}
-      {/* <CtaBanner></CtaBanner> */}
-      {/* <Footer></Footer> */}
-      {/* <LandingPage></LandingPage> */}
-      
-      <SideBar></SideBar>
-
-<<<<<<< HEAD
-      {/* <Calender> 
-        <>
-          <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
-          <CalenderItem title={'إدارة الموارد البشرية'} day="غداً" hour={'، 10:00 م'}></CalenderItem>
-        </>
-      </Calender> */}
-      
-      {/* <HeroSection userName="أحمد"></HeroSection> */}
-      
-      <ChatLayout></ChatLayout>
-
-  
-=======
-      {/* last update */}
->>>>>>> feature/auth
-
-      {/* ميزات أولياء الأمور (آخر تحديث) */}
-      {/* <StatCard/> */}
-      {/* <ActivityCard /> */}
-      {/* <ActivityCard/> */}
-<<<<<<< HEAD
-      
-      {/* المكون الشامل لأولياء الأمور */}
-      <FamilyPerformance />
-=======
-      {/* Important Alerts */}
-      {/* Child */}
-      {/* ChildReportCard */}
-
-      {/* component الشامل */}
-      {/* <FamilyPerformance /> */}
->>>>>>> feature/auth
+        
     </>
   );
 }
