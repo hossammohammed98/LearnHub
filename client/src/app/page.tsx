@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import SideBar from "@/components/common/SideBar";
 import ChatLayout from "@/features/chat/components/ChatLayout";
 
@@ -30,10 +31,15 @@ import LandingPage from "./landingpage/LandingPage";
 import ConversationItem from "@/features/chat/components/ConversationItem";
 
 // مكونات أولياء الأمور (Parent Portal)
-
 import { ActivityCard } from "@/features/parent/components/ActivityCard";
 import { FamilyPerformance } from "@/features/parent/components/FamilyPerformance";
 import StatCard from "@/features/parent/components/StateCad";
+import StatCard from "@/features/parent/components/StateCad"; // Note: Check if filename is actually StateCad or StatCard
+import { CourseCard } from "@/features/BrowseCourses/component/CourseCard";
+import { CourseList } from "@/features/BrowseCourses/component/CourseList";
+import { Pagination } from "@/features/BrowseCourses/component/Pagination";
+import SidebarFilter from "@/features/BrowseCourses/component/SideBarFilter";
+import PromoBanner from "@/features/BrowseCourses/component/PromoBanner";
 
 
 export default function HomePage() {
@@ -44,6 +50,7 @@ export default function HomePage() {
     
     <>   
         
+
     </>
   );
 }

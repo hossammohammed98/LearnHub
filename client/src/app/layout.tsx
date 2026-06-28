@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+<<<<<<< HEAD
+
+=======
 import SideBar from "@/components/common/SideBar";
 import TeacherSideBar from "@/features/teacher/TeacherSideBar";
+>>>>>>> 26a6fa8c5a025f8b56635bfd43e72078c1aabb47
 import StoreProvider from "@/store/StoreProvider";
 
 const ibmPlexArabic = IBM_Plex_Sans_Arabic({
@@ -28,7 +32,6 @@ export default function RootLayout({
       className={`${ibmPlexArabic.variable} h-full antialiased`}
     >
       <body className={`${ibmPlexArabic.className} min-h-full flex flex-col`}>
-        {/* هنا بيضمن إن الريدكس يشتغل في المشروع كله تغليف الـ children */}
         <StoreProvider>{children}</StoreProvider>
       </body>
     </html>
