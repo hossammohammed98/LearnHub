@@ -55,7 +55,6 @@ exports.refreshToken=async(payload,incomingRefreshToken)=>{
     if(!user||user.Role!==payload.role||user.RefreshToken!=incomingRefreshToken)
         throw new ApiError(401,"The Token Expired or Invalid");
     return createAccessToken({id:user._id,role:user.Role})
-
 }
 
 //logeOut 
