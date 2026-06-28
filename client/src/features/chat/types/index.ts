@@ -14,9 +14,10 @@ export interface Message{
     time:string;
     type?: 'text' | 'file';
     fileUrl?: string;
+    
 }
 
 export interface UploadFileResponse{
-    fileUrl:string;
+    secureUrl:string;
     fileName:string;
 }

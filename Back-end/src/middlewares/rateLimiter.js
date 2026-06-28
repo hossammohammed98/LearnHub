@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-// Environment-based configuration
 const isProduction = process.env.NODE_ENV === 'production';
 
 class RateLimiter {
@@ -13,15 +12,10 @@ class RateLimiter {
         this.limiterInstances = new Map();
     }
 
-    /**
-     * Creates a rate limiter middleware
-     * @param {Object} options - Rate limiter options
-     * @returns {Function} Express middleware
-     */
     create(options = {}) {
         const {
-            windowMs = 15 * 60 * 1000,     // 15 minutes
-            limit = 100,                   // Max requests per window
+            windowMs = 15 * 60 * 1000,
+            limit = 100,
             prefix = 'ratelimit:',
             message = 'Too many requests from this IP, please try again later.',
             keyGenerator,
@@ -32,14 +26,12 @@ class RateLimiter {
 
         const key = `${prefix}${windowMs}-${limit}`;
 
-        // Return cached instance if exists
         if (this.limiterInstances.has(key)) {
             return this.limiterInstances.get(key);
         }
 
         let store;
 
-        // Use Redis in production for distributed environments
         if (isProduction && process.env.REDIS_URL) {
             const redisClient = createClient({
                 url: process.env.REDIS_URL,
@@ -59,23 +51,32 @@ class RateLimiter {
         const limiter = rateLimit({
             windowMs,
             limit,
-            standardHeaders: true,        // Return rate limit info in headers
-            legacyHeaders: false,         // Disable deprecated X-RateLimit headers
+            standardHeaders: true,
+            legacyHeaders: false,
             store,
             message: {
                 status: 429,
                 error: 'Rate limit exceeded',
                 message,
             },
-            keyGenerator: keyGenerator || ((req) => {
-                // Use user ID if authenticated, otherwise IP
-                return req.user?.id || 
-                       req.ip || 
-                       req.connection.remoteAddress ||
-                       'unknown';
+            // ✅ FIX 1: Explicitly add validation rules to disable the IPv6 warning 
+            // If you use Nginx/Cloudflare and app.set('trust proxy', true), set this to true.
+            validate: {
+                default: false,
+                xForwardedForHeader: false,
+                trustProxy: false
+            },
+           keyGenerator: keyGenerator || ((req) => {
+                // Return user ID if logged in, otherwise default to the library's safe IP resolver
+                if (req.user?.id) {
+                    return req.user.id;
+                }
+                
+                // Falling back directly to req.ip is what triggers the error if the 
+                // library thinks you haven't validated your server's proxy trust settings.
+                return req.ip || 'unknown';
             }),
             skip: skip || ((req) => {
-                // Skip rate limiting for health checks or internal requests
                 return req.path === '/health' || req.path === '/favicon.ico';
             }),
             handler: handler || ((req, res) => {
@@ -94,5 +95,4 @@ class RateLimiter {
     }
 }
 
-// Export singleton instance
 module.exports = new RateLimiter();

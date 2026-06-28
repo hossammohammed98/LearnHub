@@ -46,11 +46,14 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
             time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
         };
         setMessages((prev) => [...prev, optimisticMessage]);
+        //send message
         socketRef.current.emit('send_message', {
             roomId,
             messageText: text
         });
+
     }, [roomId])
+
     const sendFileMessage = useCallback(async (file: File) => {
         if (!roomId) return;
         setUploadProgress(1);
@@ -62,7 +65,7 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
                 socketRef.current.emit('send_message', {
                     roomId,
                     messageText: `📎 ملف مرفق: ${uploadResult.fileName}`,
-                    fileUrl: uploadResult.fileUrl,
+                    fileUrl: uploadResult.secureUrl,
                     type: 'file'
                 });
             }
@@ -80,17 +83,17 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
             return;
         }
         loadChatHistory(roomId);
-        const socket=io(process.env.NEXT_PUBLIC_API_URL,{
-            autoConnect:true,
-            reconnectionAttempts:5,
-            reconnectionDelay:1000,
-            withCredentials:true,
-            transports:["websocket"],
+        const socket = io(process.env.NEXT_PUBLIC_API_URL, {
+            autoConnect: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000,
+            withCredentials: true,
+            transports: ["websocket"],
         });
-        socketRef.current=socket;
-       
+        socketRef.current = socket;
+
         socketRef.current.emit('join_room', { roomId });
-        socketRef.current.on('message_received', (incomingPayload: Message) => {
+        socketRef.current.on('message_received', (incomingPayload: any) => {
             setMessages((prev) => {
                 if (prev.some((msg) => msg.id === incomingPayload.id)) return prev;
                 return [...prev, incomingPayload];
@@ -105,14 +108,14 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
                 socketRef.current = null;
             }
         }
-    }, [roomId,loadChatHistory])
+    }, [roomId, loadChatHistory])
 
     return {
-    messages,
-    isLoading,
-    error,
-    uploadProgress,
-    sendTextMessage,
-    sendFileMessage
-  };
+        messages,
+        isLoading,
+        error,
+        uploadProgress,
+        sendTextMessage,
+        sendFileMessage
+    };
 }

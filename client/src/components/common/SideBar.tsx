@@ -4,6 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
+import { cn } from "@/services/utils";
 
 interface SideBarItem {
   icon: LucideIcon;
