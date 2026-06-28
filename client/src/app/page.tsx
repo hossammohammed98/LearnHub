@@ -1,116 +1,46 @@
-import type { Metadata } from "next";
-import SideBar from "@/components/common/SideBar";
-import ChatLayout from "@/features/chat/components/ChatLayout";
-
-import { redirect } from "next/navigation";
-import Badge from "@/components/ui/Badge";
-import ButtonInit from "@/components/ui/ButtonInit";
-import MetricCard from "@/components/ui/MetricCard";
-import Progress from "@/components/ui/Progress";
-
-// مكونات المعلم والطالب
-import CurrentCourse from "@/features/student/components/CurrentCourse";
-import TeacherNavBar from "@/features/teacher/TeacherNavBar";
-import CourseDescription from "../features/student/components/CourseDescription";
-import StudentNavBar from "@/features/student/components/StudentNavBar";
-import StudentDashboard from "@/features/student/components/StudentDashboard";
-import Calender from "@/features/student/components/Calender";
-import CalenderItem from "@/features/student/components/CalenderItem";
-import HeroSection from "@/features/student/components/HeroSection";
-
-import SectionHeader from "@/features/landingpage/component/SectionHeader";
+import Navbar from "@/features/landingpage/component/Navbar";
 import Hero from "@/features/landingpage/component/Hero";
 import FeaturesSection from "@/features/landingpage/component/FeaturesSection";
 import StepsSection from "@/features/landingpage/component/StepsSection";
 import PricingSection from "@/features/landingpage/component/PricingSection";
 import CtaBanner from "@/features/landingpage/component/CtaBanner";
-import Navbar from "@/features/landingpage/component/Navbar";
 import Footer from "@/features/landingpage/component/Footer";
-import LandingPage from "./landingpage/LandingPage";
-
-// مكونات الشات
-import ConversationItem from "@/features/chat/components/ConversationItem";
-
-// مكونات أولياء الأمور (Parent Portal)
-import { ActivityCard } from "@/features/parent/components/ActivityCard";
-import { FamilyPerformance } from "@/features/parent/components/FamilyPerformance";
-import StatCard from "@/features/parent/components/StateCad"; // Note: Check if filename is actually StateCad or StatCard
-import { CourseCard } from "@/features/BrowseCourses/component/CourseCard";
-import { CourseList } from "@/features/BrowseCourses/component/CourseList";
-import { Pagination } from "@/features/BrowseCourses/component/Pagination";
-import SidebarFilter from "@/features/BrowseCourses/component/SideBarFilter";
-import PromoBanner from "@/features/BrowseCourses/component/PromoBanner";
-
-export default function HomePage() {
-  // إذا كنت تريد تحويل المستخدم مباشرة لصفحة تسجيل الدخول، فك التعليق عن السطر التالي:
-  // redirect("/login");
-
+import Link from 'next/link';
+export default function LandingPage() {
   return (
-    <>
-      {/* <StudentDashboard></StudentDashboard> */}
-      {/* <StudentNavBar></StudentNavBar> */}
-      {/* <TeacherNavBar></TeacherNavBar> */}
-      {/* <MetricCard ></MetricCard> */}
-      {/* <Badge variant="success">قيد التقدم</Badge> */}
-      {/* <ButtonInit ButtonVariant="success">انشاء دوره جديده</ButtonInit> */}
-      {/* <Progress value={40} showLabel={true}></Progress> */}
+    <div className="min-h-screen bg-white text-slate-900 selection:bg-emerald-100 antialiased font-sans flex flex-col">
+      
+      <Navbar />
 
-      {/* <CurrentCourse badge={<Badge variant="success">قيد التقدم</Badge>} courseLevel={<Badge variant="neutral">مستوى متقدم</Badge>}></CurrentCourse> */}
+      <main className="flex-grow">
+        
+        <Hero />
 
-      {/* <CourseDescription
-        courseDescription="تعلّم كيفية بناء استراتيجيات قوية تعزز من كفاءة الأداء المؤسسي في البيئات التعليمية الحديثة والتقنيات الصاعدة."
-        courseName="الاستراتيجيات المتقدمة في إدارة المؤسسات الأكاديمية"
-        title="دورة القيادة التنفيذية"
+        <div id="features">
+          <FeaturesSection />
+        </div>
+
+        <StepsSection />
+
+        <div id="pricing">
+          <PricingSection />
+        </div>
+
+        <CtaBanner />
+        
+      </main>
+
+      <Footer />
+
+      <button 
+        aria-label="Support Chat"
+        className="fixed bottom-6 left-6 w-12 h-12 bg-[#0b1324] hover:bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 z-50 cursor-pointer"
       >
-        <>
-          <Progress value={40} showLabel={true}></Progress>
-          <ButtonInit>متابعة التعلم</ButtonInit>
-        </>
-      </CourseDescription> */}
+        <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+      </button>
 
-      {/* <Calender></Calender> */}
-      {/* <SectionHeader title={"رحلة تعليمية ممتعة و احترافية مصممة خصيصا للمستقبل وتعتمد على الذكاء الاصطناعى لتخصيص تجربة كل طالب"}></SectionHeader> */}
-      {/* <Navbar></Navbar> */}
-      {/* <Hero></Hero> */}
-      {/* <FeaturesSection></FeaturesSection> */}
-      {/* <StepsSection></StepsSection> */}
-      {/* <PricingSection></PricingSection> */}
-      {/* <CtaBanner></CtaBanner> */}
-      {/* <Footer></Footer> */}
-      {/* <LandingPage></LandingPage> */}
-
-      {/* <SideBar></SideBar> */}
-
-      {/* <Calender> 
-        <>
-          <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
-          <CalenderItem title={'إدارة الموارد البشرية'} day="غداً" hour={'، 10:00 م'}></CalenderItem>
-        </>
-      </Calender> */}
-
-      {/* <HeroSection userName="أحمد"></HeroSection> */}
-
-      {/* <ChatLayout></ChatLayout> */}
-
-      {/* ميزات أولياء الأمور (آخر تحديث) */}
-      {/* <StatCard/> */}
-      {/* <ActivityCard /> */}
-      {/* <ActivityCard/> */}
-      {/* Important Alerts */}
-      {/* Child */}
-      {/* ChildReportCard */}
-
-      {/* المكون الشامل لأولياء الأمور */}
-      {/* <FamilyPerformance /> */}
-      {/* <div className="flex ">
-        <SidebarFilter />
-        <CourseCard />
-        <CourseCard />
-        <CourseCard /> */}
-        {/* <CourseCard /> */}
-      {/* </div>
-      <PromoBanner/> */}
-      {/* <Pagination /> */}
-    </>
+    </div>
   );
 }

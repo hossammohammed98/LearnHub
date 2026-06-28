@@ -1,38 +1,27 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
-<<<<<<< HEAD
 
-=======
-import SideBar from "@/components/common/SideBar";
-import TeacherSideBar from "@/features/teacher/TeacherSideBar";
->>>>>>> 26a6fa8c5a025f8b56635bfd43e72078c1aabb47
-import StoreProvider from "@/store/StoreProvider";
-
-const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+const cairo = Cairo({
   subsets: ["arabic"],
-  weight: ["200", "300", "400", "500", "600", "700"],
-  variable: "--font-ibm-plex-arabic",
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-cairo",
 });
 
 export const metadata: Metadata = {
-  title: "تعلّم",
-  description: "منصة تعلّم التعليمية",
+  title: "منصة تعلّم التعليمية",
+  description: "منظومة تعليمية متكاملة للطلاب والمعلمين وأولياء الأمور",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="ar"
-      dir="rtl"
-      className={`${ibmPlexArabic.variable} h-full antialiased`}
-    >
-      <body className={`${ibmPlexArabic.className} min-h-full flex flex-col`}>
-        <StoreProvider>{children}</StoreProvider>
+    <html lang="ar" dir="rtl" className={`${cairo.variable}`}>
+      <body className="font-sans antialiased bg-gray-50 text-gray-900 min-h-screen">
+        {children}
       </body>
     </html>
   );

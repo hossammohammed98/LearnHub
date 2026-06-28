@@ -1,5 +1,5 @@
-// components/sections/Hero.tsx
 import Image from 'next/image';
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -32,7 +32,12 @@ export default function Hero() {
 
           <div className="flex flex-row gap-4 pt-2">
             <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-8 py-3.5 rounded-xl transition-all shadow-sm">
+             <Link
+                href="/login"
+              >
               ابدأ رحلتك الآن
+              </Link>
+                
             </button>
 
             <button className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-sm px-8 py-3.5 rounded-xl transition-all flex items-center gap-2 shadow-sm">

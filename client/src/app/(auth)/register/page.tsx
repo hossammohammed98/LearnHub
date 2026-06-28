@@ -4,20 +4,23 @@ import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { RoleSelector } from "@/features/auth/components/RoleSelector";
+import { GraduationCap } from "lucide-react";
 
 export default function RegisterPage() {
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
-      {/* Header */}
       <div className="flex flex-col items-center gap-1 pt-2">
-        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white text-xl shadow-level-1"></div>
-        <h1 className="text-lg font-bold text-primary">تعلَّم</h1>
+        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white shadow-level-1">
+          <GraduationCap className="w-6 h-6" />
+        </div>
+
+        <h1 className="text-lg font-bold text-primary">تعلَّم</h1>
+
         <p className="text-[11px] text-slate-400 font-medium tracking-wide">
-          منصة تعلَّم | مستقبل التعليم الرقمي
+          منصة تعلَّم | مستقبل التعليم الرقمي
         </p>
       </div>
 
-      {/* Tabs */}
       <div className="flex border-b border-slate-100 text-xs font-medium justify-center gap-6">
         <Link
           href="/login"
@@ -34,18 +37,16 @@ export default function RegisterPage() {
         </button>
       </div>
 
-      {/* Title */}
       <div className="text-right">
         <h2 className="text-xl font-bold text-primary">أنشئ حساباً جديداً</h2>
+
         <p className="text-sm text-slate-400 mt-1">
           اختر نوع حسابك للبدء في المنصة
         </p>
       </div>
 
-      {/* Role Selector */}
       <RoleSelector />
 
-      {/* Form */}
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <div className="grid grid-cols-2 gap-3">
           <Input
@@ -53,6 +54,7 @@ export default function RegisterPage() {
             label="الاسم الأخير"
             placeholder="أدخل الاسم الأخير"
           />
+
           <Input
             name="firstName"
             label="الاسم الأول"
@@ -74,7 +76,6 @@ export default function RegisterPage() {
           placeholder="********"
         />
 
-        {/* Terms */}
         <div className="flex flex-row items-center gap-2 text-xs text-slate-400 pt-1 leading-relaxed">
           <input
             type="checkbox"
@@ -93,9 +94,7 @@ export default function RegisterPage() {
           </label>
         </div>
 
-        {/* Submit */}
-
-        <Button> إنشاء الحساب</Button>
+        <Button>إنشاء الحساب</Button>
       </form>
     </div>
   );
