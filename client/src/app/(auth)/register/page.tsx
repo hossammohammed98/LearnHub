@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { useState } from "react";
 import { RegisterFormValues, registerSchema } from "@/features/auth/validation/registerValidation";
 import { authService } from "@/features/auth/services/authService";
-import { redirect,useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { RoleSelector } from "@/features/auth/components/RoleSelector";
 
 import Link from "next/link";
@@ -18,11 +18,13 @@ import { GraduationCap } from "lucide-react";
 
 export default function RegisterPage() {
   const [serverError, setServerError] = useState<string | null>(null);
-  const router=useRouter();
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -43,13 +45,17 @@ export default function RegisterPage() {
         Phone: Number(data.phone),
         Role: data.role,
         Password: data.password,
-        ConfirmPassword:data.confirmPassword,
+        ConfirmPassword: data.confirmPassword,
       });
 
       if (response.success) {
         console.log(response.data);
-        router.push('/login')
-        // redirect('/login')
+        if (data.role === 'Student')
+          router.push('/student')
+        else if (data.role === 'Teacher')
+          router.push('/teacher')
+        else
+          router.push('/parent')
       }
     } catch (err: any) {
       console.log(err);
@@ -61,7 +67,6 @@ export default function RegisterPage() {
     <div className="w-full max-w-md mx-auto space-y-6">
       <div className="flex flex-col items-center gap-1 pt-2">
 
-        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white text-xl shadow-level-1"></div>
         <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white shadow-level-1">
           <GraduationCap className="w-6 h-6" />
         </div>
@@ -111,14 +116,18 @@ export default function RegisterPage() {
         <p className="text-sm text-slate-400 mt-1">
           اختر نوع حسابك للبدء في المنصة
 
-        </p> */}
+        </p>
 
       </div>
 
-      <RoleSelector />
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
 
         {serverError && <p className="text-red-500 text-sm text-right">{serverError}</p>}
+        <RoleSelector
+          name="role"
+          setValue={setValue}
+          watch={watch}
+          error={errors.role?.message} />
 
         <div className="grid grid-cols-2 gap-3">
           <Input
@@ -167,13 +176,13 @@ export default function RegisterPage() {
         />
 
         <Input
-          label="تأكيد كلمة المرور" 
+          label="تأكيد كلمة المرور"
           type="password"
           placeholder="********"
           error={errors.password?.message}
           {...register("confirmPassword")}
         />
-     
+
 
 
         <div className="flex flex-row items-center gap-2 text-xs text-slate-400 pt-1 leading-relaxed">
@@ -193,7 +202,7 @@ export default function RegisterPage() {
             </span>
           </label>
         </div>
-   <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "جاري إنشاء الحساب..." : "إنشاء الحساب"}
         </Button>
       </form>

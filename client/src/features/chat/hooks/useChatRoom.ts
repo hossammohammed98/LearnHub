@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import { io } from 'socket.io-client';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Message } from "../types";
@@ -29,15 +30,16 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
             const data = await chatService.getRoomMessages(targetRoomId);
             setMessages(data);
             await chatService.updateRoomReadStatus(targetRoomId);
-        } catch (error: any) {
-            setError(error.message || 'تعذر تحميل تاريخ المحادثة.')
+        } catch (err: any) {
+            setError(err.message || 'تعذر تحميل تاريخ المحادثة.');
         } finally {
             setIsLoading(false);
         }
-
     }, []);
+
     const sendTextMessage = useCallback(async (text: string) => {
         if (!text.trim() || !roomId || !socketRef.current) return;
+        
         const temporaryId = `temp-${Date.now()}`;
         const optimisticMessage: Message = {
             id: temporaryId,
@@ -45,35 +47,34 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
             myMessage: true,
             time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
         };
+        
         setMessages((prev) => [...prev, optimisticMessage]);
-        //send message
+        
         socketRef.current.emit('send_message', {
             roomId,
-            messageText: text
+            messageText: text,
+            clientRefId: temporaryId // 3. Pass a reference ID so the backend can echoes it back
         });
-
-    }, [roomId])
+    }, [roomId]);
 
     const sendFileMessage = useCallback(async (file: File) => {
-        if (!roomId) return;
+        if (!roomId || !socketRef.current) return;
         setUploadProgress(1);
         try {
             const uploadResult = await chatService.uploadChatFile(file, roomId, (progress) => {
                 setUploadProgress(progress);
             });
-            if (socketRef.current) {
-                socketRef.current.emit('send_message', {
-                    roomId,
-                    messageText: `📎 ملف مرفق: ${uploadResult.fileName}`,
-                    fileUrl: uploadResult.secureUrl,
-                    type: 'file'
-                });
-            }
-
-        } catch (error: any) {
-            console.error("File upload operation failure context:", error.message);
+            
+            socketRef.current.emit('send_message', {
+                roomId,
+                messageText: `📎 ملف مرفق: ${uploadResult.fileName}`,
+                fileUrl: uploadResult.secureUrl,
+                type: 'file'
+            });
+        } catch (err: any) {
+            console.error("File upload operation failure context:", err.message);
         } finally {
-            setTimeout(() => { setUploadProgress(0) }, 1000)
+            setTimeout(() => { setUploadProgress(0); }, 1000);
         }
     }, [roomId]);
 
@@ -82,33 +83,44 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
             setMessages([]);
             return;
         }
+        
         loadChatHistory(roomId);
-        const socket = io(process.env.NEXT_PUBLIC_API_URL, {
+        
+        const socket = io(process.env.NEXT_PUBLIC_API_URL || '', {
             autoConnect: true,
             reconnectionAttempts: 5,
             reconnectionDelay: 1000,
             withCredentials: true,
             transports: ["websocket"],
         });
+        
         socketRef.current = socket;
 
-        socketRef.current.emit('join_room', { roomId });
-        socketRef.current.on('message_received', (incomingPayload: any) => {
+        socket.emit('join_room', { roomId });
+        
+        socket.on('message_received', (incomingPayload: any) => {
             setMessages((prev) => {
-                if (prev.some((msg) => msg.id === incomingPayload.id)) return prev;
+                // 4. SMART DUPLICATE CHECK: Swap out the matching temporary optimistic item
+                const exists = prev.some(
+                    (msg) => msg.id === incomingPayload.id || (incomingPayload.clientRefId && msg.id === incomingPayload.clientRefId)
+                );
+                
+                if (exists) {
+                    return prev.map((msg) => 
+                        msg.id === incomingPayload.clientRefId ? incomingPayload : msg
+                    );
+                }
                 return [...prev, incomingPayload];
             });
         });
 
         return () => {
-            if (socketRef.current) {
-                socketRef.current.off('message_received');
-                socketRef.current.emit('leave_room', { roomId });
-                socketRef.current.disconnect();
-                socketRef.current = null;
-            }
-        }
-    }, [roomId, loadChatHistory])
+            socket.off('message_received');
+            socket.emit('leave_room', { roomId });
+            socket.disconnect();
+            socketRef.current = null;
+        };
+    }, [roomId, loadChatHistory]);
 
     return {
         messages,

@@ -25,7 +25,7 @@ class ChatRepository extends BaseRepository{
         .sort({createdAt:-1})
     }
     async getReceiverMember(chatId,userId){
-        return await chatMember.find({chatId:chatId,userId:{$ne:userId}})
+        return await chatMember.findOne({chatId:chatId,userId:{$ne:userId}})
         .populate({path:"userId",select:"FName LName Avatar activeStatus"});
     }
     async getChatMessages(chatId){
