@@ -8,17 +8,36 @@ import { Button } from "@/components/ui/Button";
 import { useState } from "react";
 import { RegisterFormValues, registerSchema } from "@/features/auth/validation/registerValidation";
 import { authService } from "@/features/auth/services/authService";
-import { redirect, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { RoleSelector } from "@/features/auth/components/RoleSelector";
 
 import Link from "next/link";
 
 import { GraduationCap } from "lucide-react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 
 export default function RegisterPage() {
   const [serverError, setServerError] = useState<string | null>(null);
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const destination = user.Role === "Admin"
+      ? "/admin"
+      : user.Role === "Teacher"
+        ? "/teacher"
+        : user.Role === "Parent"
+          ? "/parent"
+          : "/student";
+
+    router.replace(destination);
+  }, [router, user]);
 
   const {
     register,
@@ -57,9 +76,9 @@ export default function RegisterPage() {
         else
           router.push('/parent')
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.log(err);
-      setServerError(err.message || "حدث خطأ ما");
+      setServerError(err instanceof Error ? err.message : "حدث خطأ ما");
     }
   };
 

@@ -9,13 +9,14 @@ import {
   Plus,
   HelpCircle,
 } from "lucide-react";
+import Link from "next/link";
 
 const navItems = [
-  { label: "لوحة التحكم", icon: LayoutGrid, active: false },
-  { label: "فصولي", icon: GraduationCap, active: true },
-  { label: "المناهج", icon: BookOpen, active: false },
-  { label: "التقارير", icon: BarChart2, active: false },
-  { label: "المكتبة", icon: Library, active: false },
+  { label: "لوحة التحكم", icon: LayoutGrid, active: false, href: "/teacher" },
+  { label: "فصولي", icon: GraduationCap, active: true, href: "/UploadVideosPage" },
+  { label: "المناهج", icon: BookOpen, active: false, href: "/courses" },
+  { label: "التقارير", icon: BarChart2, active: false, href: "/admin" },
+  { label: "المكتبة", icon: Library, active: false, href: "/BrowserCourses" },
 ];
 
 export default function UploadSidebar() {
@@ -37,10 +38,10 @@ export default function UploadSidebar() {
         </div>
 
         <nav className="flex flex-col gap-1">
-          {navItems.map(({ label, icon: Icon, active }) => (
-            <a
+          {navItems.map(({ label, icon: Icon, active, href }) => (
+              <Link
               key={label}
-              href="#"
+                href={href}
               aria-current={active ? "page" : undefined}
               className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm transition ${
                 active
@@ -55,17 +56,17 @@ export default function UploadSidebar() {
               {active && (
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
               )}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>
 
       {/* Compact horizontal nav: shown on small/medium, hidden from lg up */}
       <nav className="flex items-center gap-1 overflow-x-auto px-3 py-2 lg:hidden">
-        {navItems.map(({ label, icon: Icon, active }) => (
-          <a
+        {navItems.map(({ label, icon: Icon, active, href }) => (
+          <Link
             key={label}
-            href="#"
+            href={href}
             aria-current={active ? "page" : undefined}
             title={label}
             className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs whitespace-nowrap transition sm:text-sm ${
@@ -76,7 +77,7 @@ export default function UploadSidebar() {
           >
             <Icon className="h-4 w-4 shrink-0" />
             <span>{label}</span>
-          </a>
+          </Link>
         ))}
       </nav>
 
@@ -84,22 +85,18 @@ export default function UploadSidebar() {
           buttons. On small/medium the primary action lives in the page
           header instead, so it isn't duplicated. */}
       <div className="hidden lg:flex lg:flex-col lg:gap-3">
-        <button
-          type="button"
-          suppressHydrationWarning
-          className="flex items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-800"
-        >
+        <Link href="/courses" className="flex items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-800">
           <Plus className="h-4 w-4" />
           إضافة حصة جديدة
-        </button>
+        </Link>
 
-        <a
-          href="#"
+        <Link
+          href="/chat"
           className="flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm text-gray-500 transition hover:text-gray-700"
         >
           <HelpCircle className="h-4 w-4" />
           الدعم الفني
-        </a>
+        </Link>
       </div>
     </aside>
   );

@@ -2,9 +2,11 @@
 import NotificationBell from "@/components/ui/NotificationBell";
 import { useState } from "react";
 import Link from "next/link";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LandingNavbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const user = useAuthStore((state) => state.user);
 
   return (
     <>
@@ -16,7 +18,7 @@ export default function LandingNavbar() {
           {/* Right Side: Branding Logo & Desktop Navigation */}
           <div className="flex items-center gap-10">
             <Link
-              href="/"
+              href={user ? "/teacher" : "/register"}
               className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2"
             >
               <span className="text-[#007f5f]">تعلّم</span>
@@ -25,23 +27,27 @@ export default function LandingNavbar() {
             {/* Hidden on mobile, visible on desktop */}
             <nav className="hidden md:flex items-center gap-8 text-xs font-bold text-slate-600">
               <Link
-                href="/"
+                href={user ? "/teacher" : "/register"}
                 className="text-[#007f5f] hover:text-[#02664a] transition-all"
               >
                 الرئيسية
               </Link>
-              <Link
-                href="#features"
-                className="hover:text-slate-900 transition-all"
-              >
-                المميزات
-              </Link>
-              <Link
-                href="#pricing"
-                className="hover:text-slate-900 transition-all"
-              >
-                الأسعار
-              </Link>
+              {!user && (
+                <>
+                  <Link
+                    href="#features"
+                    className="hover:text-slate-900 transition-all"
+                  >
+                    المميزات
+                  </Link>
+                  <Link
+                    href="#pricing"
+                    className="hover:text-slate-900 transition-all"
+                  >
+                    الأسعار
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
 
@@ -67,31 +73,41 @@ export default function LandingNavbar() {
               </svg>
             </div>
 
-            <button className="hidden sm:block bg-slate-940 hover:bg-slate-940 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all whitespace-nowrap">
+            {!user ? (
               <Link
                 href="/login"
                 className="hidden sm:block bg-slate-950 hover:bg-slate-900 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all whitespace-nowrap text-center"
               >
                 دخول
               </Link>
-            </button>
-            <NotificationBell></NotificationBell>
-
-            <button className="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-all flex-shrink-0">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            ) : (
+              <Link
+                href="/teacher"
+                className="hidden sm:block bg-slate-950 hover:bg-slate-900 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all whitespace-nowrap text-center"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </button>
+                لوحة التحكم
+              </Link>
+            )}
+
+            {user && <NotificationBell />}
+
+            {user && (
+              <Link href="/settings" className="w-9 h-9 rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-all flex-shrink-0" aria-label="الملف الشخصي">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              </Link>
+            )}
 
             <button
               onClick={() => setIsOpen(true)}
@@ -177,34 +193,40 @@ export default function LandingNavbar() {
 
           <nav className="flex flex-col gap-5 mt-8 text-sm font-bold text-slate-600">
             <Link
-              href="/"
+              href={user ? "/teacher" : "/register"}
               onClick={() => setIsOpen(false)}
               className="text-[#007f5f] py-1"
             >
               الرئيسية
             </Link>
-            <Link
-              href="#features"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-slate-900 py-1 transition-all"
-            >
-              المميزات
-            </Link>
-            <Link
-              href="#pricing"
-              onClick={() => setIsOpen(false)}
-              className="hover:text-slate-900 py-1 transition-all"
-            >
-              الأسعار
-            </Link>
+            {!user && (
+              <>
+                <Link
+                  href="#features"
+                  onClick={() => setIsOpen(false)}
+                  className="hover:text-slate-900 py-1 transition-all"
+                >
+                  المميزات
+                </Link>
+                <Link
+                  href="#pricing"
+                  onClick={() => setIsOpen(false)}
+                  className="hover:text-slate-900 py-1 transition-all"
+                >
+                  الأسعار
+                </Link>
+              </>
+            )}
           </nav>
         </div>
 
-        <div className="sm:hidden space-y-3 pt-6 border-t border-slate-100">
-          <button className="w-full bg-slate-950 text-white font-bold text-xs py-3 rounded-xl transition-all">
-            دخول
-          </button>
-        </div>
+        {!user && (
+          <div className="sm:hidden space-y-3 pt-6 border-t border-slate-100">
+            <Link href="/login" className="block w-full bg-slate-950 text-white font-bold text-xs py-3 rounded-xl transition-all text-center">
+              دخول
+            </Link>
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,10 +1,12 @@
 "use client";
 
+import Link from "next/link";
+
 const footerLinks = [
-  { label: "اتصل بنا", href: "#" },
-  { label: "من نحن", href: "#" },
-  { label: "سياسة الخصوصية", href: "#" },
-  { label: "شروط الاستخدام", href: "#" },
+  { label: "اتصل بنا", href: "/chat" },
+  { label: "من نحن", href: "/landingpage" },
+  { label: "سياسة الخصوصية", href: "/settings" },
+  { label: "شروط الاستخدام", href: "/courses" },
 ];
 
 export default function AssistantsFooter() {
@@ -15,13 +17,13 @@ export default function AssistantsFooter() {
 
         <nav className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           {footerLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
               href={link.href}
               className="text-sm text-gray-500 transition hover:text-gray-700"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 

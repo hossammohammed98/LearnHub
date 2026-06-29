@@ -1,4 +1,5 @@
 
+import Link from 'next/link';
 import React from 'react';
 import { FiSearch, FiBell, FiSettings, FiHelpCircle } from 'react-icons/fi';
 
@@ -32,7 +33,7 @@ export default function NavbarAdmin({
       <div className="flex items-center gap-6">
         
         {/* User Info & Avatar */}
-        <div className="flex items-center gap-3">
+        <Link href="/settings" className="flex items-center gap-3 transition hover:opacity-90">
           <div className="relative w-11 h-11 rounded-full border-2 border-emerald-500 p-[2px]">
             <img
               src={avatarUrl}
@@ -48,7 +49,7 @@ export default function NavbarAdmin({
               {userRole}
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Vertical Separator Divider */}
         <div className="h-8 w-[1px] bg-slate-200" />
@@ -57,14 +58,14 @@ export default function NavbarAdmin({
         <div className="flex items-center gap-4 text-slate-500">
           
           {/* Help Button */}
-          <button className="p-2 hover:bg-slate-50 rounded-lg text-xl transition-colors" title="المساعدة">
+          <Link href="/chat" className="p-2 hover:bg-slate-50 rounded-lg text-xl transition-colors" title="المساعدة" aria-label="المساعدة">
             <FiHelpCircle />
-          </button>
+          </Link>
 
           {/* Settings Button */}
-          <button className="p-2 hover:bg-slate-50 rounded-lg text-xl transition-colors" title="الإعدادات">
+          <Link href="/settings" className="p-2 hover:bg-slate-50 rounded-lg text-xl transition-colors" title="الإعدادات" aria-label="الإعدادات">
             <FiSettings />
-          </button>
+          </Link>
 
           {/* Notification Button with Badge */}
           <button className="p-2 hover:bg-slate-50 rounded-lg text-xl transition-colors relative" title="الإشعارات">

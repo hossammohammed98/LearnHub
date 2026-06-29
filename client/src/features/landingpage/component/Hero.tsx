@@ -1,7 +1,10 @@
 import Image from 'next/image';
 import Link from "next/link";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function Hero() {
+  const user = useAuthStore((state) => state.user);
+
   return (
     <section
       className="relative w-full overflow-hidden pt-16 pb-24 px-6 md:px-16 bg-emerald-50"
@@ -31,14 +34,9 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-row gap-4 pt-2">
-            <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-8 py-3.5 rounded-xl transition-all shadow-sm">
-             <Link
-                href="/login"
-              >
-              ابدأ رحلتك الآن
-              </Link>
-                
-            </button>
+            <Link href={user ? "/teacher" : "/login"} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-8 py-3.5 rounded-xl transition-all shadow-sm text-center">
+              {user ? "لوحة التحكم" : "ابدأ رحلتك الآن"}
+            </Link>
 
             <button className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-bold text-sm px-8 py-3.5 rounded-xl transition-all flex items-center gap-2 shadow-sm">
               <svg
@@ -54,7 +52,7 @@ export default function Hero() {
                   d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
                 />
               </svg>
-              <span>شاهد العرض</span>
+              <span>{user ? "استكشاف الدورات" : "شاهد العرض"}</span>
             </button>
           </div>
         </div>

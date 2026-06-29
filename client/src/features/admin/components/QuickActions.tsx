@@ -1,11 +1,12 @@
+import Link from 'next/link';
 import React from 'react';
 import { FiUserPlus, FiFileText, FiRefreshCw } from 'react-icons/fi';
 
 export const QuickActions: React.FC = () => {
   const actions = [
-    { text: 'إضافة مستخدم جديد', icon: <FiUserPlus className="w-5 h-5 text-teal-600" /> },
-    { text: 'تصدير تقرير شهري', icon: <FiFileText className="w-5 h-5 text-teal-600" /> },
-    { text: 'تحديث النظام', icon: <FiRefreshCw className="w-5 h-5 text-teal-600" /> },
+    { text: 'إضافة مستخدم جديد', icon: <FiUserPlus className="w-5 h-5 text-teal-600" />, href: '/AssistantsPage' },
+    { text: 'تصدير تقرير شهري', icon: <FiFileText className="w-5 h-5 text-teal-600" />, href: '/admin' },
+    { text: 'تحديث النظام', icon: <FiRefreshCw className="w-5 h-5 text-teal-600" />, href: '/settings' },
   ];
 
   return (
@@ -16,8 +17,9 @@ export const QuickActions: React.FC = () => {
       </div>
       <div className="space-y-4">
         {actions.map((action, idx) => (
-          <button 
-            key={idx} 
+          <Link
+            key={idx}
+            href={action.href}
             className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-gray-100 text-right group"
           >
             <div className="flex items-center gap-3 flex-row-reverse w-full justify-between">
@@ -26,7 +28,7 @@ export const QuickActions: React.FC = () => {
               </span>
               {action.icon}
             </div>
-          </button>
+          </Link>
         ))}
       </div>
     </div>

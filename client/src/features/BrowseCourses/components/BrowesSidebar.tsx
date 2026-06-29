@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   CalendarDays,
   GraduationCap,
@@ -21,32 +22,32 @@ const sideBarItems: SidebarItem[] = [
   {
     icon: LayoutDashboard,
     name: "لوحة القيادة",
-    href: "#",
+    href: "/register",
   },
   {
     icon: GraduationCap,
     name: "المسارات",
-    href: "#",
+    href: "/BrowserCourses",
   },
   {
     icon: MessageSquare,
     name: "الرسائل",
-    href: "#",
+    href: "/chat",
   },
   {
     icon: CalendarDays,
     name: "الجدول",
-    href: "#",
+    href: "/teacher",
   },
   {
     icon: Settings,
     name: "الإعدادات",
-    href: "#",
+    href: "/settings",
   },
   {
     icon: MessageSquareWarning,
     name: "الدعم",
-    href: "#",
+    href: "/chat",
   },
 ];
 
@@ -62,7 +63,8 @@ export default function BrowseSidebar() {
           const isActive = activeIndex === i;
 
           return (
-            <button
+            <Link
+              href={item.href}
               key={i}
               onClick={() => setActiveIndex(i)}
               className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 text-right
@@ -74,7 +76,7 @@ export default function BrowseSidebar() {
             >
               <span>{item.name}</span>
               <Icon size={20} strokeWidth={1.8} />
-            </button>
+            </Link>
           );
         })}
       </nav>

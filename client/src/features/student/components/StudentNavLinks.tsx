@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 
 const ulData = [
   { href: '/', name: 'الرئيسية' },
-  { href: '/browseCourse', name: 'تصفح المسارات' },
+  { href: '/BrowserCourses', name: 'تصفح المسارات' },
 ];
 
 function StudentNavLinks() {

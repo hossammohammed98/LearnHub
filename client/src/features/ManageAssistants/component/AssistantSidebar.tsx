@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
-  LayoutGrid,
   BookOpen,
+  LayoutGrid,
   PlayCircle,
-  Calendar,
   MessageSquare,
   Settings,
   GraduationCap,
@@ -12,15 +13,17 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { label: "لوحة التحكم", icon: LayoutGrid, active: false },
-  { label: "دوراتي", icon: BookOpen, active: false },
-  { label: "دروس مباشرة", icon: PlayCircle, active: false },
-  { label: "الجدول", icon: Calendar, active: false },
-  { label: "الرسائل", icon: MessageSquare, active: true },
-  { label: "الإعدادات", icon: Settings, active: false },
+  { label: "لوحة التحكم", icon: LayoutGrid, href: "/teacher" },
+  { label: "دوراتي", icon: BookOpen, href: "/courses" },
+  { label: "دروس مباشرة", icon: PlayCircle, href: "/BrowserCourses" },
+  { label: "الرسائل", icon: MessageSquare, href: "/chat" },
+  { label: "إدارة المساعدين", icon: GraduationCap, href: "/AssistantsPage" },
+  { label: "الإعدادات", icon: Settings, href: "/settings" },
 ];
 
 export default function AssistantsSidebar() {
+  const pathname = usePathname();
+
   return (
     <aside
       dir="rtl"
@@ -39,13 +42,16 @@ export default function AssistantsSidebar() {
         </div>
 
         <nav className="flex flex-col gap-1">
-          {navItems.map(({ label, icon: Icon, active }) => (
-            <a
+          {navItems.map(({ label, icon: Icon, href }) => {
+            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+
+            return (
+            <Link
               key={label}
-              href="#"
-              aria-current={active ? "page" : undefined}
+              href={href}
+              aria-current={isActive ? "page" : undefined}
               className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm transition ${
-                active
+                isActive
                   ? "bg-emerald-700 font-medium text-white"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
               }`}
@@ -54,29 +60,32 @@ export default function AssistantsSidebar() {
                 <Icon className="h-4 w-4" />
                 {label}
               </span>
-            </a>
-          ))}
+            </Link>
+          )})}
         </nav>
       </div>
 
       {/* Compact horizontal nav: shown on small/medium, hidden from lg up */}
       <nav className="flex items-center gap-1 overflow-x-auto px-3 py-2 lg:hidden">
-        {navItems.map(({ label, icon: Icon, active }) => (
-          <a
+        {navItems.map(({ label, icon: Icon, href }) => {
+          const isActive = pathname === href || pathname.startsWith(`${href}/`);
+
+          return (
+          <Link
             key={label}
-            href="#"
-            aria-current={active ? "page" : undefined}
+            href={href}
+            aria-current={isActive ? "page" : undefined}
             title={label}
             className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs whitespace-nowrap transition sm:text-sm ${
-              active
+              isActive
                 ? "bg-emerald-700 font-medium text-white"
                 : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
             }`}
           >
             <Icon className="h-4 w-4 shrink-0" />
             <span>{label}</span>
-          </a>
-        ))}
+          </Link>
+        )})}
       </nav>
 
       {/* Upgrade promo card: only on lg, where there's vertical room */}
@@ -85,12 +94,9 @@ export default function AssistantsSidebar() {
           <Sparkles className="h-3.5 w-3.5" />
           الترقية للممتاز
         </div>
-        <button
-          type="button"
-          className="w-full rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-800"
-        >
+        <Link href="/settings" className="block w-full rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-800">
           اكتشف الآن
-        </button>
+        </Link>
       </div>
     </aside>
   );

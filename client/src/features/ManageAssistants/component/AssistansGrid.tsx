@@ -1,35 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import apiClient from "@/services/apiClient";
+import type { ApiResponse } from "@/utils/ApiResponse";
 import AssistantCard, { type Assistant } from "./AssistantCard";
 import AddAssistantTile from "./AddAssistantTile";
 
-const initialAssistants: Assistant[] = [
-  {
-    id: "asst-1",
-    name: "محمود يسري",
-    email: "mahmoud.y@educore.eg",
-    avatarInitial: "م",
+interface BackendAssistant {
+  _id: string;
+  TeacherId: string;
+  Email: string;
+}
+
+function createDisplayName(email: string) {
+  const [localPart] = email.split("@");
+  const normalized = localPart?.replace(/[._-]+/g, " ").trim();
+  return normalized || email;
+}
+
+function mapAssistant(assistant: BackendAssistant): Assistant {
+  const displayName = createDisplayName(assistant.Email);
+  return {
+    id: assistant._id,
+    name: displayName,
+    email: assistant.Email,
+    avatarInitial: (displayName[0] || assistant.Email[0] || "A").toUpperCase(),
     status: "active",
-    tags: ["الاختبارات", "المواد العلمية"],
-  },
-  {
-    id: "asst-2",
-    name: "سارة أحمد",
-    email: "sara.a@educore.eg",
-    avatarInitial: "س",
-    status: "active",
-    tags: ["الفيديوهات", "الطلاب"],
-  },
-  {
-    id: "asst-3",
-    name: "ليلى كامل",
-    email: "layla.k@educore.eg",
-    avatarInitial: "ل",
-    status: "inactive",
-    tags: ["الطلاب"],
-  },
-];
+    tags: [assistant.TeacherId ? "مرتبط بمعلم" : "بدون معلم"],
+  };
+}
 
 type AssistantsGridProps = {
   onAddNew?: () => void;
@@ -40,7 +39,39 @@ export default function AssistantsGrid({
   onAddNew,
   onEditPermissions,
 }: AssistantsGridProps) {
-  const [assistants, setAssistants] = useState<Assistant[]>(initialAssistants);
+  const [assistants, setAssistants] = useState<Assistant[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadAssistants() {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await apiClient.get<ApiResponse<BackendAssistant[]>>("/assistant");
+        if (isMounted) {
+          setAssistants((response.data.data || []).map(mapAssistant));
+        }
+      } catch (requestError: unknown) {
+        if (isMounted) {
+          setError(requestError instanceof Error ? requestError.message : "تعذر تحميل المساعدين من الخادم.");
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadAssistants();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleReactivate = (id: string) => {
     setAssistants((prev) =>
@@ -60,17 +91,31 @@ export default function AssistantsGrid({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {assistants.map((assistant) => (
-          <AssistantCard
-            key={assistant.id}
-            assistant={assistant}
-            onEditPermissions={onEditPermissions}
-            onReactivate={handleReactivate}
-          />
-        ))}
-        <AddAssistantTile onClick={onAddNew} />
-      </div>
+      {isLoading ? (
+        <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-10 text-center text-sm text-gray-500">
+          جارٍ تحميل المساعدين من الخادم...
+        </div>
+      ) : error ? (
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-700">
+          {error}
+        </div>
+      ) : assistants.length ? (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {assistants.map((assistant) => (
+            <AssistantCard
+              key={assistant.id}
+              assistant={assistant}
+              onEditPermissions={onEditPermissions}
+              onReactivate={handleReactivate}
+            />
+          ))}
+          <AddAssistantTile onClick={onAddNew} />
+        </div>
+      ) : (
+        <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-10 text-center text-sm text-gray-500">
+          لا يوجد مساعدون مسجلون حالياً.
+        </div>
+      )}
     </div>
   );
 }

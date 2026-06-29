@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { FiActivity } from 'react-icons/fi';
 
 export interface ActivityItem {
@@ -44,9 +45,9 @@ export const RecentActivities: React.FC = () => {
           <FiActivity className="w-5 h-5 text-teal-600" />
           <span>النشاطات الأخيرة</span>
         </div>
-        <a href="#" className="text-teal-600 hover:text-teal-700 text-sm font-semibold transition-colors">
+        <Link href="/admin" className="text-teal-600 hover:text-teal-700 text-sm font-semibold transition-colors">
           عرض الكل
-        </a>
+        </Link>
       </div>
 
       <div className="overflow-x-auto">
