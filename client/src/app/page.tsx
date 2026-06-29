@@ -23,45 +23,55 @@ export default function HomePage() {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-emerald-100 antialiased font-sans flex flex-col">
-      <Navbar />
+    <>   
+     {/* <StudentDashboard></StudentDashboard> */}
 
-      <main className="flex-grow">
-        <Hero />
+      {/* <TeacherNavBar></TeacherNavBar> */}
+      {/* <MetricCard ></MetricCard> */}
+      {/* <Badge variant="success">قيد التقدم</Badge> */}
+      {/* <ButtonInit ButtonVariant="success">انشاء دوره جديده</ButtonInit> */}
+      {/* <Progress value={40} showLabel={true}></Progress> */}
+      {/* <CurrentCourse badge={ <Badge variant="success">قيد التقدم</Badge>} 
+      courseLevel={ <Badge variant="neutral">مستوى متقدم</Badge>}>
+      </CurrentCourse> */}
 
-        <div id="features">
-          <FeaturesSection />
-        </div>
+      {/* <CourseDescription
+        courseDescription="تعلّم كيفية بناء استراتيجيات قوية تعزز من
+                    كفاءة الأداء المؤسسي في البيئات التعليمية
+                    الحديثة والتقنيات الصاعدة."
 
-        <StepsSection />
+        courseName="الاستراتيجيات المتقدمة في
+                    إدارة المؤسسات الأكاديمية"
 
-        <div id="pricing">
-          <PricingSection />
-        </div>
-
-        <CtaBanner />
-      </main>
-
-      <Footer />
-
-      <button
-        aria-label="Support Chat"
-        className="fixed bottom-6 left-6 w-12 h-12 bg-[#0b1324] hover:bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 z-50 cursor-pointer"
+        title="دورة القيادة التنفيذية"
       >
-        <svg
-          className="w-5 h-5 text-emerald-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-          />
-        </svg>
-      </button>
-    </div>
-  );
+        <>
+          <Progress value={40} showLabel={true}></Progress>
+          <ButtonInit >متابعة التعلم</ButtonInit>
+        </>
+      </CourseDescription> */}
+      {/* <Calender></Calender> */}
+        {/* <SectionHeader title={"رحلة تعليمية ممتعة و احترافية مصممة خصيصا للمستقبو تعتمد على الذكاء الاصطناعى لتخصيص تجربة كل طالب"}></SectionHeader> */}
+        {/* <Navbar></Navbar> */}
+        {/* <Hero></Hero> */}
+        {/* <FeaturesSection></FeaturesSection> */}
+        {/* <StepsSection></StepsSection> */}
+        {/* <PricingSection></PricingSection> */}
+        {/* <CtaBanner></CtaBanner> */}
+        {/* <Footer></Footer> */}
+        {/* <LandingPage></LandingPage> */}
+        <SideBar></SideBar>
+
+      {/* <Calender> 
+        <>
+        <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
+        <CalenderItem title={'إدارة الموارد البشرية'} day="غداً" hour={'، 10:00 م'}></CalenderItem>
+        </>
+      </Calender> */}
+      {/* <HeroSection userName="أحمد"></HeroSection> */}
+       <ChatLayout></ChatLayout>
+    </>
+
+  )
+
 }

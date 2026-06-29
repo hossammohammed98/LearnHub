@@ -1,4 +1,4 @@
-import Navbar from "@/features/landingpage/component/Navbar";
+import Navbar from "@/features/landingpage/component/LandingNavbar";
 import Hero from "@/features/landingpage/component/Hero";
 import FeaturesSection from "@/features/landingpage/component/FeaturesSection";
 import StepsSection from "@/features/landingpage/component/StepsSection";

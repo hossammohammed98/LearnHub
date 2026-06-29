@@ -1,0 +1,97 @@
+"use client";
+
+import {
+  LayoutGrid,
+  BookOpen,
+  PlayCircle,
+  Calendar,
+  MessageSquare,
+  Settings,
+  GraduationCap,
+  Sparkles,
+} from "lucide-react";
+
+const navItems = [
+  { label: "لوحة التحكم", icon: LayoutGrid, active: false },
+  { label: "دوراتي", icon: BookOpen, active: false },
+  { label: "دروس مباشرة", icon: PlayCircle, active: false },
+  { label: "الجدول", icon: Calendar, active: false },
+  { label: "الرسائل", icon: MessageSquare, active: true },
+  { label: "الإعدادات", icon: Settings, active: false },
+];
+
+export default function AssistantsSidebar() {
+  return (
+    <aside
+      dir="rtl"
+      className="w-full border-b border-gray-200 bg-white lg:flex lg:h-full lg:w-64 lg:flex-col lg:justify-between lg:border-b-0 lg:border-l lg:px-4 lg:py-6"
+    >
+      {/* Brand block + full nav: shown from lg up only */}
+      <div className="hidden lg:block">
+        <div className="mb-8 flex items-center gap-3 px-2">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-900">
+            <GraduationCap className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-900">تعلّم</p>
+            <p className="text-xs text-gray-500">منصة التعليم الذكي</p>
+          </div>
+        </div>
+
+        <nav className="flex flex-col gap-1">
+          {navItems.map(({ label, icon: Icon, active }) => (
+            <a
+              key={label}
+              href="#"
+              aria-current={active ? "page" : undefined}
+              className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm transition ${
+                active
+                  ? "bg-emerald-700 font-medium text-white"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+            >
+              <span className="flex items-center gap-3">
+                <Icon className="h-4 w-4" />
+                {label}
+              </span>
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      {/* Compact horizontal nav: shown on small/medium, hidden from lg up */}
+      <nav className="flex items-center gap-1 overflow-x-auto px-3 py-2 lg:hidden">
+        {navItems.map(({ label, icon: Icon, active }) => (
+          <a
+            key={label}
+            href="#"
+            aria-current={active ? "page" : undefined}
+            title={label}
+            className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs whitespace-nowrap transition sm:text-sm ${
+              active
+                ? "bg-emerald-700 font-medium text-white"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            }`}
+          >
+            <Icon className="h-4 w-4 shrink-0" />
+            <span>{label}</span>
+          </a>
+        ))}
+      </nav>
+
+      {/* Upgrade promo card: only on lg, where there's vertical room */}
+      <div className="hidden rounded-xl bg-emerald-50 p-4 text-center lg:block">
+        <div className="mb-2 flex items-center justify-center gap-1.5 text-xs font-medium text-emerald-800">
+          <Sparkles className="h-3.5 w-3.5" />
+          الترقية للممتاز
+        </div>
+        <button
+          type="button"
+          className="w-full rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-800"
+        >
+          اكتشف الآن
+        </button>
+      </div>
+    </aside>
+  );
+}
