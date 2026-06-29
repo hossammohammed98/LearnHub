@@ -1,8 +1,8 @@
 const ApiError=require('../shared/core/ApiError')
 const jwt=require('jsonwebtoken')
 exports.protect=(req,res,next)=>{
-    const incomingAccessToken = req.cookies.refreshToken;
-
+    const incomingAccessToken = req.cookies.accessToken;
+    // console.log(incomingAccessToken);
     if (!incomingAccessToken) {
         return next(new ApiError(401, "Unauthorized: No token provided"));
     }

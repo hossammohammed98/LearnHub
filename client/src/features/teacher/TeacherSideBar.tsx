@@ -31,7 +31,7 @@ const sideBarItem: SideBarProps[] = [
   {
     icon: MessageSquare,
     name: "الرسائل",
-    href: "/Messages",
+    href: "/chat",
   },
   {
     icon: CalendarDays,

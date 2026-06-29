@@ -1,6 +1,6 @@
 import React from 'react'
 interface HeroSectionProps{
-    userName:string;
+    userName:string|undefined;
 }
 function HeroSection({userName}:HeroSectionProps) {
   return (
