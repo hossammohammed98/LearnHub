@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
+import type { UserRegister } from "../types";
 import { authService } from "../services/authService";
 
 export const useRegister = () => {
@@ -12,7 +13,7 @@ export const useRegister = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const register = async (userData: any) => {
+  const register = async (userData: UserRegister) => {
     setIsLoading(true);
     setError(null);
 
@@ -25,8 +26,8 @@ export const useRegister = () => {
       else if (response.data.Role === "Parent") router.push("/parent");
       else router.push("/");
 
-    } catch (err: any) {
-      setError(err.message || "حدث خطأ ما أثناء إنشاء الحساب");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "حدث خطأ ما أثناء إنشاء الحساب");
     } finally {
       setIsLoading(false);
     }

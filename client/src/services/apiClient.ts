@@ -23,12 +23,12 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
-        const originalRequest = error.config;
+        const originalRequest = error.config as (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined;
         const status = error.response?.status;
 
         // 1. Check if the error is an expired token (401) and we haven't retried yet
-        if (status === 401 && originalRequest && !(originalRequest as any)._retry) {
-            (originalRequest as any)._retry = true;
+        if (status === 401 && originalRequest && !originalRequest._retry) {
+            originalRequest._retry = true;
             try {
                 console.warn('🔄 Access Token expired. Attempting global refresh token handshake...');
                 
@@ -51,11 +51,12 @@ apiClient.interceptors.response.use(
         }
         
         // 2. FIXED: Every other error (including 500s) skips the refresh loop and goes straight here
+        const responseData = error.response?.data as { message?: string; code?: string } | undefined;
         const specializeError = {
             // Extracts the message safely from your backend ApiResponse payload structure
-            message: (error.response?.data as any)?.message || 'حدث خطأ غير متوقع في الاتصال.',
+            message: responseData?.message || 'حدث خطأ غير متوقع في الاتصال.',
             status: status || 500,
-            code: (error.response?.data as any)?.code || 'INTERNAL_SERVER_ERROR'
+            code: responseData?.code || 'INTERNAL_SERVER_ERROR'
         };
 
         return Promise.reject(specializeError);
