@@ -7,16 +7,12 @@ import { useChatRoom } from '../hooks/useChatRoom';
 
 interface ChatWindowProps {
     selectedChatId: string | null;
-    // 🚨 Added to cleanly accept dynamic info from the active sidebar selection
-    selectedChatDetails?: {
-        userName: string;
-        imgUrl: string;
-        active?: boolean;
-    } | null;
+    chatName: string;
+    chatImg: string;
     onBack: () => void;
 }
 
-function ChatWindow({ selectedChatId, selectedChatDetails, onBack }: ChatWindowProps) {
+function ChatWindow({ selectedChatId, chatName, chatImg, onBack }: ChatWindowProps) {
     const {
         messages,
         isLoading,
@@ -27,7 +23,6 @@ function ChatWindow({ selectedChatId, selectedChatDetails, onBack }: ChatWindowP
 
     const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
 
-    // Auto-scroll anchor system
     useEffect(() => {
         if (scrollAnchorRef.current) {
             scrollAnchorRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -44,12 +39,12 @@ function ChatWindow({ selectedChatId, selectedChatDetails, onBack }: ChatWindowP
 
     return (
         <div className='flex-1 flex flex-col h-full bg-[#F4F7F9]'>
-            {/* 🎯 FIXED: Dynamic header values matching the selected chat room context */}
-            <ChatHeader 
-                userName={selectedChatDetails?.userName || "مستودع المحادثة"} 
-                imgUrl={selectedChatDetails?.imgUrl || "/images/login.jpg"} 
-                active={selectedChatDetails?.active ?? false} 
-                onBack={onBack} 
+            {/* Dynamic Context Header parameters mapped seamlessly */}
+            <ChatHeader
+                userName={chatName}
+                imgUrl={chatImg}
+                active={true}
+                onBack={onBack}
             />
 
             <div className='flex-1 overflow-y-auto p-6 flex flex-col gap-4'>
@@ -60,28 +55,30 @@ function ChatWindow({ selectedChatId, selectedChatDetails, onBack }: ChatWindowP
                     </div>
                 ) : (
                     messages.map((msg: any) => {
-                        // Extract localized readable time string safely from timestamp configurations
                         let formattedTime = "";
                         if (msg.createdAt) {
                             formattedTime = new Date(msg.createdAt).toLocaleTimeString('ar-EG', {
-                                hour: '2-digit', 
+                                hour: '2-digit',
                                 minute: '2-digit'
                             });
                         }
-
+                        console.log("🕵️‍♂️ RAW MESSAGE OBJECT FROM BACKEND:", msg);
                         return (
                             <MessageBubble
-                                key={msg._id || msg.id} // 🎯 FIXED: Handles MongoDB explicit _id records
-                                messageText={msg.content || msg.messageText || ""} // 🎯 FIXED: Maps directly to your backend schema body 'content'
+                                key={msg._id || msg.id}
+                                messageText={msg.content || ""}
                                 myMessage={msg.myMessage}
                                 time={msg.time || formattedTime}
-                                imgUrl={msg.Avatar || "/images/login.jpg"} // 🎯 FIXED: Renders the backend populated sender Avatar 
+                                imgUrl={msg.Avatar || "/images/login.jpg"}
+
+                                // 🎯 FIXED: Access keys directly from the nested attachment object!
+                                type={msg.messageType} // This is exactly "file"
+                                fileUrl={msg.attachment?.fileUrl} // Safely reads from msg.attachment.fileUrl
                             />
                         );
                     })
                 )}
 
-                {/* File Uploading Feedback Tracker */}
                 {uploadProgress > 0 && (
                     <div className="self-start bg-emerald-50 border border-emerald-100 text-emerald-800 rounded-xl px-4 py-2 text-xs flex items-center gap-3 shadow-sm animate-pulse">
                         <span className="w-2.5 h-2.5 bg-emerald-600 rounded-full animate-ping" />

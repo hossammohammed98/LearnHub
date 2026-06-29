@@ -37,84 +37,92 @@ function ChatInput({ placeholder = 'اكتب رسالتك هنا....', onSendFil
         const result = fileValidationSchema.safeParse(selectedFile);
 
         if (!result.success) {
-            const errorMessage = result.error.message;
+            // Fallback friendly message extraction if using standard Zod errors
+            const errorMessage = result.error?.message || "ملف غير صالح";
             alert(errorMessage);
-            e.target.value = '';
+            e.target.value = ''; // Reset input element state
+            return; // 🎯 FIXED: Stop execution here!
+        }
+        try {
             await onSendFile(selectedFile);
+        } catch (error) {
+            console.error("Failed to send selected file:", error);
+        } finally {
+            e.target.value = ''; // 🎯 FIXED: Reset selection state so users can re-upload the same file later if needed
         }
     }
-        useEffect(() => {
-            const handelOutsideClick = (event: MouseEvent) => {
-                if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target as Node)) {
-                    setShowEmojiPicker(false);
-                }
+    useEffect(() => {
+        const handelOutsideClick = (event: MouseEvent) => {
+            if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target as Node)) {
+                setShowEmojiPicker(false);
             }
-            document.addEventListener('mousedown', handelOutsideClick);
-            return () => document.removeEventListener('mousedown', handelOutsideClick);
-        }, [])
-        return (
-            <form onSubmit={handleSendMessage} className='p-4 bg-white border-t border-slate-100 flex items-center gap-3 w-full'>
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
-                    accept=".pdf,.png,.jpg,.jpeg,.docx"
-                />
-                <div ref={emojiPickerRef} className="flex items-center  md:gap-2 flex-shrink-0">
-                    <button
-                        type="button"
-                        onClick={() => setShowEmojiPicker((prev) => !prev)}
-                        className={`p-2 rounded-lg transition-colors 
-                        ${showEmojiPicker ? 'text-emerald-600 bg-emerald-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-                            }`}
-                        aria-label="Add emoji"
-                    >
-                        <SmileIcon size={20} className="md:w-[22px] md:h-[22px]" />
-                    </button>
-                    {showEmojiPicker && (
-                        <div className="absolute bottom-16 left-auto right-auto z-50 shadow-xl border border-slate-100 rounded-2xl overflow-hidden max-w-[90vw]">
-                            <EmojiPicker
-                                onEmojiClick={handleEmojiClick}
-                                theme={Theme.LIGHT}
-                                height={380}
-                                width={320}
-                                searchPlaceholder="ابحث عن إيموجي..."
-                                previewConfig={{ showPreview: false }}
-                            />
-                        </div>
-                    )}
-                    <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
-                        aria-label="Attach file"
-                    >
-                        <PaperclipIcon size={20} className="md:w-[22px] md:h-[22px]" />
-                    </button>
-                </div>
-                <input
-                    type="text"
-                    value={textInput}
-                    onChange={(e) => { setTextInput(e.target.value) }}
-                    className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5 md:px-4 md:py-3 text-xs md:text-sm outline-none text-right font-medium placeholder-slate-400 focus:border-emerald-500/30 focus:bg-white transition-all min-w-0"
-                    placeholder={placeholder}
-                />
-
+        }
+        document.addEventListener('mousedown', handelOutsideClick);
+        return () => document.removeEventListener('mousedown', handelOutsideClick);
+    }, [])
+    return (
+        <form onSubmit={handleSendMessage} className='p-4 bg-white border-t border-slate-100 flex items-center gap-3 w-full'>
+            <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept=".pdf,.png,.jpg,.jpeg,.docx"
+            />
+            <div ref={emojiPickerRef} className="flex items-center  md:gap-2 flex-shrink-0">
                 <button
-                    type="submit"
-                    disabled={!textInput.trim()}
-
-                    className={`p-2.5 md:p-3 rounded-xl transition-all flex items-center justify-center flex-shrink-0 transform rotate-180 ${textInput.trim()
-                        ? 'bg-[#006C49] text-white hover:bg-[#005438] cursor-pointer'
-                        : 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                    type="button"
+                    onClick={() => setShowEmojiPicker((prev) => !prev)}
+                    className={`p-2 rounded-lg transition-colors 
+                        ${showEmojiPicker ? 'text-emerald-600 bg-emerald-50' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
                         }`}
-                    aria-label="Send message"
+                    aria-label="Add emoji"
                 >
-                    <SendHorizonal size={18} />
+                    <SmileIcon size={20} className="md:w-[22px] md:h-[22px]" />
                 </button>
-            </form>
-        )
-    }
+                {showEmojiPicker && (
+                    <div className="absolute bottom-16 left-auto right-auto z-50 shadow-xl border border-slate-100 rounded-2xl overflow-hidden max-w-[90vw]">
+                        <EmojiPicker
+                            onEmojiClick={handleEmojiClick}
+                            theme={Theme.LIGHT}
+                            height={380}
+                            width={320}
+                            searchPlaceholder="ابحث عن إيموجي..."
+                            previewConfig={{ showPreview: false }}
+                        />
+                    </div>
+                )}
+                <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                    aria-label="Attach file"
+                >
+                    <PaperclipIcon size={20} className="md:w-[22px] md:h-[22px]" />
+                </button>
+            </div>
+            <input
+                type="text"
+                value={textInput}
+                onChange={(e) => { setTextInput(e.target.value) }}
+                className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-3 py-2.5 md:px-4 md:py-3 text-xs md:text-sm outline-none text-right font-medium placeholder-slate-400 focus:border-emerald-500/30 focus:bg-white transition-all min-w-0"
+                placeholder={placeholder}
+            />
 
-    export default ChatInput
+            <button
+                type="submit"
+                disabled={!textInput.trim()}
+
+                className={`p-2.5 md:p-3 rounded-xl transition-all flex items-center justify-center flex-shrink-0 transform rotate-180 ${textInput.trim()
+                    ? 'bg-[#006C49] text-white hover:bg-[#005438] cursor-pointer'
+                    : 'bg-slate-100 text-slate-300 cursor-not-allowed'
+                    }`}
+                aria-label="Send message"
+            >
+                <SendHorizonal size={18} />
+            </button>
+        </form>
+    )
+}
+
+export default ChatInput

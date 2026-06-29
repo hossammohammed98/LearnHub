@@ -57,9 +57,14 @@ exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{
 exports.logout=catchAsyncHandler(async(req,res,next)=>{
     const result=await authService.logOut(req.payload);
     res.clearCookie('refreshToken', {
-    httpOnly: true,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production'
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
+    });
+    res.clearCookie('accessToken', {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
     });
     return  ApiResponse.success(res,"The user Log Out Successfully",null,200);
 })

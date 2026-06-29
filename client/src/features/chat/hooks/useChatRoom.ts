@@ -1,11 +1,10 @@
 'use client';
 
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Message } from "../types";
 import { chatService } from "../services/chatService";
 
-type CustomWebSocketClient = any;
 interface UseChatRoomResult {
     messages: Message[];
     isLoading: boolean;
@@ -21,7 +20,8 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
     const [error, setError] = useState<string | null>(null);
     const [uploadProgress, setUploadProgress] = useState<number>(0);
 
-    const socketRef = useRef<CustomWebSocketClient | null>(null);
+    // 🎯 FIXED: Strongly typed standard Socket client instead of 'any'
+    const socketRef = useRef<Socket | null>(null);
 
     const loadChatHistory = useCallback(async (targetRoomId: string) => {
         setIsLoading(true);
@@ -38,8 +38,9 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
     }, []);
 
     const sendTextMessage = useCallback(async (text: string) => {
+        console.log("🔍 sendTextMessage triggered. Socket status:", !!socketRef.current);
         if (!text.trim() || !roomId || !socketRef.current) return;
-        
+
         const temporaryId = `temp-${Date.now()}`;
         const optimisticMessage: Message = {
             id: temporaryId,
@@ -47,15 +48,15 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
             myMessage: true,
             time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
         };
-        
+
         setMessages((prev) => [...prev, optimisticMessage]);
-        
+
         socketRef.current.emit('send_message', {
             roomId,
             messageText: text,
-            clientRefId: temporaryId // 3. Pass a reference ID so the backend can echoes it back
+            clientRefId: temporaryId
         });
-    }, [roomId]);
+    }, [roomId,socketRef.current]);
 
     const sendFileMessage = useCallback(async (file: File) => {
         if (!roomId || !socketRef.current) return;
@@ -64,7 +65,7 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
             const uploadResult = await chatService.uploadChatFile(file, roomId, (progress) => {
                 setUploadProgress(progress);
             });
-            
+
             socketRef.current.emit('send_message', {
                 roomId,
                 messageText: `📎 ملف مرفق: ${uploadResult.fileName}`,
@@ -76,41 +77,53 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
         } finally {
             setTimeout(() => { setUploadProgress(0); }, 1000);
         }
-    }, [roomId]);
+    }, [roomId,socketRef.current]);
 
     useEffect(() => {
         if (!roomId) {
             setMessages([]);
             return;
         }
-        
+
         loadChatHistory(roomId);
-        
-        const socket = io(process.env.NEXT_PUBLIC_API_URL || '', {
+
+        const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', {
             autoConnect: true,
             reconnectionAttempts: 5,
             reconnectionDelay: 1000,
             withCredentials: true,
-            transports: ["websocket"],
+            transports: ['polling',"websocket"],
         });
-        
+
         socketRef.current = socket;
 
         socket.emit('join_room', { roomId });
-        
+
         socket.on('message_received', (incomingPayload: any) => {
             setMessages((prev) => {
-                // 4. SMART DUPLICATE CHECK: Swap out the matching temporary optimistic item
                 const exists = prev.some(
                     (msg) => msg.id === incomingPayload.id || (incomingPayload.clientRefId && msg.id === incomingPayload.clientRefId)
                 );
                 
+                // 🎯 FIXED: Use incomingPayload.myMessage directly from the backend, 
+                // or fallback cleanly without checking undefined client query objects.
+                const processedPayload: Message = {
+                    id: incomingPayload.id,
+                    messageText: incomingPayload.messageText,
+                    fileUrl: incomingPayload.fileUrl,
+                    type: incomingPayload.type,
+                    time: incomingPayload.time || new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
+                    // If the backend says true, or if it has your current client user id context
+                    myMessage: incomingPayload.myMessage ?? false 
+                };
+
                 if (exists) {
-                    return prev.map((msg) => 
-                        msg.id === incomingPayload.clientRefId ? incomingPayload : msg
+                    // 🎯 FIXED: Correctly mapped to replace the matching optimistic item with 'processedPayload'
+                    return prev.map((msg) =>
+                        msg.id === incomingPayload.clientRefId ? processedPayload : msg
                     );
                 }
-                return [...prev, incomingPayload];
+                return [...prev, processedPayload];
             });
         });
 
