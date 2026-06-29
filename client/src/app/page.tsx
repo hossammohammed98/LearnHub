@@ -5,7 +5,7 @@ import StepsSection from "@/features/landingpage/component/StepsSection";
 import PricingSection from "@/features/landingpage/component/PricingSection";
 import CtaBanner from "@/features/landingpage/component/CtaBanner";
 import Footer from "@/features/landingpage/component/Footer";
-import LandingPage from "./landingpage/page";
+import LandingPae from "./landingpage/page";
 
 // مكونات الشات
 import ConversationItem from "@/features/chat/components/ConversationItem";
