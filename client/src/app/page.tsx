@@ -22,4 +22,5 @@ export default function HomePage() {
   // إذا كنت تريد تحويل المستخدم مباشرة لصفحة تسجيل الدخول، فك التعليق عن السطر التالي:
   redirect("/register");
 
+
 }
