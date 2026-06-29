@@ -1,8 +1,8 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import { getApiBaseUrl } from './runtimeConfig';
 
 export const apiClient: AxiosInstance = axios.create({
-    // FIXED: Points relatively to the Next.js rewritten route to completely eliminate port conflicts
-    baseURL: '/api/v1', 
+    baseURL: getApiBaseUrl(),
     timeout: 15000,
     headers: {
         "Content-Type": 'application/json',
@@ -23,15 +23,20 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
-        const originalRequest = error.config;
+        const originalRequest = error.config as (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined;
         const status = error.response?.status;
 
-        if (status === 401 && originalRequest && !(originalRequest as any)._retry) {
-            (originalRequest as any)._retry = true;
+        // 1. Check if the error is an expired token (401) and we haven't retried yet
+        if (status === 401 && originalRequest && !originalRequest._retry) {
+            originalRequest._retry = true;
             try {
                 console.warn('🔄 Access Token expired. Attempting global refresh token handshake...');
                 
-                await axios.post('/api/v1/auth/refresh-token', {}, { withCredentials: true });
+                // Fire refresh call using vanilla axios instance
+                await axios.post('/auth/refresh-token', {}, {
+                    baseURL: getApiBaseUrl(),
+                    withCredentials: true
+                });
                 
                 return apiClient(originalRequest);
             }
@@ -44,11 +49,17 @@ apiClient.interceptors.response.use(
             }
         }
         
-        // Structured error return mapping
-        const customError = new Error((error.response?.data as any)?.message || 'حدث خطأ غير متوقع في الاتصال بالمخدم.');
-        (customError as any).status = status || (error.code === 'ECONNREFUSED' ? 503 : 500);
-        (customError as any).code = (error.response?.data as any)?.code || error.code || 'NETWORK_ERROR';
+        // 2. FIXED: Every other error (including 500s) skips the refresh loop and goes straight here
+        const responseData = error.response?.data as { message?: string; code?: string } | undefined;
+        const specializeError = {
+            // Extracts the message safely from your backend ApiResponse payload structure
+            message: responseData?.message || 'حدث خطأ غير متوقع في الاتصال.',
+            status: status || 500,
+            code: responseData?.code || 'INTERNAL_SERVER_ERROR'
+        };
 
         return Promise.reject(customError);
     }
 );
+
+export default apiClient;
