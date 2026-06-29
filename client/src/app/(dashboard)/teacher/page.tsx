@@ -34,14 +34,14 @@ const teacherMetricCards: MetricCardProps[] = [
     icon: <BookAIcon></BookAIcon>,
   },
   {
-    title: "اجمالى الطلاب",
+    title: "الدورات النشطة",
     value: 1248,
     tag: "+12%",
     tagType: "info",
     icon: <BookAIcon></BookAIcon>,
   },
   {
-    title: "اجمالى الطلاب",
+    title: "إجمالي الإيرادات",
     value: 1248,
     tag: "+12%",
     tagType: "info",
