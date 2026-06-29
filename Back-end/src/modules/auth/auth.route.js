@@ -7,7 +7,7 @@ const authController=require('./auth.controller');
 
 router.post('/register', authController.register);
 router.post('/login', authController.login);
-router.get('/refresh-token', protect, authController.refreshToken);
+router.post('/refresh-token', authController.refreshToken);
 router.post('/logout', protect, authController.logout);
 router.get('/verify-email',authController.verifyEmail);
 router.post('/forgot-password', authController.forgetPassword);

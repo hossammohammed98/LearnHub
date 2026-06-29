@@ -12,11 +12,13 @@ const assignmentRoute=require('./modules/assignments/assignment.route');
 const chapterRoute=require('./modules/chapters/chapter.route');
 const chatRoute=require('./modules/chat/chat.route');
 const courseRoute=require('./modules/courses/course.route');
+const assistantRoute=require('./modules/assistants/assistant.route');
 const lessonRoute=require('./modules/lessons/lesson.route');
 const parentRoute=require('./modules/parents/parent.route');
 const quizzesRoute=require('./modules/quizzes/quiz.route');
 const studentRoute=require('./modules/students/student.route');
 const teacherRoute=require('./modules/teachers/teacher.route');
+const systemRoute=require('./modules/system/system.route');
 
 const app=express();
 app.set('trust proxy', 1);
@@ -41,6 +43,7 @@ const authLimiter = rateLimiter.create({
 
 app.use(express.json());
 app.use(cookieParser()); 
+app.use('/api/v1', systemRoute);
 app.use('/api/v1/auth',authRoute);
 
 const apiLimiter = rateLimiter.create({
@@ -54,6 +57,7 @@ app.use('/api/v1/assignment',assignmentRoute);
 app.use('/api/v1/chapter',chapterRoute);
 app.use('/api/v1/chat',chatRoute);
 app.use('/api/v1/course',courseRoute);
+app.use('/api/v1/assistant',assistantRoute);
 app.use('/api/v1/lesson',lessonRoute);
 app.use('/api/v1/parent',parentRoute);
 app.use('/api/v1/quizzes',quizzesRoute);

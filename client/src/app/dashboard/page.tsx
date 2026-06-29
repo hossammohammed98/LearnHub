@@ -1,13 +1,5 @@
-import ProfileSettings from '@/features/settings/SettingsSidebar';
-import  TeacherSideBar from '@/features/teacher/TeacherSideBar';
+import { redirect } from 'next/navigation';
 
-function page() {
-  return (
-    <div>
-      <ProfileSettings></ProfileSettings>
-      <TeacherSideBar/>
-    </div>
-  )
+export default function Page() {
+  redirect('/teacher');
 }
-
-export default page
