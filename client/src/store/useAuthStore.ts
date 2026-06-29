@@ -8,6 +8,7 @@ interface UserData {
   Phone: number;
   Role: string;
   Email?: string;
+  parentProfileId?: string;
 }
 
 interface AuthState {

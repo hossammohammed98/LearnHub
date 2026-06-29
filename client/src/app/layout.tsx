@@ -19,8 +19,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl" className={`${cairo.variable}`}>
-      <body className="font-sans antialiased bg-gray-50 text-gray-900 min-h-screen" suppressHydrationWarning>
+    <html
+      lang="ar"
+      suppressHydrationWarning
+      dir="rtl"
+      className={`${cairo.variable}`}
+    >
+      <body
+        className="font-sans antialiased bg-gray-50 text-gray-900 min-h-screen"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

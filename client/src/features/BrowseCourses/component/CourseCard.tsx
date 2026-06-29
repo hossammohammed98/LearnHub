@@ -1,59 +1,72 @@
 import React from "react";
 import Image from "next/image";
-import { Course } from "./types";
+import { Course } from "@/features/BrowseCourses/types"; 
 
-const defaultCourseData: Course = {
-  id: "default-id",
-  title: "أساسيات تطوير الويب وتصميم الواجهات",
-  category: "Uncategorized",
-  rating: 0,
+const defaultCourseData = {
   image: "/images/student.jpg",
+  category: "تطوير البرمجيات",
   price: 0,
   instructor: {
-    name: "name instructor",
+    name: "مدرس المادة",
     avatar: "/images/student.jpg",
   },
 };
 
-export const CourseCard: React.FC<{ course?: Course }> = ({
-  course = defaultCourseData,
-}) => {
+export const CourseCard: React.FC<{ course: Course }> = ({ course }) => {
+  // Gracefully fallback to UI layout defaults if API fields are missing
+ // القراءة من الحقول  القادمة من الباك إند مباشرة
+const courseImage = course.Image || defaultCourseData.image;
+const priceValue = course.Price !== undefined ? course.Price : defaultCourseData.price;
+  const instructorName = course.instructor?.name || defaultCourseData.instructor.name;
+  const instructorAvatar = course.instructor?.avatar || defaultCourseData.instructor.avatar;
+
   return (
     <div
-      className="bg-white rounded-[24px] border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between h-full max-w-[320px]"
+      className="bg-white rounded-[24px] border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between h-full max-w-[320px] mx-auto w-full"
       dir="rtl"
     >
       {/* Image */}
-      <div className="w-full rounded-[20px] mb-4 overflow-hidden">
+      <div className="w-full rounded-[20px] mb-4 overflow-hidden aspect-[4/3] relative">
         <Image
-          src={course.image}
-          alt={course.title}
-          width={400}
-          height={300}
-          className="w-full h-full object-cover"
+          src={courseImage}
+          alt={course.Title || "صورة الكورس"}
+          fill
+          className="object-cover"
+          sizes="(max-w-7xl) 33vw, 100vw"
         />
       </div>
 
       {/* Content */}
       <div className="flex-1 flex flex-col text-right">
-        <h3 className="text-gray-900 font-bold text-sm leading-snug mb-3 line-clamp-2 h-10">
-          {course.title}
+        {/* Category Badge if available */}
+        <span className="text-[10px] text-teal-600 font-semibold bg-teal-50/50 px-2.5 py-1 rounded-full w-max mb-2">
+          {course.category || defaultCourseData.category}
+        </span>
+
+        {/* Dynamic Title mapping from backend PascalCase field */}
+        <h3 className="text-gray-900 font-bold text-sm leading-snug mb-2 line-clamp-2 h-10">
+          {course.Title}
         </h3>
+
+        {/* Short description preview snippet */}
+        <p className="text-gray-500 text-[11px] leading-relaxed mb-3 line-clamp-2 h-8">
+          {course.Description}
+        </p>
 
         {/* Instructor with Avatar */}
         <div className="flex items-center gap-2 mb-4">
-          <div className="relative w-7 h-7 rounded-full overflow-hidden">
+          <div className="relative w-7 h-7 rounded-full overflow-hidden border border-gray-100">
             <Image
-              src={course.instructor.avatar}
-              alt={course.instructor.name}
+              src={instructorAvatar}
+              alt={instructorName}
               fill
-              sizes="28px" // 👈 حل التحذير: لأن مساحة الأفاتار في الـ Tailwind هي w-7 وتساوي 28 بكسل
+              sizes="28px"
               className="object-cover"
             />
           </div>
 
-          <p className="text-gray-500 text-xs font-medium">
-            {course.instructor.name}
+          <p className="text-gray-600 text-xs font-medium">
+            {instructorName}
           </p>
         </div>
       </div>
@@ -78,7 +91,7 @@ export const CourseCard: React.FC<{ course?: Course }> = ({
         </button>
 
         <span className="text-teal-600 font-extrabold text-base">
-          {course.price} ج.م
+          {priceValue} ج.م
         </span>
       </div>
     </div>

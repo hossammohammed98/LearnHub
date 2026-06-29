@@ -1,7 +1,9 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 
+const apiBaseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
+
 export const apiClient: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: apiBaseURL,
     timeout: 15000,
     headers: {
         "Content-Type": 'application/json',
@@ -32,7 +34,7 @@ apiClient.interceptors.response.use(
                 console.warn('🔄 Access Token expired. Attempting global refresh token handshake...');
                 
                 // Fire refresh call using vanilla axios instance
-                await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`, {}, { withCredentials: true });
+                await axios.post(`${apiBaseURL}/auth/refresh-token`, {}, { withCredentials: true });
                 
                 // Retry the original request using our configured apiClient
                 return apiClient(originalRequest);

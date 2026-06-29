@@ -89,6 +89,7 @@ const PromoBanner: React.FC<PromobannerProps> = ({
 
             {/* CTA Button */}
             <button
+            suppressHydrationWarning
               onClick={onButtonClick}
               className="bg-amber-400 hover:bg-amber-500 transition-colors text-gray-800 font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl text-lg"
               aria-label={buttonText}

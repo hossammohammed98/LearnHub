@@ -20,25 +20,25 @@ export const Pagination: React.FC = () => {
         </svg>
       </button>
 
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-teal-800 text-white font-bold text-sm shadow-sm">
+      <button suppressHydrationWarning className="w-9 h-9 flex items-center justify-center rounded-xl bg-teal-800 text-white font-bold text-sm shadow-sm">
         ١
       </button>
 
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl border border-transparent text-gray-600 hover:border-gray-200 hover:bg-gray-50 font-medium text-sm transition-all">
+      <button suppressHydrationWarning className="w-9 h-9 flex items-center justify-center rounded-xl border border-transparent text-gray-600 hover:border-gray-200 hover:bg-gray-50 font-medium text-sm transition-all">
         ٢
       </button>
 
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl border border-transparent text-gray-600 hover:border-gray-200 hover:bg-gray-50 font-medium text-sm transition-all">
+      <button suppressHydrationWarning className="w-9 h-9 flex items-center justify-center rounded-xl border border-transparent text-gray-600 hover:border-gray-200 hover:bg-gray-50 font-medium text-sm transition-all">
         ٣
       </button>
 
-      <span className="text-gray-400 text-sm px-1">...</span>
+      <span suppressHydrationWarning className="text-gray-400 text-sm px-1">...</span>
 
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl border border-transparent text-gray-600 hover:border-gray-200 hover:bg-gray-50 font-medium text-sm transition-all">
+      <button suppressHydrationWarning className="w-9 h-9 flex items-center justify-center rounded-xl border border-transparent text-gray-600 hover:border-gray-200 hover:bg-gray-50 font-medium text-sm transition-all">
         ١٠
       </button>
 
-      <button className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
+      <button suppressHydrationWarning className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

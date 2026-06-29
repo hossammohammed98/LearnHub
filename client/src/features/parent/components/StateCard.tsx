@@ -10,7 +10,7 @@ interface StatCardProps {
   iconBgColor?: string;
 }
 
-export function StatCard({
+export function StateCard({
   title = "متوسط درجات الأبناء",
   value = "88.5%",
   badgeType = "trend",
@@ -75,4 +75,4 @@ export function StatCard({
   );
 }
 
-export default StatCard;
+export default StateCard;

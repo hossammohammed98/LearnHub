@@ -6,6 +6,7 @@ function NotificationBell() {
     return (
         <div className="relative flex items-center justify-center">
             <button
+            
                 className="p-2 rounded-xl hover:bg-gray-50 transition-colors focus:outline-none"
                 onClick={() => setIsOpen(!isOpen)}
             >
