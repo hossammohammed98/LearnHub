@@ -32,6 +32,7 @@ function ConversationItem({
         active ? 'bg-emerald-50/60' : 'hover:bg-slate-50'
       }`}
     >
+      {/* Avatar Container */}
       <div className='relative w-12 h-12 flex-shrink-0'>
         <Image 
           alt={displayName} 
@@ -42,6 +43,7 @@ function ConversationItem({
         />
       </div>
 
+      {/* Text Blocks */}
       <div className='flex-1 min-w-0 text-right'>
         <div className='flex justify-between items-baseline mb-1 gap-2'>
           <h2 className={`text-sm font-semibold truncate ${active ? 'text-[#006C49]' : 'text-slate-800'}`}>

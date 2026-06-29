@@ -1,3 +1,5 @@
+"use client"; 
+import { useRouter } from "next/navigation";
 import Navbar from "@/features/landingpage/component/LandingNavbar";
 import Hero from "@/features/landingpage/component/Hero";
 import FeaturesSection from "@/features/landingpage/component/FeaturesSection";
@@ -6,10 +8,18 @@ import PricingSection from "@/features/landingpage/component/PricingSection";
 import CtaBanner from "@/features/landingpage/component/CtaBanner";
 import Footer from "@/features/landingpage/component/Footer";
 
-export default function LandingPage() {
+export default function Page() {
+  const router = useRouter();
+
+  const handleSupportChat = () => {
+
+    console.log("Opening support chat...");
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-emerald-100 antialiased font-sans flex flex-col">
       
+
       <Navbar />
 
       <main className="flex-grow">
@@ -32,7 +42,9 @@ export default function LandingPage() {
 
       <Footer />
 
+      {/* Floating Action Support Button connected to interaction handler */}
       <button 
+        onClick={handleSupportChat}
         aria-label="Support Chat"
         className="fixed bottom-6 left-6 w-12 h-12 bg-[#0b1324] hover:bg-slate-900 text-white rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95 z-50 cursor-pointer"
       >

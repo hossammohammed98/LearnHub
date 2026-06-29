@@ -8,7 +8,7 @@ import { chatService } from '../services/chatService';
 import { Conversation } from '../types';
 
 interface ChatSideBarProps {
-  onSelectChat: (id: string, details: { userName: string; imgUrl: string; active?: boolean }) => void;
+  onSelectChat: (id: string, name: string, img: string) => void;
   selectedChatId: string | null;
 }
 
@@ -71,11 +71,11 @@ function ChatSideBar({ onSelectChat, selectedChatId }: ChatSideBarProps) {
             lastMessage={room.lastMessage}
             time={room.time}
             active={selectedChatId === room.id}
-            onClick={() => onSelectChat(room.id, {
-              userName: room.userName || "مستخدم غير معروف",
-              imgUrl: room.imgUrl || "/images/login.jpg",
-              active: selectedChatId === room.id
-            })}
+            onClick={() => onSelectChat(
+              room.id, 
+              room.userName || "مستودع المحادثة", 
+              room.imgUrl || "/images/login.jpg"
+            )}
           />
         ))}
       </ConversationList>

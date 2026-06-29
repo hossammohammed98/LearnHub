@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { LoginFormValues, loginSchema } from "@/features/auth/validation/loginValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/features/auth/services/authService";
+import { GraduationCap } from "lucide-react"; // Kept in case you want to use it in the logo box
 import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LoginPage() {
@@ -43,9 +44,11 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
-      {/* Header */}
+      {/* Header Logo */}
       <div className="flex flex-col items-center gap-1 pt-2">
-        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white text-xl shadow-level-1"></div>
+        <div className="w-11 h-11 bg-primary rounded-xl flex items-center justify-center text-white text-xl shadow-level-1">
+          <GraduationCap className="w-6 h-6" /> {/* Placed the icon inside your empty logo div */}
+        </div>
         <h1 className="text-lg font-bold text-primary">تعلَّم</h1>
         <p className="text-[11px] text-slate-400 font-medium tracking-wide">
           منصة تعلَّم | مستقبل التعليم الرقمي
@@ -114,12 +117,12 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        {/* Explicitly added type="submit" and hooked up isSubmitting loader */}
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "جاري تسجيل الدخول..." : "دخول"}
+        <Button type="submit" disabled={isSubmitting} className="w-full">
+          {isSubmitting ? "جاري الدخول..." : "دخول"}
         </Button>
       </form>
 
+      {/* Footer link */}
       <div className="text-center text-sm text-slate-400">
         ليس لديك حساب؟{" "}
         <Link

@@ -7,6 +7,8 @@ const courseController = require('./course.controller');
 const { addCourseSchema, validateId, updateCourseSchema } = require('./course.validator');
 router.use(protect);
 
+router.post('/getCourseUploadToken',restrictTo('Teacher','Assistant'),courseController.getCourseUploadToken)
+
 router.route('/')
 .get(courseController.getAll)
 .post(restrictTo('Teacher','Assistant'),validate(addCourseSchema), courseController.create);

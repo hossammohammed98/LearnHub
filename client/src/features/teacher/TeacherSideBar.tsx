@@ -21,7 +21,7 @@ const sideBarItem: SideBarProps[] = [
   {
     icon: LayoutDashboard,
     name: "لوحة القيادة",
-    href: "/dashboard",
+    href: "/teacher",
   },
   {
     icon: GraduationCap,

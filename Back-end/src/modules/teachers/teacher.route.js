@@ -11,6 +11,8 @@ router.route('/')
 .get(teacherController.getAll)
 .post(restrictTo('Teacher','Admin'),validate(addTeacherSchema), teacherController.create);
 
+router.get('/dashboard', restrictTo('Teacher','Admin'), teacherController.dashboard);
+
 router.route('/:id')
 .get(validate(validateId,"params"),teacherController.getById)
 .patch(restrictTo('Teacher','Admin'),

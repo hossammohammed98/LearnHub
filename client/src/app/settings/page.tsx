@@ -1,4 +1,5 @@
-import Navbar from "@/features/landingpage/component/Navbar";
+
+import Navbar from "@/components/common/Navbar";
 import NotificationSettings from "@/features/settings/NotificationSettings";
 import ProfileSection from "@/features/settings/ProfileSection";
 import SecuritySettings from "@/features/settings/SecuritySettings";

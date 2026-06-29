@@ -46,10 +46,10 @@ export default function BrowseHeader({ onMenuToggle }: BrowseHeaderProps) {
         <NotificationBell />
 
         {/* Profile Avatar */}
-        <button suppressHydrationWarning className="hover:opacity-80 transition-opacity">
+        {/* <button suppressHydrationWarning className="hover:opacity-80 transition-opacity">
           <Avatar src="/avatar-placeholder.png" alt="اسم المستخدم" size="md" />
-        </button>
-
+        </button> */}
+        <Avatar></Avatar>
         {/* Mobile Hamburger Menu */}
         <button 
           suppressHydrationWarning
