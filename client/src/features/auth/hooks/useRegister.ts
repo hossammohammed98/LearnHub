@@ -1,0 +1,36 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
+import { authService } from "../services/authService";
+
+export const useRegister = () => {
+  const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
+  
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const register = async (userData: any) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await authService.registerUser(userData);
+      setUser(response.data);
+
+      if (response.data.Role === "Student") router.push("/student");
+      else if (response.data.Role === "Teacher") router.push("/teacher");
+      else if (response.data.Role === "Parent") router.push("/parent");
+      else router.push("/");
+
+    } catch (err: any) {
+      setError(err.message || "حدث خطأ ما أثناء إنشاء الحساب");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { register, isLoading, error };
+};

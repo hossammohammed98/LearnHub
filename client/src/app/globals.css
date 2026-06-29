@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+
+  --font-sans: "IBM Plex Sans Arabic", sans-serif;
+  --color-primary: #091426;          /* Courses and dark backgrounds */
+  --color-brand-navy: #1e293b;       /* Slate navy for UI elements and dark sections */
+  --color-brand-success: #006C49;    /* Buttons, inputs, success states (Emerald Green) */
+  --color-brand-warning: #f59e0b;    /* Alerts and highlights (Amber) */
+  --color-surface-bg: #f8fafc;       /* Soft site background (Ghost White) */
+  --color-brand-gray:#45474C;
+
+
+
+  /* 3. Border Radius */
+  --radius-lg: 12px;                /* Cards and input fields */
+  --radius-md: 8px;                 /* Buttons */
+
+  /* 4. Shadows (Level 1 & Level 2) */
+  --shadow-level-1: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-level-2: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+}
+
+/* Apply global site background */
+body {
+  background-color: var(--color-surface-bg);
+  font-family: var(--font-sans);
+}
