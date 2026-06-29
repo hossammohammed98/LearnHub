@@ -38,7 +38,6 @@ apiClient.interceptors.response.use(
                     withCredentials: true
                 });
                 
-                // Retry the original request using our configured apiClient
                 return apiClient(originalRequest);
             }
             catch (refreshError) {
@@ -59,7 +58,7 @@ apiClient.interceptors.response.use(
             code: responseData?.code || 'INTERNAL_SERVER_ERROR'
         };
 
-        return Promise.reject(specializeError);
+        return Promise.reject(customError);
     }
 );
 
