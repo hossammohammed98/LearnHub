@@ -1,26 +1,37 @@
 "use client";
-import { useState } from "react";
 
-export function RoleSelector() {
-  const [selected, setSelected] = useState("student");
+import { useFormContext } from "react-hook-form";
+
+interface SelectedProps {
+  error?: string;
+  name: string; // The form field name
+  setValue: any; // React Hook Form's setValue function
+  watch: any;    // React Hook Form's watch function
+}
+
+export function RoleSelector({ error, name, setValue, watch }: SelectedProps) {
+  // Watch the real live form state managed by react-hook-form
+  const selectedRole = watch(name) || "Student"; 
 
   const roles = [
-    { id: "student", label: "طالب", icon: "" },
-    { id: "teacher", label: "معلم", icon: "" },
-    { id: "parent", label: "ولي أمر", icon: "" },
+    { id: "Student", label: "طالب", icon: "🎓" },
+    { id: "Teacher", label: "معلم", icon: "👨‍🏫" },
+    { id: "Parent", label: "ولي أمر", icon: "👨‍👩‍👦" },
   ];
 
   return (
-    <div className="space-y-2">
-      <p className="text-xs text-gray-500 text-right">اختر نوع حسابك للبدء في المنصة</p>
+    <div className="space-y-2 text-right">
+      <p className="text-xs text-gray-500">اختر نوع حسابك للبدء في المنصة</p>
+      
       <div className="grid grid-cols-3 gap-3">
         {roles.map((role) => (
           <button
             key={role.id}
             type="button"
-            onClick={() => setSelected(role.id)}
+            // Set values through React Hook Form dynamically
+            onClick={() => setValue(name, role.id, { shouldValidate: true })}
             className={`flex flex-col items-center justify-center p-3 rounded-xl border text-sm gap-1 transition-all cursor-pointer ${
-              selected === role.id
+              selectedRole === role.id
                 ? "border-teal-600 bg-teal-50/30 text-teal-800 font-bold ring-1 ring-teal-600"
                 : "border-gray-200 text-gray-600 hover:bg-gray-50"
             }`}
@@ -30,6 +41,13 @@ export function RoleSelector() {
           </button>
         ))}
       </div>
+
+      {/* Moved error display safely outside of the button grid container */}
+      {error && (
+        <p className="text-[11px] font-medium text-red-500 mt-1">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

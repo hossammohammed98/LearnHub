@@ -7,17 +7,18 @@ class ChatController extends BaseController {
         super(BaseController);
     }
     getAllChats = catchAsyncHandler(async (req, res, next) => {
+        // console.log(req.user);
         const result = await ChatService.getAllChats(req.user.id);
-        return new ApiResponse.success(res, "The Chats Returned Successfully", result, 200);
+        return  ApiResponse.success(res, "The Chats Returned Successfully", result, 200);
     })
     getChatMessages = catchAsyncHandler(async (req, res, next) => {
         const result = await ChatService.getChatMessages(req.params.id,req.user.id);
-        return new ApiResponse.success(res, "The Chat Messages Returned Successfully", result, 200);
+        return  ApiResponse.success(res, "The Chat Messages Returned Successfully", result, 200);
     })
     getChatAttachmentToken=catchAsyncHandler(async(req,res,next)=>{
         const {fileType}=req.body;
         const result=await ChatService.getChatAttachmentToken(req.params.id,fileType);
-        return new ApiResponse.success(res,"Signature Created Successfully",result,200);
+        return  ApiResponse.success(res,"Signature Created Successfully",result,200);
     })
     
 }

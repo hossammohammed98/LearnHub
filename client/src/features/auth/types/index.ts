@@ -10,8 +10,8 @@ export interface UserProfile {
     id: string;
     FName: string;
     LName: string;
-    phone: number;
-    role: string;
+    Phone: number;
+    Role: string;
 }
 
 export interface UserRegister {

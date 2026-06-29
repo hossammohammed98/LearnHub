@@ -10,11 +10,13 @@ import { LoginFormValues, loginSchema } from "@/features/auth/validation/loginVa
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/features/auth/services/authService";
 import { GraduationCap } from "lucide-react"; // Kept in case you want to use it in the logo box
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LoginPage() {
   const [serverError, setServerError] = useState<string | null>(null);
+  const setUser=useAuthStore((state)=>state.setUser);
   const router = useRouter();
-  
+
   const {
     register,
     handleSubmit,
@@ -31,6 +33,8 @@ export default function LoginPage() {
         Password: data.password,
       });
       if (response.success) {
+        
+        setUser(response.data);
         router.push('/landingpage');
       }
     } catch (err: any) {
@@ -68,7 +72,7 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      {/* Title */}
+      {/* Title (Only One) */}
       <div className="text-right">
         <h2 className="text-xl font-bold text-primary">دخول إلى حسابك</h2>
         <p className="text-sm text-slate-400 mt-1">
@@ -76,7 +80,7 @@ export default function LoginPage() {
         </p>
       </div>
 
-      {/* Actual Form */}
+      {/* Form Handling Submission */}
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {serverError && <p className="text-red-500 text-sm text-right">{serverError}</p>}
         
