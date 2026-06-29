@@ -30,7 +30,7 @@ export default function ButtonInit({
   };
 
   const sizeStyles = {
-    sm: 'px-4 py-2 text-xs font-medium rounded-lg',
+    sm: 'px-4 py-2 text-xs font-medium rounded-xl',
     md: 'px-5 py-3 text-sm font-semibold rounded-xl', 
     lg: 'px-7 py-4 text-base font-semibold rounded-xl',
   };

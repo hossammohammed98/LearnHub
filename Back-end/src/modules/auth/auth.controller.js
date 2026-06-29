@@ -5,7 +5,6 @@ const ApiError = require('../../shared/core/ApiError');
 const crypto=require('crypto');
 //Register
 exports.register=catchAsyncHandler(async(req,res,next)=>{
-    console.log("am regist controller");
     const result=await authService.register(req.body);
     res.cookie('refreshToken',result.refreshToken,{
         httpOnly:true,
@@ -13,7 +12,13 @@ exports.register=catchAsyncHandler(async(req,res,next)=>{
         maxAge:7*24*60*60*1000,
         secure:process.env.NODE_ENV === 'production'
     })
-    return  ApiResponse.success(res,"The User Add Successfully",result.accessToken,200);
+    res.cookie('accessToken',result.accessToken,{
+        httpOnly:true,
+        sameSite:'strict',
+        maxAge:15*60*1000,
+        secure:process.env.NODE_ENV === 'production'
+    })
+    return  ApiResponse.success(res,"The User Add Successfully",result.user,200);
 })
 //Login
 exports.login=catchAsyncHandler(async(req,res,next)=>{
@@ -24,7 +29,13 @@ exports.login=catchAsyncHandler(async(req,res,next)=>{
         maxAge:7*24*60*60*1000,
         secure:process.env.NODE_ENV === 'production'
     })
-    return ApiResponse.success(res,"The User Logging Successfully",result.accessToken,200);
+     res.cookie('accessToken',result.accessToken,{
+        httpOnly:true,
+        sameSite:'strict',
+        maxAge:15*60*1000,
+        secure:process.env.NODE_ENV === 'production'
+    })
+    return ApiResponse.success(res,"The User Logging Successfully",result.user,200);
 })
 //Refresh Token
 exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{
@@ -32,7 +43,14 @@ exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{
     if (!incomingRefreshToken) {
         return next(new ApiError(401, "Refresh token missing"));
     }
-    const accessToken=await authService.refreshToken(req.payload,incomingRefreshToken);
+    
+    const accessToken=await authService.refreshToken(req.user,incomingRefreshToken);
+    res.cookie('accessToken',accessToken,{
+        httpOnly:true,
+        sameSite:'strict',
+        maxAge:15*60*1000,
+        secure:process.env.NODE_ENV === 'production'
+    })
     return  ApiResponse.success(res,"The Token Refreshed Successfully",accessToken,200);
 })
 //logout

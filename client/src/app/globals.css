@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+
   --font-sans: "IBM Plex Sans Arabic", sans-serif;
   --color-primary: #091426;          /* Courses and dark backgrounds */
   --color-brand-navy: #1e293b;       /* Slate navy for UI elements and dark sections */
@@ -8,6 +9,7 @@
   --color-brand-warning: #f59e0b;    /* Alerts and highlights (Amber) */
   --color-surface-bg: #f8fafc;       /* Soft site background (Ghost White) */
   --color-brand-gray:#45474C;
+
 
 
   /* 3. Border Radius */
