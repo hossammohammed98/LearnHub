@@ -4,7 +4,7 @@ import PromoBanner from '@/features/BrowseCourses/component/PromoBanner';
 import { CourseCard } from './../../features/BrowseCourses/component/CourseCard';
 import { Pagination } from '@/features/BrowseCourses/component/Pagination';
 import SidebarFilter from '@/features/BrowseCourses/component/SideBarFilter';
-import Navbar from '@/features/landingpage/component/Navbar';
+import Navbar from '@/components/common/Navbar';
 import SortTabs from '@/features/BrowseCourses/component/SortTabs';
 
 export default function BrowseCoursesPage() {

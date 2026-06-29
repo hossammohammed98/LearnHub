@@ -2,6 +2,7 @@
 import BrowseSidebar from "@/features/BrowseCourses/components/BrowesSidebar";
 import BrowseHeader from "@/features/BrowseCourses/components/BrowseHeader";
 import BrowseFooter from "@/features/BrowseCourses/components/BrowseFooter";
+import Link from "next/link";
 import CategoryTabs from "@/features/BrowseCourses/components/CategoryTabs";
 import CreatePathCard from "@/features/BrowseCourses/components/CreatePathCard";
 import DataSciencePathCard from "@/features/BrowseCourses/components/DataSciencePathCard";
@@ -40,10 +41,10 @@ export default function page() {
 
             {/* Mobile Nav Links with brand colors */}
             <nav className="flex flex-col gap-4 text-right mb-6 font-medium text-gray-600">
-              <a href="#" className="hover:text-[#006C49] py-2 border-b border-gray-50">الرئيسية</a>
-              <a href="#" className="hover:text-[#006C49] py-2 border-b border-gray-50 text-[#006C49] font-bold">تصفح المسارات</a>
-              <a href="#" className="hover:text-[#006C49] py-2 border-b border-gray-50">المدربين</a>
-              <a href="#" className="hover:text-[#006C49] py-2">تعلم</a>
+              <Link href="/register" className="hover:text-[#006C49] py-2 border-b border-gray-50">الرئيسية</Link>
+              <Link href="/BrowserCourses" className="hover:text-[#006C49] py-2 border-b border-gray-50 text-[#006C49] font-bold">تصفح المسارات</Link>
+              <Link href="/teacher" className="hover:text-[#006C49] py-2 border-b border-gray-50">المدربين</Link>
+              <Link href="/register" className="hover:text-[#006C49] py-2">تعلم</Link>
             </nav>
 
             <hr className="my-2" />

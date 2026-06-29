@@ -2,7 +2,6 @@
 import SideBar from '@/components/common/SideBar';
 import
  {
-  CalendarDays,
   GraduationCap,
   LayoutDashboard,
   LucideIcon,
@@ -26,7 +25,7 @@ const sideBarItem: SideBarProps[] = [
   {
     icon: GraduationCap,
     name: "الدورات",
-    href: "/Courses",
+    href: "/courses",
   },
   {
     icon: MessageSquare,
@@ -34,24 +33,19 @@ const sideBarItem: SideBarProps[] = [
     href: "/chat",
   },
   {
-    icon: CalendarDays,
-    name: "الجدول",
-    href: "/Calendar",
-  },
-  {
     icon: Settings,
     name: "الإعدادات",
-    href: "/Settings",
+    href: "/settings",
   },
   {
     icon: SquarePlus,
-    name:"اضافة مساعد",
-    href:"/addAssistant"
+    name: "إدارة المساعدين",
+    href: "/AssistantsPage",
   },
   {
     icon: MessageSquareWarning,
     name: "الدعم",
-    href: "/support",
+    href: "/chat",
   },
 ];
 function TeacherSideBar() {

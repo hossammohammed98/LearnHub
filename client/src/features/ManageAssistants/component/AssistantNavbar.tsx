@@ -1,7 +1,8 @@
 "use client";
+import Link from "next/link";
 import NotificationBell from "@/components/ui/NotificationBell";
 import Avatar from "@/components/common/Avatar";
-import { Search, Bell, RefreshCw } from "lucide-react";
+import { Search, RefreshCw } from "lucide-react";
 
 export default function AssistantsNavbar() {
   return (
@@ -35,7 +36,7 @@ export default function AssistantsNavbar() {
           <Bell className="h-5 w-5" />
           <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
         </button> */}
-          <NotificationBell></NotificationBell>
+          <NotificationBell />
         {/* <button
           type="button"
           aria-label="الملف الشخصي"
@@ -43,14 +44,16 @@ export default function AssistantsNavbar() {
         >
           م
         </button> */}
-          <Avatar></Avatar>
-        <button
-          type="button"
+          <Link href="/settings" aria-label="الملف الشخصي">
+            <Avatar />
+          </Link>
+        <Link
+          href="/teacher"
           className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-gray-50 sm:px-4 sm:text-sm"
         >
           <RefreshCw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           تبديل الدور
-        </button>
+        </Link>
       </div>
     </header>
   );

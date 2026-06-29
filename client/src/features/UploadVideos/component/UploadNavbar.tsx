@@ -1,6 +1,7 @@
 "use client";
 import NotificationBell from "@/components/ui/NotificationBell";
 import Avatar from "@/components/common/Avatar";
+import Link from "next/link";
 
 import { Search, Settings, Bell } from "lucide-react";
 
@@ -47,13 +48,13 @@ export default function UploadNavbar() {
 
         <NotificationBell></NotificationBell>
         
-        <button
-          type="button"
+        <Link
+          href="/settings"
           aria-label="الإعدادات"
           className="hidden rounded-full p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 sm:inline-flex"
         >
           <Settings className="h-5 w-5" />
-        </button>
+        </Link>
 
         {/* <button
           type="button"
@@ -62,7 +63,9 @@ export default function UploadNavbar() {
         >
           م
         </button> */}
-        <Avatar></Avatar>
+        <Link href="/settings" aria-label="الملف الشخصي">
+          <Avatar />
+        </Link>
       </div>
     </header>
   );

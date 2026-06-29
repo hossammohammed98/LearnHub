@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { LoginFormValues, loginSchema } from "@/features/auth/validation/loginValidation";
@@ -15,7 +15,24 @@ import { useAuthStore } from "@/store/useAuthStore";
 export default function LoginPage() {
   const [serverError, setServerError] = useState<string | null>(null);
   const setUser=useAuthStore((state)=>state.setUser);
+  const user = useAuthStore((state) => state.user);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const destination = user.Role === "Admin"
+      ? "/admin"
+      : user.Role === "Teacher"
+        ? "/teacher"
+        : user.Role === "Parent"
+          ? "/parent"
+          : "/student";
+
+    router.replace(destination);
+  }, [router, user]);
 
   const {
     register,
@@ -33,12 +50,19 @@ export default function LoginPage() {
         Password: data.password,
       });
       if (response.success) {
-        
         setUser(response.data);
-        router.push('/landingpage');
+        const destination = response.data.Role === "Admin"
+          ? "/admin"
+          : response.data.Role === "Teacher"
+            ? "/teacher"
+            : response.data.Role === "Parent"
+              ? "/parent"
+              : "/student";
+
+        router.push(destination);
       }
-    } catch (err: any) {
-      setServerError(err.message || "حدث خطأ ما");
+    } catch (err: unknown) {
+      setServerError(err instanceof Error ? err.message : "حدث خطأ ما");
     }
   };
 

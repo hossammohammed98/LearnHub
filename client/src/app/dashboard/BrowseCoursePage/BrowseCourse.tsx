@@ -12,6 +12,7 @@ import MarketingPathCard from "@/features/BrowseCourses/components/MarketingPath
 import DataSciencePathCard from "@/features/BrowseCourses/components/DataSciencePathCard";
 import HowItWorks from "@/features/BrowseCourses/components/HowItWorks";
 import BrowseFooter from "@/features/BrowseCourses/components/BrowseFooter";
+import Link from "next/link";
 
 export default function PathsPage() {
 
@@ -40,10 +41,10 @@ export default function PathsPage() {
 
             {/* Mobile Nav Links with brand colors */}
             <nav className="flex flex-col gap-4 text-right mb-6 font-medium text-gray-600">
-              <a href="#" className="hover:text-[#006C49] py-2 border-b border-gray-50">الرئيسية</a>
-              <a href="#" className="hover:text-[#006C49] py-2 border-b border-gray-50 text-[#006C49] font-bold">تصفح المسارات</a>
-              <a href="#" className="hover:text-[#006C49] py-2 border-b border-gray-50">المدربين</a>
-              <a href="#" className="hover:text-[#006C49] py-2">تعلم</a>
+              <Link href="/register" className="hover:text-[#006C49] py-2 border-b border-gray-50">الرئيسية</Link>
+              <Link href="/BrowserCourses" className="hover:text-brand-success py-2 border-b border-gray-50 text-brand-success font-bold">تصفح المسارات</Link>
+              <Link href="/teacher" className="hover:text-brand-success py-2 border-b border-gray-50">المدربين</Link>
+              <Link href="/register" className="hover:text-brand-success py-2">تعلم</Link>
             </nav>
 
             <hr className="my-2" />
@@ -62,7 +63,7 @@ export default function PathsPage() {
         <div className="flex items-stretch">
           
           {/* Desktop Sidebar: Stretched to full height and sticky */}
-          <aside className="hidden md:block w-64 border-l border-gray-100 bg-white flex-shrink-0">
+          <aside className="hidden md:block w-64 border-l border-gray-100 bg-white shrink-0">
             <div className="sticky top-20 h-[calc(100vh-80px)] overflow-y-auto">
               <BrowseSidebar />
             </div>
