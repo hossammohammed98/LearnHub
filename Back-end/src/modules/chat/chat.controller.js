@@ -9,17 +9,28 @@ class ChatController extends BaseController {
     getAllChats = catchAsyncHandler(async (req, res, next) => {
         // console.log(req.user);
         const result = await ChatService.getAllChats(req.user.id);
-        return  ApiResponse.success(res, "The Chats Returned Successfully", result, 200);
+        return ApiResponse.success(res, "The Chats Returned Successfully", result, 200);
     })
     getChatMessages = catchAsyncHandler(async (req, res, next) => {
-        const result = await ChatService.getChatMessages(req.params.id,req.user.id);
-        return  ApiResponse.success(res, "The Chat Messages Returned Successfully", result, 200);
+        // console.log(req.user);
+        // console.log(req.params.id);
+        const result = await ChatService.getChatMessages(req.params.id, req.user.id);
+        return ApiResponse.success(res, "The Chat Messages Returned Successfully", result, 200);
     })
-    getChatAttachmentToken=catchAsyncHandler(async(req,res,next)=>{
-        const {fileType}=req.body;
-        const result=await ChatService.getChatAttachmentToken(req.params.id,fileType);
-        return  ApiResponse.success(res,"Signature Created Successfully",result,200);
+    getChatAttachmentToken = catchAsyncHandler(async (req, res, next) => {
+        const { fileType } = req.body;
+        console.log(fileType);
+        const result = await ChatService.getChatAttachmentToken(req.params.id, fileType);
+        return ApiResponse.success(res, "Signature Created Successfully", result, 200);
     })
-    
+    updateChatReadStatus = catchAsyncHandler(async (req, res, next) => {
+        const chatId = req.params.id;
+        const userId = req.user.id; 
+
+        await ChatService.clearUnreadCount(chatId, userId);
+
+        return ApiResponse.success(res, "Chat read status updated successfully", null, 200);
+    });
+
 }
 module.exports = new ChatController();

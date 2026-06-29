@@ -4,34 +4,29 @@ import React, { useState } from 'react'
 import ChatSideBar from './ChatSideBar'
 import ChatWindow from './ChatWindow'
 
-interface ChatDetails {
-  userName: string;
-  imgUrl: string;
-  active?: boolean;
-}
-
 function ChatLayout() {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
-  const [selectedChatDetails, setSelectedChatDetails] = useState<ChatDetails | null>(null);
+  const [activeChatName, setActiveChatName] = useState<string>("المحادثة");
+  const [activeChatImg, setActiveChatImg] = useState<string>("/images/login.jpg");
 
-  // Updates both pieces of state simultaneously when a user clicks a room card row
-  const handleSelectChat = (id: string, details: ChatDetails) => {
+  // State coordination engine: catches selection payloads from Sidebar
+  const handleSelectChat = (id: string, name: string, img: string) => {
     setSelectedChatId(id);
-    setSelectedChatDetails(details);
+    setActiveChatName(name);
+    setActiveChatImg(img);
   };
 
   const handleBack = () => {
     setSelectedChatId(null);
-    setSelectedChatDetails(null);
   };
 
   return (
     <div className='flex h-screen w-full overflow-hidden bg-[#F8FAFC]' dir="rtl">
-      <div className={`md:block h-full`}>
+      <div className="hidden md:block h-full">
         <SideBar />
       </div>
       <div className='flex flex-1 overflow-hidden'>
-        {/* Sidebar Panel Navigation wrapper */}
+        {/* Navigation Room List Sidebar */}
         <div className={`w-full md:w-80 h-full flex-shrink-0 ${selectedChatId ? 'hidden md:block' : 'block'}`}>
           <ChatSideBar 
             onSelectChat={handleSelectChat} 
@@ -39,11 +34,12 @@ function ChatLayout() {
           />
         </div>
         
-        {/* Main Workspace Frame container */}
+        {/* Message Panel Workspace Window */}
         <div className={`w-full md:flex-1 h-full ${selectedChatId ? 'block' : 'hidden md:block'}`}>
           <ChatWindow 
             selectedChatId={selectedChatId} 
-            selectedChatDetails={selectedChatDetails} 
+            chatName={activeChatName} 
+            chatImg={activeChatImg} 
             onBack={handleBack} 
           />
         </div>

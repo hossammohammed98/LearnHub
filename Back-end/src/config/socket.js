@@ -1,5 +1,5 @@
 const {Server}=require('socket.io');
-const socketAuth=require('../middlewares/socketAuth.middleware.js');
+const { socketAuth } = require('../middlewares/socketAuth.middleware.js');
 const {createClient}=require('redis');
 const {createAdapter}=require('@socket.io/redis-adapter')
 const registerChatHandlers = require('../sockets/chat.socket.js');
@@ -41,7 +41,7 @@ exports.initSocket=async(server)=>{
         },
         pingTimeout:60000,
         pingInterval:25000,
-        transports:['websocket'],
+        transports:['polling','websocket'],
         adapter:createAdapter(pubClient,subClient)
     })
 

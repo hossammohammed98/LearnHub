@@ -43,6 +43,12 @@ class ChatRepository extends BaseRepository{
         chat.save();
         return chat;
     }
+    async updateUnreadStatus(chatId,userId){
+        const chat=await chatMember.findOneAndUpdate({ chatId: chatId, userId: userId },
+        { $set: { unreadCount: 0 } },
+        { new: true })
+        return true;
+    }
 
 }
 module.exports =new ChatRepository();
