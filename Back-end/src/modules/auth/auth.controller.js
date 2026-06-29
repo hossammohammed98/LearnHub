@@ -3,6 +3,7 @@ const ApiResponse=require('../../shared/core/ApiResponse');
 const authService=require('./auth.service');
 const ApiError = require('../../shared/core/ApiError');
 const crypto=require('crypto');
+const jwt = require('jsonwebtoken');
 //Register
 exports.register=catchAsyncHandler(async(req,res,next)=>{
     const result=await authService.register(req.body);
@@ -43,8 +44,15 @@ exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{
     if (!incomingRefreshToken) {
         return next(new ApiError(401, "Refresh token missing"));
     }
-    
-    const accessToken=await authService.refreshToken(req.user,incomingRefreshToken);
+
+    let decodedRefreshToken;
+    try {
+        decodedRefreshToken = jwt.verify(incomingRefreshToken, process.env.SECRET_REFRESH_KEY);
+    } catch (error) {
+        return next(new ApiError(401, "Refresh token expired or invalid"));
+    }
+
+    const accessToken=await authService.refreshToken(decodedRefreshToken,incomingRefreshToken);
     res.cookie('accessToken',accessToken,{
         httpOnly:true,
         sameSite:'strict',

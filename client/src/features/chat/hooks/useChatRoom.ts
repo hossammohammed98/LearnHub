@@ -4,7 +4,10 @@ import { io, Socket } from 'socket.io-client';
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Message } from "../types";
 import { chatService } from "../services/chatService";
+import { getSocketBaseUrl } from "@/services/runtimeConfig";
 
+type CustomWebSocketClient = Socket;
+type IncomingMessagePayload = Message & { clientRefId?: string };
 interface UseChatRoomResult {
     messages: Message[];
     isLoading: boolean;
@@ -22,20 +25,6 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
 
     // 🎯 FIXED: Strongly typed standard Socket client instead of 'any'
     const socketRef = useRef<Socket | null>(null);
-
-    const loadChatHistory = useCallback(async (targetRoomId: string) => {
-        setIsLoading(true);
-        setError(null);
-        try {
-            const data = await chatService.getRoomMessages(targetRoomId);
-            setMessages(data);
-            await chatService.updateRoomReadStatus(targetRoomId);
-        } catch (err: any) {
-            setError(err.message || 'تعذر تحميل تاريخ المحادثة.');
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
 
     const sendTextMessage = useCallback(async (text: string) => {
         console.log("🔍 sendTextMessage triggered. Socket status:", !!socketRef.current);
@@ -72,8 +61,8 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
                 fileUrl: uploadResult.secureUrl,
                 type: 'file'
             });
-        } catch (err: any) {
-            console.error("File upload operation failure context:", err.message);
+        } catch (err: unknown) {
+            console.error("File upload operation failure context:", err instanceof Error ? err.message : err);
         } finally {
             setTimeout(() => { setUploadProgress(0); }, 1000);
         }
@@ -81,13 +70,35 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
 
     useEffect(() => {
         if (!roomId) {
-            setMessages([]);
             return;
         }
 
         loadChatHistory(roomId);
 
         const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', {
+        
+        let isActive = true;
+        void (async () => {
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                const data = await chatService.getRoomMessages(roomId);
+                if (!isActive) return;
+
+                setMessages(data);
+                await chatService.updateRoomReadStatus(roomId);
+            } catch (err: unknown) {
+                if (!isActive) return;
+                setError(err instanceof Error ? err.message : 'تعذر تحميل تاريخ المحادثة.');
+            } finally {
+                if (isActive) {
+                    setIsLoading(false);
+                }
+            }
+        })();
+        
+        const socket = io(getSocketBaseUrl(), {
             autoConnect: true,
             reconnectionAttempts: 5,
             reconnectionDelay: 1000,
@@ -102,7 +113,7 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
         socket.on('message_received', (incomingPayload: any) => {
             setMessages((prev) => {
                 const exists = prev.some(
-                    (msg) => msg.id === incomingPayload.id || (incomingPayload.clientRefId && msg.id === incomingPayload.clientRefId)
+                    (msg) => msg.id === incomingMessage.id || (incomingMessage.clientRefId && msg.id === incomingMessage.clientRefId)
                 );
                 
                 // 🎯 FIXED: Use incomingPayload.myMessage directly from the backend, 
@@ -128,15 +139,16 @@ export function useChatRoom(roomId: string | null): UseChatRoomResult {
         });
 
         return () => {
+            isActive = false;
             socket.off('message_received');
             socket.emit('leave_room', { roomId });
             socket.disconnect();
             socketRef.current = null;
         };
-    }, [roomId, loadChatHistory]);
+    }, [roomId]);
 
     return {
-        messages,
+        messages: roomId ? messages : [],
         isLoading,
         error,
         uploadProgress,

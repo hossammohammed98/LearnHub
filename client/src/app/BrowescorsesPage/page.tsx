@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import BrowseSidebar from "@/features/BrowseCourses/components/BrowesSidebar";
 import BrowseHeader from "@/features/BrowseCourses/components/BrowseHeader";
 import BrowseFooter from "@/features/BrowseCourses/components/BrowseFooter";
