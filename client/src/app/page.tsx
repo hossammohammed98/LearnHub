@@ -98,7 +98,9 @@ export default function HomePage() {
         <MarketingPathCard></MarketingPathCard> */}
         {/* <BrowseCourse></BrowseCourse> */}
         {/* <UploadPage></UploadPage> */}
-          <AssistantsPage></AssistantsPage>
+          {/* <AssistantsPage></AssistantsPage> */}
+
+          <BrowseCourse></BrowseCourse>
       {/* <Calender> 
         <>
         <CalenderItem title={'حلقة بحث: الذكاء الاصطناعي'} day="اليوم" hour={'، 04:00 م'}></CalenderItem>
