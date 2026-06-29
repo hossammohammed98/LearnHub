@@ -111,7 +111,7 @@ export default function RegisterPage() {
         <p className="text-sm text-slate-400 mt-1">
           اختر نوع حسابك للبدء في المنصة
 
-        </p> */}
+        </p> 
 
       </div>
 
