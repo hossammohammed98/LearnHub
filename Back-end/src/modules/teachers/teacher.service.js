@@ -6,4 +6,4 @@ class TeacherService extends BaseService {
     super(TeacherRepository);
   }
 }
-module.exports = TeacherService;
+module.exports =new TeacherService();

@@ -8,6 +8,7 @@ const userSchema=new mongoose.Schema({
     Password:{type:String,required:[true,"The Password is Required"],select:false},
     Phone:{type:String,required:[true,"The Phone is Required"]},
     Avatar:{type:String},
+    activeStatus:{type:Boolean},
     Role:{type:String,enum:['Student','Parent',"Teacher",'Admin'],required:[true,"THe Role is Required"]},
     RefreshToken:{type:String,default:null,select:false},
     isVerified:{type:Boolean,default:false},
@@ -16,15 +17,11 @@ const userSchema=new mongoose.Schema({
     passwordResetToken:String,
     passwordResetTokenExpires:String,
 },{timestamps:true})
-userSchema.pre('save',async function (next){
+userSchema.pre('save',async function (){
     if(!this.isModified('Password'))
-        return next();
-    try{
-        this.Password=await hashPassword(this.Password);
-        next();
-    }
-    catch(error){
-        next(error);
-    }
+        return ;
+    
+    this.Password=await hashPassword(this.Password);
+  
 })
 module.exports=mongoose.model('User',userSchema);

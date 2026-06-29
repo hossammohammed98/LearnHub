@@ -6,4 +6,4 @@ class LessonController extends BaseController{
         super(LessonService);
     }
 }
-module.exports=LessonController;
+module.exports=new LessonController();

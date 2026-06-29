@@ -1,5 +1,5 @@
-const createAccessToken=require('../../shared/utils/createAccessToken')
-const createRefreshToken=require('../../shared/utils/createRefreshToken')
+const {createAccessToken}=require('../../shared/utils/createAccessToken')
+const {createRefreshToken}=require('../../shared/utils/createRefreshToken')
 const authRepository=require('../auth/auth.repository')
 const ApiError=require('../../shared/core/ApiError')
 const { comparePassword } = require('../../shared/utils/hashHelper')
@@ -18,6 +18,7 @@ exports.register=async(data)=>{
         throw new ApiError(400,"Password Not Match ConfirmPassword");
     delete data.ConfirmPassword;
     const newUser= await authRepository.createUser(data);
+    console.log(newUser);
     if(!newUser)
         throw new ApiError(400,"Can Not Create New User"); 
     const accessToken= createAccessToken({id:newUser._id,role:newUser.Role});
@@ -54,7 +55,6 @@ exports.refreshToken=async(payload,incomingRefreshToken)=>{
     if(!user||user.Role!==payload.role||user.RefreshToken!=incomingRefreshToken)
         throw new ApiError(401,"The Token Expired or Invalid");
     return createAccessToken({id:user._id,role:user.Role})
-
 }
 
 //logeOut 

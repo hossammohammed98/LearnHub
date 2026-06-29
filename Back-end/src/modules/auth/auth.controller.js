@@ -12,7 +12,13 @@ exports.register=catchAsyncHandler(async(req,res,next)=>{
         maxAge:7*24*60*60*1000,
         secure:process.env.NODE_ENV === 'production'
     })
-    return new ApiResponse.success(res,"The User Add Successfully",result.accessToken,200);
+    res.cookie('accessToken',result.accessToken,{
+        httpOnly:true,
+        sameSite:'strict',
+        maxAge:15*60*1000,
+        secure:process.env.NODE_ENV === 'production'
+    })
+    return  ApiResponse.success(res,"The User Add Successfully",result.user,200);
 })
 //Login
 exports.login=catchAsyncHandler(async(req,res,next)=>{
@@ -23,7 +29,13 @@ exports.login=catchAsyncHandler(async(req,res,next)=>{
         maxAge:7*24*60*60*1000,
         secure:process.env.NODE_ENV === 'production'
     })
-    return new ApiResponse.success(res,"The User Logging Successfully",result.accessToken,200);
+     res.cookie('accessToken',result.accessToken,{
+        httpOnly:true,
+        sameSite:'strict',
+        maxAge:15*60*1000,
+        secure:process.env.NODE_ENV === 'production'
+    })
+    return ApiResponse.success(res,"The User Logging Successfully",result.user,200);
 })
 //Refresh Token
 exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{
@@ -31,8 +43,15 @@ exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{
     if (!incomingRefreshToken) {
         return next(new ApiError(401, "Refresh token missing"));
     }
-    const accessToken=await authService.refreshToken(req.payload,incomingRefreshToken);
-    return new ApiResponse.success(res,"The Token Refreshed Successfully",accessToken,200);
+    
+    const accessToken=await authService.refreshToken(req.user,incomingRefreshToken);
+    res.cookie('accessToken',accessToken,{
+        httpOnly:true,
+        sameSite:'strict',
+        maxAge:15*60*1000,
+        secure:process.env.NODE_ENV === 'production'
+    })
+    return  ApiResponse.success(res,"The Token Refreshed Successfully",accessToken,200);
 })
 //logout
 exports.logout=catchAsyncHandler(async(req,res,next)=>{
@@ -42,21 +61,21 @@ exports.logout=catchAsyncHandler(async(req,res,next)=>{
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production'
     });
-    return new ApiResponse.success(res,"The user Log Out Successfully",null,200);
+    return  ApiResponse.success(res,"The user Log Out Successfully",null,200);
 })
 //verify Email
-exports.verifyEmail=catchAsyncHandler((req,res,next)=>{
+exports.verifyEmail=catchAsyncHandler(async(req,res,next)=>{
     const {token}=req.body;
     if(!token)
         return next(new ApiError(400,"The Verification Token Is Missing"));
     const result=await authService.verifyEmail(token);
-    return new ApiResponse.success(res,"The Email verification Successfully",result,200);
+    return  ApiResponse.success(res,"The Email verification Successfully",result,200);
 })
 //ask to reset password
 exports.forgetPassword=catchAsyncHandler(async(req,res,next)=>{
     const {Email}=req.body;
     await authService.forgetPassword(Email);
-    return new ApiResponse.success(res,'إذا كان البريد الإلكتروني مسجلاً لدينا، ستتلقى رابطاً لإعادة التعيين قريباً.',null,200);
+    return  ApiResponse.success(res,'إذا كان البريد الإلكتروني مسجلاً لدينا، ستتلقى رابطاً لإعادة التعيين قريباً.',null,200);
 })
 //the user reset password
 exports.resetPassword=catchAsyncHandler(async(req,res,next)=>{
@@ -64,5 +83,5 @@ exports.resetPassword=catchAsyncHandler(async(req,res,next)=>{
     if(!token||!newPassword)
         return next(new ApiError(400,"The ResetPassword Token or New Password Is Missing"));
     const result=await authService.resetPassword(token,newPassword);
-    return new ApiResponse.success(res,'تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.',null,200);
+    return  ApiResponse.success(res,'تم تغيير كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول.',null,200);
 })
