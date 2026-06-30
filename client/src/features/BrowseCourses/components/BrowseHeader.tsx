@@ -20,7 +20,7 @@ export default function BrowseHeader({ onMenuToggle }: BrowseHeaderProps) {
       <nav className="hidden md:flex items-center gap-7">
         <Link href="/register" className="text-sm font-medium text-gray-500 hover:text-[#006C49] transition-colors">تعلم</Link>
         <Link href="/register" className="text-sm font-medium text-gray-500 hover:text-[#006C49] transition-colors">الرئيسية</Link>
-        <Link href="/BrowserCourses" className="border-b-2 border-[#006C49] pb-1 text-sm font-semibold text-[#006C49]">تصفح المسارات</Link>
+        <Link href="/BrowescorsesPage" className="border-b-2 border-[#006C49] pb-1 text-sm font-semibold text-[#006C49]">تصفح المسارات</Link>
         <Link href="/teacher" className="text-sm font-medium text-gray-500 hover:text-[#006C49] transition-colors">المدربين</Link>
       </nav>
 

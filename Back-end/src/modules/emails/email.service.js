@@ -6,8 +6,12 @@ exports.sendVerificationEmail=async(user)=>{
     const rawToken=await crypto.randomBytes(32).toString('hex');
     const hashedToken=await crypto.createHash('sha256').update(rawToken).digest('hex');
     user.verificationToken=hashedToken;
-    user.verificationTokenDate=Date.now()+(24**60*60*1000);
+    user.verificationTokenExpires=Date.now()+(24*60*60*1000);
     await user.save();
+    if (process.env.NODE_ENV !== 'production' || !process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+        console.warn('Skipping verification email outside production or without email credentials.');
+        return null;
+    }
     const verificationUrl=`http://localhost:3000/auth/verify-email/token=${rawToken}`;
     return transporter.sendMail({
         from:`"منصة تعلّم الرقمية" <${process.env.EMAIL_USER}>`,
@@ -28,10 +32,14 @@ exports.sendResetPasswordEmail=async(user)=>{
     user.passwordResetToken=hashedToken;
     user.passwordResetTokenExpires=Date.now()+(10*60*1000);
     await user.save();
+    if (process.env.NODE_ENV !== 'production' || !process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+        console.warn('Skipping reset password email outside production or without email credentials.');
+        return null;
+    }
     const resetUrl=`http://localhost:3000/reset-password?token=${rawToken}`;
     return transporter.sendMail({
         from: `"منصة تعلّم الرقمية" <${process.env.EMAIL_USER}>`,
-        to: user.email,
+        to: user.Email,
         subject: 'طلب إعادة تعيين كلمة المرور 🔑',
         html: `
             <div style="font-family: Arial, sans-serif; direction: rtl; text-align: right; padding: 20px; color: #333;">

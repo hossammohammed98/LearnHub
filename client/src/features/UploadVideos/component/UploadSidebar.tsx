@@ -13,10 +13,10 @@ import Link from "next/link";
 
 const navItems = [
   { label: "لوحة التحكم", icon: LayoutGrid, active: false, href: "/teacher" },
-  { label: "فصولي", icon: GraduationCap, active: true, href: "/UploadVideosPage" },
+  { label: "فصولي", icon: GraduationCap, active: true, href: "/UploadVideos" },
   { label: "المناهج", icon: BookOpen, active: false, href: "/courses" },
   { label: "التقارير", icon: BarChart2, active: false, href: "/admin" },
-  { label: "المكتبة", icon: Library, active: false, href: "/BrowserCourses" },
+  { label: "المكتبة", icon: Library, active: false, href: "/BrowescorsesPage" },
 ];
 
 export default function UploadSidebar() {
@@ -25,7 +25,6 @@ export default function UploadSidebar() {
       dir="rtl"
       className="w-full border-b border-gray-200 bg-white lg:flex lg:h-full lg:w-64 lg:flex-col lg:justify-between lg:border-b-0 lg:border-l lg:px-4 lg:py-6"
     >
-      {/* Brand block + full nav: hidden on small/medium, shown from lg up */}
       <div className="hidden lg:block">
         <div className="mb-8 flex items-center gap-3 px-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-900">
@@ -39,9 +38,9 @@ export default function UploadSidebar() {
 
         <nav className="flex flex-col gap-1">
           {navItems.map(({ label, icon: Icon, active, href }) => (
-              <Link
+            <Link
               key={label}
-                href={href}
+              href={href}
               aria-current={active ? "page" : undefined}
               className={`flex items-center justify-between rounded-lg px-3 py-2.5 text-sm transition ${
                 active
@@ -53,15 +52,12 @@ export default function UploadSidebar() {
                 <Icon className="h-4 w-4" />
                 {label}
               </span>
-              {active && (
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
-              )}
+              {active && <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />}
             </Link>
           ))}
         </nav>
       </div>
 
-      {/* Compact horizontal nav: shown on small/medium, hidden from lg up */}
       <nav className="flex items-center gap-1 overflow-x-auto px-3 py-2 lg:hidden">
         {navItems.map(({ label, icon: Icon, active, href }) => (
           <Link
@@ -81,11 +77,11 @@ export default function UploadSidebar() {
         ))}
       </nav>
 
-      {/* Bottom actions: only on lg, where there's room for full-width
-          buttons. On small/medium the primary action lives in the page
-          header instead, so it isn't duplicated. */}
       <div className="hidden lg:flex lg:flex-col lg:gap-3">
-        <Link href="/courses" className="flex items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-800">
+        <Link
+          href="/courses"
+          className="flex items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-800"
+        >
           <Plus className="h-4 w-4" />
           إضافة حصة جديدة
         </Link>

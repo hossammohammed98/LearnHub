@@ -7,6 +7,16 @@ class LessonController extends BaseController {
     constructor() {
         super(LessonService);
     }
+    getById = catchAsyncHandler(async(req, res, next) => {
+        const data = await LessonService.getStudentSafeById(req.params.id, req.user);
+        return ApiResponse.success(res, "The Data Returned Successfully", data);
+    })
+
+    getPlayback = catchAsyncHandler(async (req, res, next) => {
+        const result = await LessonService.getPlaybackAccess(req.params.id, req.user);
+        return ApiResponse.success(res, "Playback URL returned successfully", result, 200);
+    })
+
     deleteLessonAsset = catchAsyncHandler(async (req, res, next) => {
 
         const { lessonId, assetType } = req.params;

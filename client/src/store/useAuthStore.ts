@@ -5,9 +5,10 @@ interface UserData {
   id: string;
   FName: string;
   LName: string;
-  Phone: number;
+  Phone: string;
   Role: string;
   Email?: string;
+  Avatar?: string;
 }
 
 interface AuthState {

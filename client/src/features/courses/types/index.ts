@@ -5,7 +5,12 @@ export interface Lesson {
   isCompleted: boolean;
   isLocked: boolean;
   videoUrl?: string;
+  playbackRequired?: boolean;
   description?: string;
+  attachments?: Array<{
+    fileName: string;
+    url: string;
+  }>;
 }
 
 export interface Unit {

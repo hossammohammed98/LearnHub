@@ -42,6 +42,7 @@ exports.login=async(data)=>{
         throw new ApiError(400,"The Email Or Password Is InValid");
     const accessToken=createAccessToken({id:user.id,role:user.Role})
     const refreshToken=createRefreshToken({id:user.id,role:user.Role});
+    await authRepository.updateRefreshToken(user._id,refreshToken);
      return {
         accessToken:accessToken,
         refreshToken:refreshToken,
@@ -81,7 +82,7 @@ exports.forgetPassword=async(email)=>{
     const user=await authRepository.findUserByEmailWithPassword(email);
     if(!user)
        return ;
-    await emailService.sendResetPasswordEmail(email);
+    await emailService.sendResetPasswordEmail(user);
     return;
 }
 

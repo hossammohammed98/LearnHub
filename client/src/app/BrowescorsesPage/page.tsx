@@ -1,98 +1,197 @@
-"use client"
-import BrowseSidebar from "@/features/BrowseCourses/components/BrowesSidebar";
-import BrowseHeader from "@/features/BrowseCourses/components/BrowseHeader";
-import BrowseFooter from "@/features/BrowseCourses/components/BrowseFooter";
-import Link from "next/link";
-import CategoryTabs from "@/features/BrowseCourses/components/CategoryTabs";
-import CreatePathCard from "@/features/BrowseCourses/components/CreatePathCard";
-import DataSciencePathCard from "@/features/BrowseCourses/components/DataSciencePathCard";
-import HowItWorks from "@/features/BrowseCourses/components/HowItWorks";
-import FeaturedPathCard from "@/features/BrowseCourses/components/FeaturedPathCard";
-import MarketingPathCard from "@/features/BrowseCourses/components/MarketingPathCard";
-import PathsHero from "@/features/BrowseCourses/components/PathsHero";
-import UXPathCard from "@/features/BrowseCourses/components/UXPathCard";
-import { useState } from "react";
+"use client";
 
+import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import PromoBanner from "@/features/BrowseCourses/component/PromoBanner";
+import { CourseCard } from "@/features/BrowseCourses/component/CourseCard";
+import SidebarFilter from "@/features/BrowseCourses/component/SideBarFilter";
+import StudentNavbar from "@/features/student/components/StudentNavbar";
+import SortTabs from "@/features/BrowseCourses/component/SortTabs";
+import {
+  ApiCourse,
+  getCoursePrice,
+  getCourses,
+} from "@/features/courses/services/courseService";
+import {
+  FilterValues,
+  SortOption,
+  filterBrowseCourses,
+  getCourseActionHref,
+  getCourseActionLabel,
+  getDefaultFilters,
+  sortBrowseCourses,
+  toBrowseCourse,
+} from "@/features/BrowseCourses/component/browseCourseUtils";
 
-export default function page() {
+const MIN_PRICE_SLIDER_MAX = 5000;
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+export default function BrowseCoursesPage() {
+  const searchParams = useSearchParams();
+  const searchQuery = (searchParams.get("search") || "").trim().toLowerCase();
+
+  const [courses, setCourses] = useState<ApiCourse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [sortBy, setSortBy] = useState<SortOption>("popular");
+
+  const maxPrice = useMemo(() => {
+    const highestCoursePrice = courses.reduce(
+      (max, course) => Math.max(max, getCoursePrice(course)),
+      0,
+    );
+    return Math.max(MIN_PRICE_SLIDER_MAX, highestCoursePrice);
+  }, [courses]);
+
+  const [draftFilters, setDraftFilters] = useState<FilterValues>(() =>
+    getDefaultFilters(MIN_PRICE_SLIDER_MAX),
+  );
+  const [appliedFilters, setAppliedFilters] = useState<FilterValues>(() =>
+    getDefaultFilters(MIN_PRICE_SLIDER_MAX),
+  );
+
+  useEffect(() => {
+    if (!isLoading) {
+      const nextDefaults = getDefaultFilters(maxPrice);
+      setDraftFilters(nextDefaults);
+      setAppliedFilters(nextDefaults);
+    }
+  }, [isLoading, maxPrice]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadCourses = async () => {
+      try {
+        const data = await getCourses();
+        if (isMounted) {
+          setCourses(data.filter((course) => course.Status !== "draft"));
+        }
+      } catch (err) {
+        if (isMounted) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : "تعذر تحميل الدورات. حاول مرة أخرى.",
+          );
+        }
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    loadCourses();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const browseCourses = useMemo(() => courses.map(toBrowseCourse), [courses]);
+
+  const visibleCourses = useMemo(() => {
+    let filtered = filterBrowseCourses(browseCourses, appliedFilters);
+
+    if (searchQuery) {
+      filtered = filtered.filter(
+        (course) =>
+          course.title.toLowerCase().includes(searchQuery) ||
+          course.instructor.name.toLowerCase().includes(searchQuery) ||
+          course.category.toLowerCase().includes(searchQuery),
+      );
+    }
+
+    return sortBrowseCourses(filtered, sortBy);
+  }, [browseCourses, appliedFilters, sortBy, searchQuery]);
+
+  const handleApplyFilters = () => {
+    setAppliedFilters(draftFilters);
+  };
 
   return (
-    <div dir="rtl" className="min-h-screen bg-gray-50 flex flex-col justify-between relative overflow-x-hidden">
-      
-      {/* Mobile Drawer */}
-      <div className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-        {/* Dark blur backdrop */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)} />
-        
-        {/* The Left Side Tab Panel */}
-        <div className={`absolute top-0 left-0 h-full w-72 bg-white shadow-2xl p-6 transition-transform duration-300 transform ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
-          <div className="flex flex-col h-full">
-            <div className="flex justify-between items-center border-b pb-4 mb-6">
-              <span className="font-bold text-gray-800">التنقل السريع</span>
-              {/* Close button inside the tab */}
-              <button onClick={() => setIsMenuOpen(false)} className="text-gray-500 hover:text-gray-800">
-                <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+    <div className="bg-[#FAFCFF] min-h-screen font-sans">
+      <StudentNavbar />
+
+      <div className="container mx-auto px-4 py-8" dir="rtl">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+          <div className="lg:col-span-1 order-1">
+            <SidebarFilter
+              filters={draftFilters}
+              maxPrice={maxPrice}
+              onChange={setDraftFilters}
+              onApply={handleApplyFilters}
+            />
+          </div>
+
+          <div className="lg:col-span-3 order-2 flex flex-col gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="text-right">
+                <span className="text-xs font-semibold text-gray-400 block mb-0.5">
+                  تصفح الدورات
+                </span>
+                <h1 className="text-sm text-gray-600 font-medium">
+                  {searchQuery ? (
+                    <>
+                      نتائج البحث عن &quot;{searchParams.get("search")}&quot;:{" "}
+                      <span className="font-bold text-gray-900">
+                        {visibleCourses.length}
+                      </span>{" "}
+                      {visibleCourses.length === 1 ? "دورة" : "دورات"}
+                    </>
+                  ) : (
+                    <>
+                      تم العثور على{" "}
+                      <span className="font-bold text-gray-900">
+                        {visibleCourses.length}
+                      </span>{" "}
+                      {visibleCourses.length === 1 ? "دورة متاحة" : "دورات متاحة"}
+                    </>
+                  )}
+                </h1>
+              </div>
+
+              <div className="flex justify-start sm:justify-end">
+                <SortTabs onChange={setSortBy} defaultValue={sortBy} />
+              </div>
             </div>
 
-            {/* Mobile Nav Links with brand colors */}
-            <nav className="flex flex-col gap-4 text-right mb-6 font-medium text-gray-600">
-              <Link href="/register" className="hover:text-[#006C49] py-2 border-b border-gray-50">الرئيسية</Link>
-              <Link href="/BrowserCourses" className="hover:text-[#006C49] py-2 border-b border-gray-50 text-[#006C49] font-bold">تصفح المسارات</Link>
-              <Link href="/teacher" className="hover:text-[#006C49] py-2 border-b border-gray-50">المدربين</Link>
-              <Link href="/register" className="hover:text-[#006C49] py-2">تعلم</Link>
-            </nav>
+            {isLoading && (
+              <div className="rounded-lg border border-gray-100 bg-white p-8 text-center text-gray-500">
+                جاري تحميل الدورات...
+              </div>
+            )}
 
-            <hr className="my-2" />
-            
-            <div className="flex-1 overflow-y-auto mt-4">
-              <BrowseSidebar />
+            {!isLoading && error && (
+              <div className="rounded-lg border border-red-100 bg-red-50 p-8 text-center text-red-600">
+                {error}
+              </div>
+            )}
+
+            {!isLoading && !error && visibleCourses.length === 0 && (
+              <div className="rounded-lg border border-gray-100 bg-white p-8 text-center text-gray-500">
+                لا توجد دورات مطابقة للفلاتر المحددة.
+              </div>
+            )}
+
+            {!isLoading && !error && visibleCourses.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-2">
+                {visibleCourses.map((course) => (
+                  <CourseCard
+                    key={course.id}
+                    course={course}
+                    actionLabel={getCourseActionLabel(course)}
+                    actionHref={getCourseActionHref(course)}
+                    detailsHref={`/courses?courseId=${course.id}`}
+                  />
+                ))}
+              </div>
+            )}
+
+            <div className="w-full mt-2">
+              <PromoBanner />
             </div>
           </div>
         </div>
       </div>
-
-      <div>
-        <BrowseHeader onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
-
-        {/* Main Content Layout */}
-        <div className="flex items-stretch">
-          
-          {/* Desktop Sidebar: Stretched to full height and sticky */}
-          <aside className="hidden md:block w-64 border-l border-gray-100 bg-white flex-shrink-0">
-            <div className="sticky top-20 h-[calc(100vh-80px)] overflow-y-auto">
-              <BrowseSidebar />
-            </div>
-          </aside>
-
-          {/* Main Area */}
-          <main className="flex-1 w-full max-w-7xl mx-auto">
-            <PathsHero />
-            <CategoryTabs />
-
-            <section className="grid grid-cols-1 gap-6 px-4 py-6 sm:px-6 md:px-8 md:py-10 md:grid-cols-3">
-              <div className="md:col-span-2">
-                <FeaturedPathCard />
-              </div>
-              <div className="md:col-span-1">
-                <UXPathCard />
-              </div>
-
-              <CreatePathCard />
-              <MarketingPathCard />
-              <DataSciencePathCard />
-            </section>
-
-            <HowItWorks />
-          </main>
-        </div>
-      </div>
-
-      <BrowseFooter />
     </div>
   );
 }

@@ -1,5 +1,4 @@
 
-import Page from '../../../../.next/dev/types/routes.d';
 export interface ApiResponse<T> {
    success: boolean; 
    message: string;
@@ -10,7 +9,7 @@ export interface UserProfile {
     id: string;
     FName: string;
     LName: string;
-    Phone: number;
+    Phone: string;
     Role: string;
 }
 
@@ -19,7 +18,7 @@ export interface UserRegister {
     LName: string;
     Email:string,
     SSN:string,
-    Phone: number;
+    Phone: string;
     Role: string;
     Password:string;
     ConfirmPassword:string;

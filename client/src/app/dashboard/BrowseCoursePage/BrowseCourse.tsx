@@ -42,7 +42,7 @@ export default function PathsPage() {
             {/* Mobile Nav Links with brand colors */}
             <nav className="flex flex-col gap-4 text-right mb-6 font-medium text-gray-600">
               <Link href="/register" className="hover:text-[#006C49] py-2 border-b border-gray-50">الرئيسية</Link>
-              <Link href="/BrowserCourses" className="hover:text-brand-success py-2 border-b border-gray-50 text-brand-success font-bold">تصفح المسارات</Link>
+              <Link href="/BrowescorsesPage" className="hover:text-brand-success py-2 border-b border-gray-50 text-brand-success font-bold">تصفح المسارات</Link>
               <Link href="/teacher" className="hover:text-brand-success py-2 border-b border-gray-50">المدربين</Link>
               <Link href="/register" className="hover:text-brand-success py-2">تعلم</Link>
             </nav>

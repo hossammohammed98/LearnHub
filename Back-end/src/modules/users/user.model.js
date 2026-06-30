@@ -9,13 +9,14 @@ const userSchema=new mongoose.Schema({
     Phone:{type:String,required:[true,"The Phone is Required"]},
     Avatar:{type:String},
     activeStatus:{type:Boolean},
-    Role:{type:String,enum:['Student','Parent',"Teacher",'Admin'],required:[true,"THe Role is Required"]},
+    Role:{type:String,enum:['Student','Parent',"Teacher",'Assistant','Admin'],required:[true,"THe Role is Required"]},
     RefreshToken:{type:String,default:null,select:false},
     isVerified:{type:Boolean,default:false},
     verificationToken:String,
     verificationTokenExpires:Date,
     passwordResetToken:String,
     passwordResetTokenExpires:String,
+    enrolledCourses:[{type:mongoose.Schema.Types.ObjectId,ref:'Course'}],
 },{timestamps:true})
 userSchema.pre('save',async function (){
     if(!this.isModified('Password'))

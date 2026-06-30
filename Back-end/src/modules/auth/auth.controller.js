@@ -63,7 +63,7 @@ exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{
 })
 //logout
 exports.logout=catchAsyncHandler(async(req,res,next)=>{
-    const result=await authService.logOut(req.payload);
+    await authService.logOut(req.user);
     res.clearCookie('refreshToken', {
         httpOnly: true,
         sameSite: 'strict',

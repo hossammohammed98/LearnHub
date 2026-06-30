@@ -1,40 +1,64 @@
+"use client";
+
 import FormField from "./FormField";
 
-export default function ProfileForm() {
+export interface ProfileFormValues {
+  FName: string;
+  LName: string;
+  Email: string;
+  Phone: string;
+}
+
+interface ProfileFormProps {
+  values: ProfileFormValues;
+  onChange: (field: keyof ProfileFormValues, value: string) => void;
+  disabled?: boolean;
+}
+
+export default function ProfileForm({
+  values,
+  onChange,
+  disabled = false,
+}: ProfileFormProps) {
   return (
-    <form className="grid grid-cols-1 gap-6 md:grid-cols-2">
-      <FormField label="الاسم الكامل">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      <FormField label="الاسم الأول">
         <input
-          className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary"
-          defaultValue="أحمد علي"
+          className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary disabled:opacity-60"
+          value={values.FName}
+          onChange={(event) => onChange("FName", event.target.value)}
+          disabled={disabled}
+        />
+      </FormField>
+
+      <FormField label="الاسم الأخير">
+        <input
+          className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary disabled:opacity-60"
+          value={values.LName}
+          onChange={(event) => onChange("LName", event.target.value)}
+          disabled={disabled}
         />
       </FormField>
 
       <FormField label="البريد الإلكتروني">
         <input
           type="email"
-          className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary"
-          defaultValue="ahmed.ali@example.com"
+          className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary disabled:opacity-60"
+          value={values.Email}
+          onChange={(event) => onChange("Email", event.target.value)}
+          disabled={disabled}
         />
       </FormField>
 
       <FormField label="رقم الهاتف">
         <input
           dir="ltr"
-          className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary"
-          defaultValue="+20 123 456 7890"
+          className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary disabled:opacity-60"
+          value={values.Phone}
+          onChange={(event) => onChange("Phone", event.target.value)}
+          disabled={disabled}
         />
       </FormField>
-
-      <FormField label="المستوى الدراسي">
-        <select className="w-full rounded-xl border bg-muted px-4 py-3 outline-none focus:border-primary">
-          <option>الصف الأول الثانوي</option>
-          <option >
-            الصف الثاني الثانوي
-          </option>
-          <option>الصف الثالث الثانوي</option>
-        </select>
-      </FormField>
-    </form>
+    </div>
   );
 }

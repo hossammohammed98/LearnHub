@@ -60,7 +60,7 @@ export default function FeaturesSection() {
               لا نكتفي بالمنهج الدراسي، بل نعد الطلاب لمهارات سوق العمل المستقبلية عبر دورات احترافية متكاملة.
             </p>
           </div>
-          <Link href="/BrowserCourses" className="text-[#007f5f] text-xs font-bold hover:underline inline-flex items-center gap-1 mt-4">
+          <Link href="/BrowescorsesPage" className="text-[#007f5f] text-xs font-bold hover:underline inline-flex items-center gap-1 mt-4">
             <span>اكتشف المزيد</span>
             <span className="text-sm">←</span>
           </Link>

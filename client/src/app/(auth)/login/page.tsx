@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { authService } from "@/features/auth/services/authService";
 import { GraduationCap } from "lucide-react"; // Kept in case you want to use it in the logo box
 import { useAuthStore } from "@/store/useAuthStore";
+import { normalizeAuthUser } from "@/features/auth/utils/normalizeAuthUser";
 
 export default function LoginPage() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -50,7 +51,7 @@ export default function LoginPage() {
         Password: data.password,
       });
       if (response.success) {
-        setUser(response.data);
+        setUser(normalizeAuthUser(response.data));
         const destination = response.data.Role === "Admin"
           ? "/admin"
           : response.data.Role === "Teacher"

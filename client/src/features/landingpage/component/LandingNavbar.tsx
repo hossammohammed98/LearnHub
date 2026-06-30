@@ -1,4 +1,5 @@
 "use client";
+import LogoutButton from "@/components/common/LogoutButton";
 import NotificationBell from "@/components/ui/NotificationBell";
 import { useState } from "react";
 import Link from "next/link";
@@ -108,6 +109,8 @@ export default function LandingNavbar() {
                 </svg>
               </Link>
             )}
+
+            {user && <LogoutButton />}
 
             <button
               onClick={() => setIsOpen(true)}
@@ -220,11 +223,15 @@ export default function LandingNavbar() {
           </nav>
         </div>
 
-        {!user && (
+        {!user ? (
           <div className="sm:hidden space-y-3 pt-6 border-t border-slate-100">
             <Link href="/login" className="block w-full bg-slate-950 text-white font-bold text-xs py-3 rounded-xl transition-all text-center">
               دخول
             </Link>
+          </div>
+        ) : (
+          <div className="sm:hidden space-y-3 pt-6 border-t border-slate-100">
+            <LogoutButton />
           </div>
         )}
       </div>

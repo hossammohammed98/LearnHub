@@ -7,6 +7,8 @@ const lessonController = require('./lesson.controller');
 const { addLessonSchema, validateId, updateLessonSchema } = require('./lesson.validator');
 router.use(protect);
 
+router.get('/:id/playback', validate(validateId,"params"), lessonController.getPlayback);
+
 router.route('/')
 .get(lessonController.getAll)
 .post(restrictTo('Teacher','Assistant'),validate(addLessonSchema), lessonController.create);

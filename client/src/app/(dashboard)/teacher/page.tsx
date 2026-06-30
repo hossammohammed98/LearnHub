@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import Button from "@/components/ui/ButtonInit";
 import MetricCard from "@/components/ui/MetricCard";
 import ActivityChart from "@/features/teacher/ActivityChart";
@@ -83,6 +84,7 @@ function getMetricIcon(metricKey: string) {
 }
 
 function TeacherDashboard() {
+  const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const [dashboard, setDashboard] = useState<TeacherDashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -100,6 +102,7 @@ function TeacherDashboard() {
         if (isMounted) {
           setDashboard(response.data.data);
         }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (requestError: any) {
         if (isMounted) {
           setError(requestError?.message || 'تعذر تحميل لوحة المعلم.');
@@ -143,7 +146,7 @@ function TeacherDashboard() {
               </p>
             </div>
 
-            <Button size="md" disabled={isLoading}>
+            <Button size="md" disabled={isLoading} onClick={() => router.push("/UploadVideos")}>
               {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
               إنشاء دورة جديدة
             </Button>
@@ -186,6 +189,7 @@ function TeacherDashboard() {
                     {recentCourses.length ? recentCourses.map((course) => (
                       <RecentCourseCard
                         key={course.id}
+                        id={course.id}
                         name={course.name}
                         studentNum={course.studentNum}
                         rating={course.rating}

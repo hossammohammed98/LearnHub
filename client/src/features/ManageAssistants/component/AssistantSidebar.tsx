@@ -15,7 +15,7 @@ import {
 const navItems = [
   { label: "لوحة التحكم", icon: LayoutGrid, href: "/teacher" },
   { label: "دوراتي", icon: BookOpen, href: "/courses" },
-  { label: "دروس مباشرة", icon: PlayCircle, href: "/BrowserCourses" },
+  { label: "دروس مباشرة", icon: PlayCircle, href: "/BrowescorsesPage" },
   { label: "الرسائل", icon: MessageSquare, href: "/chat" },
   { label: "إدارة المساعدين", icon: GraduationCap, href: "/AssistantsPage" },
   { label: "الإعدادات", icon: Settings, href: "/settings" },

@@ -1,17 +1,28 @@
-const z = require('zod');
+const { z } = require('zod');
 
-const createLesson = z.object({
-    ChapterId:z.string({required_error:"The ChapterId is required"}),
-    Title:z.string({required_error:"عنوان الدرس مطلوب"}).min(2, "العنوان لا يقل عن حرفين"),
-    Content:z.string({required_error:"محتوى الدرس مطلوب"}).min(2, "المحتوى لا يقل عن حرفين")
+const mediaSchema = z.object({
+  url: z.string().url().optional(),
+  public_id: z.string().optional(),
+  resourceType: z.string().optional(),
+  fileName: z.string().optional(),
 });
 
-const updateLesson = z.object({
-    ChapterId:z.string(),
-    Title:z.string().min(2, "العنوان لا يقل عن حرفين"),
-    Content:z.string().min(2, "المحتوى لا يقل عن حرفين")
+exports.addLessonSchema = z.object({
+  ChapterId: z.string({ required_error: 'The ChapterId is required' }),
+  Title: z.string({ required_error: 'Lesson title is required' }).min(2),
+  Content: z.string().optional(),
+  Video: mediaSchema.optional(),
+  Attachments: z.array(mediaSchema).optional(),
+});
+
+exports.updateLessonSchema = z.object({
+  ChapterId: z.string().optional(),
+  Title: z.string().min(2).optional(),
+  Content: z.string().min(2).optional(),
+  Video: mediaSchema.optional(),
+  Attachments: z.array(mediaSchema).optional(),
 });
 
 exports.validateId = z.object({
-    id: z.string().regex(/^[0-9a-fA-F]{24}$/, "معرف المستخدم خطأ")
+  id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Not Valid Id'),
 });

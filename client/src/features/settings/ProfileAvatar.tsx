@@ -1,23 +1,25 @@
-import Image from "next/image";
-import { Camera } from "lucide-react";
+"use client";
 
-export default function ProfileAvatar() {
+import Image from "next/image";
+
+interface ProfileAvatarProps {
+  avatarUrl?: string;
+  userName?: string;
+}
+
+export default function ProfileAvatar({
+  avatarUrl = "/images/user.png",
+  userName = "المستخدم",
+}: ProfileAvatarProps) {
   return (
-    <div className="relative group">
+    <div className="relative group shrink-0">
       <Image
-        src="/images/student.jpg"
-        alt="User Avatar"
+        src={avatarUrl}
+        alt={userName}
         width={128}
         height={128}
         className="rounded-3xl border-4 object-cover"
       />
-
-      <button
-        className="relative bottom-9 right-2 rounded-xl bg-primary p-2 text-white shadow-lg transition-transform hover:scale-110"
-        aria-label="تغيير الصورة"
-      >
-        <Camera size={18} />
-      </button>
     </div>
   );
 }

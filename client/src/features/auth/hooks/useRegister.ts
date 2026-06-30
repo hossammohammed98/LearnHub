@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/useAuthStore";
 import type { UserRegister } from "../types";
 import { authService } from "../services/authService";
+import { normalizeAuthUser } from "../utils/normalizeAuthUser";
 
 export const useRegister = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ export const useRegister = () => {
 
     try {
       const response = await authService.registerUser(userData);
-      setUser(response.data);
+      setUser(normalizeAuthUser(response.data));
 
       if (response.data.Role === "Student") router.push("/student");
       else if (response.data.Role === "Teacher") router.push("/teacher");

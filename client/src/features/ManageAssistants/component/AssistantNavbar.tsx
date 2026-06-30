@@ -1,4 +1,5 @@
 "use client";
+import LogoutButton from "@/components/common/LogoutButton";
 import Link from "next/link";
 import NotificationBell from "@/components/ui/NotificationBell";
 import Avatar from "@/components/common/Avatar";
@@ -54,6 +55,8 @@ export default function AssistantsNavbar() {
           <RefreshCw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           تبديل الدور
         </Link>
+
+        <LogoutButton />
       </div>
     </header>
   );

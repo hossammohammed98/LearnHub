@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { initiatePayment, webhook } = require('./payment.controller');
-const { authMiddleware } = require('../../middlewares/auth.middleware');
-const { roleMiddleware } = require('../../middlewares/role.middleware');
+const { protect } = require('../../middlewares/protect');
+const { restrictTo } = require('../../middlewares/restrictTo');
 
 // Student initiates payment for a course
 router.post(
   '/initiate/:courseId',
-  authMiddleware,
-  roleMiddleware('student'),
+  protect,
+  restrictTo('Student'),
   initiatePayment
 );
 

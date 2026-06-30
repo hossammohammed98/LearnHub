@@ -27,7 +27,7 @@ const sideBarItems: SidebarItem[] = [
   {
     icon: GraduationCap,
     name: "المسارات",
-    href: "/BrowserCourses",
+    href: "/BrowescorsesPage",
   },
   {
     icon: MessageSquare,

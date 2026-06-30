@@ -1,4 +1,4 @@
-import { apiClient } from "@/services/apiClient"; // Check this import relative directory location path matches your structure
+import { apiClient } from "@/services/apiClient";
 
 export interface DashboardStats {
   totalCourses: number;
@@ -17,6 +17,7 @@ export interface CurrentCourseDetails {
   progress: number;
   level: string;
   status: string;
+  coverImage?: string;
 }
 
 export interface UpcomingSession {
@@ -26,21 +27,28 @@ export interface UpcomingSession {
   hour: string;
 }
 
+export interface StudentProfile {
+  avatar: string | null;
+  firstName: string;
+  lastName: string;
+  roleLabel: string;
+}
+
 export interface DashboardSummaryData {
+  profile: StudentProfile;
   stats: DashboardStats;
   currentCourse: CurrentCourseDetails | null;
   upcomingSessions: UpcomingSession[];
 }
 
 interface BackendApiResponse<T> {
-  status: string;
+  success: boolean;
   message: string;
   data: T;
 }
 
 class UserService {
   async getStudentDashboardSummary(): Promise<DashboardSummaryData> {
-    // Appends to baseURL resulting in a call to /api/v1/courses/dashboard-summary
     const response = await apiClient.get<BackendApiResponse<DashboardSummaryData>>(
       "/courses/dashboard-summary"
     );

@@ -61,7 +61,7 @@ export default function RegisterPage() {
         LName: data.lastName,
         Email: data.email,
         SSN: data.ssn,
-        Phone: Number(data.phone),
+        Phone: data.phone,
         Role: data.role,
         Password: data.password,
         ConfirmPassword: data.confirmPassword,
@@ -198,7 +198,7 @@ export default function RegisterPage() {
           label="تأكيد كلمة المرور"
           type="password"
           placeholder="********"
-          error={errors.password?.message}
+          error={errors.confirmPassword?.message}
           {...register("confirmPassword")}
         />
 

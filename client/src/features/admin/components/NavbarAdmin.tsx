@@ -1,6 +1,7 @@
 
 import Link from 'next/link';
 import React from 'react';
+import LogoutButton from '@/components/common/LogoutButton';
 import { FiSearch, FiBell, FiSettings, FiHelpCircle } from 'react-icons/fi';
 
 interface NavbarProps {
@@ -73,6 +74,8 @@ export default function NavbarAdmin({
             {/* Red Alert Dot */}
             <span className="absolute top-2 left-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white" />
           </button>
+
+          <LogoutButton />
           
         </div>
 

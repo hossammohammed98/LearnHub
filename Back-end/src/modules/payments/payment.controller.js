@@ -1,13 +1,13 @@
 const paymentService = require('./payment.service');
-const { ApiResponse } = require('../../core/ApiResponse');
-const { ApiError } = require('../../core/ApiError');
+const ApiResponse = require('../../shared/core/ApiResponse');
 
 const initiatePayment = async (req, res, next) => {
   try {
-    const { course } = req;        // attach via middleware or fetch in service
-    const student = req.user;      // from auth.middleware
-    const result = await paymentService.createIntention({ course, student });
-    return ApiResponse.success(res, result);
+    const result = await paymentService.createIntention({
+      courseId: req.params.courseId,
+      studentId: req.user.id,
+    });
+    return ApiResponse.success(res, 'Payment intention created successfully', result);
   } catch (err) {
     next(err);
   }

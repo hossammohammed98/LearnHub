@@ -1,5 +1,4 @@
-
-import Navbar from "@/components/common/Navbar";
+import StudentNavbar from "@/features/student/components/StudentNavbar";
 import NotificationSettings from "@/features/settings/NotificationSettings";
 import ProfileSection from "@/features/settings/ProfileSection";
 import SecuritySettings from "@/features/settings/SecuritySettings";
@@ -7,10 +6,10 @@ import SettingsSidebar from "@/features/settings/SettingsSidebar";
 
 export default function SettingsPage() {
   return (
-    <main className="">
-        <Navbar></Navbar>
+    <main className="min-h-screen bg-gray-50">
+      <StudentNavbar />
+
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-12 mt-4">
-        
         <aside className="space-y-6 xl:col-span-3 self-start mr-6">
           <SettingsSidebar activeSection="profile" />
         </aside>

@@ -53,6 +53,15 @@ exports.updateUserSchema = z.object({
     ).optional(),
 });
 
+exports.changePasswordSchema = z.object({
+    currentPassword: z.string({
+        required_error: "كلمة المرور الحالية مطلوبة",
+    }).min(1, "كلمة المرور الحالية مطلوبة"),
+    newPassword: z.string({
+        required_error: "كلمة المرور الجديدة مطلوبة",
+    }).min(6, "كلمة المرور الجديدة لا تقل عن 6 أحرف"),
+});
+
 exports.validateId = z.object({
     id: z.string().regex(/^[0-9a-fA-F]{24}$/, "معرف المستخدم خطأ")
 });

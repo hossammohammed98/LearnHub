@@ -43,7 +43,10 @@ apiClient.interceptors.response.use(
             catch (refreshError) {
                 console.error('Session Completely Expired, Redirecting Connection To auth gateway');
                 if (typeof window !== 'undefined') {
-                    window.location.href = '/login?session_expired=true';
+                    localStorage.removeItem('auth-storage');
+                    if (window.location.pathname !== '/login') {
+                        window.location.replace('/login?session_expired=true');
+                    }
                 }
                 return Promise.reject(refreshError);
             }
@@ -51,14 +54,13 @@ apiClient.interceptors.response.use(
         
         // 2. FIXED: Every other error (including 500s) skips the refresh loop and goes straight here
         const responseData = error.response?.data as { message?: string; code?: string } | undefined;
-        const specializeError = {
-            // Extracts the message safely from your backend ApiResponse payload structure
-            message: responseData?.message || 'حدث خطأ غير متوقع في الاتصال.',
+        const message = responseData?.message || 'حدث خطأ غير متوقع في الاتصال.';
+        const specializedError = Object.assign(new Error(message), {
             status: status || 500,
             code: responseData?.code || 'INTERNAL_SERVER_ERROR'
-        };
+        });
 
-        return Promise.reject(customError);
+        return Promise.reject(specializedError);
     }
 );
 
