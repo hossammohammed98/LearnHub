@@ -1,5 +1,6 @@
 "use client";
 import SideBar from '@/components/common/SideBar';
+import { useAuthStore } from '@/store/useAuthStore';
 import
  {
   GraduationCap,
@@ -25,7 +26,7 @@ const sideBarItem: SideBarProps[] = [
   {
     icon: GraduationCap,
     name: "الدورات",
-    href: "/courses",
+    href: "/teacher",
   },
   {
     icon: MessageSquare,
@@ -49,8 +50,15 @@ const sideBarItem: SideBarProps[] = [
   },
 ];
 function TeacherSideBar() {
+  const user = useAuthStore((state) => state.user);
+
   return (
-    <SideBar sideBarItems = {sideBarItem}></SideBar>
+    <SideBar
+      sideBarItems={sideBarItem}
+      userName={user ? `${user.FName} ${user.LName}`.trim() : "معلم"}
+      userRole="معلم"
+      avatarUrl={user?.Avatar || "/images/user.png"}
+    />
   )
 }
 

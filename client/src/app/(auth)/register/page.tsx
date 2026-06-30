@@ -11,6 +11,7 @@ import { authService } from "@/features/auth/services/authService";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RoleSelector } from "@/features/auth/components/RoleSelector";
+import { normalizeAuthUser } from "@/features/auth/utils/normalizeAuthUser";
 
 import Link from "next/link";
 
@@ -50,12 +51,11 @@ export default function RegisterPage() {
     defaultValues: { role: "Student" }
   });
 
+  const setUser = useAuthStore((state) => state.setUser);
+
   const onSubmit = async (data: RegisterFormValues) => {
-    console.log(data);
-    console.log(serverError);
     setServerError(null);
     try {
-      // Clean mapping logic isolated here
       const response = await authService.registerUser({
         FName: data.firstName,
         LName: data.lastName,
@@ -68,16 +68,16 @@ export default function RegisterPage() {
       });
 
       if (response.success) {
-        console.log(response.data);
+        setUser(normalizeAuthUser(response.data));
+        setAccessToken(response.accessToken ?? null);
         if (data.role === 'Student')
-          router.push('/student')
+          router.push('/student');
         else if (data.role === 'Teacher')
-          router.push('/teacher')
+          router.push('/teacher');
         else
-          router.push('/parent')
+          router.push('/parent');
       }
     } catch (err: unknown) {
-      console.log(err);
       setServerError(err instanceof Error ? err.message : "حدث خطأ ما");
     }
   };
@@ -147,6 +147,7 @@ export default function RegisterPage() {
           setValue={setValue}
           watch={watch}
           error={errors.role?.message} />
+        <input type="hidden" value={watch('role')} {...register('role')} />
 
         <div className="grid grid-cols-2 gap-3">
           <Input

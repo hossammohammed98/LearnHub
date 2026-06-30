@@ -28,18 +28,18 @@ function SideBar({
 
   return (
     <aside>
-      <div className="bg-white w-15 sm:w-64 h-screen pr-[1vw] flex flex-col gap-2">
-        <div className="flex items-center gap-2 mt-[3vh] sm:mb-3 pr-2 sm:pr-4">
-          <div className="rounded-full w-9 h-9 sm:w-11 sm:h-11 bg-[#D8E3FB] overflow-hidden shrink-0">
+      <div className="flex h-screen w-20 flex-col gap-2 border-l border-gray-100 bg-white px-2 py-4 sm:w-72 sm:px-3">
+        <div className="mt-2 flex items-center gap-3 rounded-2xl bg-[#F6F7F9] p-2 sm:mb-3 sm:px-3 sm:py-3">
+          <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full bg-[#D8E3FB] sm:h-11 sm:w-11">
             {avatarUrl.startsWith("http") ? (
               <img
                 src={avatarUrl}
                 alt="صورة المستخدم"
-                className="rounded-full w-9 h-9 sm:w-11 sm:h-11 object-cover"
+                className="h-9 w-9 rounded-full object-cover sm:h-11 sm:w-11"
               />
             ) : (
               <Image
-                className="rounded-full w-9 h-9 sm:w-11 sm:h-11 object-cover"
+                className="h-9 w-9 rounded-full object-cover sm:h-11 sm:w-11"
                 width={48}
                 height={48}
                 src={avatarUrl}
@@ -48,29 +48,35 @@ function SideBar({
             )}
           </div>
 
-          <div className="hidden sm:block min-w-0">
-            <p className="text-[13px] text-primary truncate">{userName}</p>
-            <p className="text-[9px] text-[#45474C]">{userRole}</p>
+          <div className="hidden min-w-0 sm:block">
+            <p className="truncate text-[13px] font-semibold text-slate-900">{userName}</p>
+            <p className="text-[10px] text-slate-600">{userRole}</p>
           </div>
         </div>
 
-        <ul className="flex flex-col pl-4 text-[#45474C]">
+        <ul className="flex flex-col gap-1 text-slate-600">
           {sideBarItems.map((item) => {
             const Icon = item.icon;
             const isActive =
               pathName === item.href || pathName.startsWith(`${item.href}/`);
 
             return (
-              <Link key={item.name} href={item.href}>
+              <Link key={item.name} href={item.href} className="block">
                 <li
-                  className={`flex flex-row items-center gap-2 px-4 sm:w-64 h-11 ${
+                  className={`flex h-12 items-center gap-3 rounded-2xl px-3 transition-all sm:px-4 ${
                     isActive
-                      ? "text-emerald-500 rounded-xl sm:border-2 sm:bg-[#6CF8BB] sm:text-[#00714D]"
-                      : "hover:bg-[#f5f5f5]"
+                      ? "bg-[#E6F7EF] text-[#00714D] shadow-sm"
+                      : "text-slate-600 hover:bg-[#F6F7F9] hover:text-[#006644]"
                   }`}
                 >
-                  <Icon className="shrink-0" />
-                  <p className="hidden sm:flex text-[14px]">{item.name}</p>
+                  <div
+                    className={`flex h-9 w-9 items-center justify-center rounded-xl ${
+                      isActive ? "bg-[#006644] text-white" : "bg-[#F6F7F9] text-slate-600"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 shrink-0" />
+                  </div>
+                  <p className="hidden text-[14px] font-semibold sm:flex">{item.name}</p>
                 </li>
               </Link>
             );

@@ -6,6 +6,9 @@ import ConversationList from './ConversationList';
 import ConversationItem from './ConversationItem';
 import { chatService } from '../services/chatService';
 import { Conversation } from '../types';
+import { io } from 'socket.io-client';
+import { getSocketBaseUrl } from '@/services/runtimeConfig';
+import { useAuthStore } from '@/store/useAuthStore';
 
 interface ChatSideBarProps {
   onSelectChat: (id: string, name: string, img: string) => void;
@@ -17,6 +20,7 @@ function ChatSideBar({ onSelectChat, selectedChatId }: ChatSideBarProps) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -25,15 +29,64 @@ function ChatSideBar({ onSelectChat, selectedChatId }: ChatSideBarProps) {
         setError(null);
         const data = await chatService.getRooms();
         setRooms(data || []);
-      } catch (err: any) {
-        setError(err.message || 'حدث خطأ أثناء تحميل المحادثات.');
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'حدث خطأ أثناء تحميل المحادثات.';
+        setError(message);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchRooms();
-  }, []);
+    void fetchRooms();
+
+    if (!accessToken) return;
+
+    const socket = io(getSocketBaseUrl(), {
+      autoConnect: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      withCredentials: true,
+      transports: ['polling', 'websocket'],
+      auth: accessToken ? { token: `Bearer ${accessToken}` } : undefined,
+      extraHeaders: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+    });
+
+    const handleIncomingMessage = (payload: Record<string, unknown>) => {
+      const roomId = (payload.chatId ?? payload.roomId)?.toString();
+      if (!roomId) return;
+
+      const normalizedText = (payload.messageText ?? payload.content ?? '').toString().trim();
+      const attachmentFileUrl = payload.fileUrl ?? (payload.attachment as { fileUrl?: string } | undefined)?.fileUrl;
+      const isAttachment = payload.type === 'file' || payload.messageType === 'file' || Boolean(attachmentFileUrl);
+      const fileName = (payload.attachment as { fileName?: string } | undefined)?.fileName || payload.fileName?.toString();
+      const previewText = isAttachment
+        ? (normalizedText || (fileName ? `📎 ملف مرفق: ${fileName}` : '📎 ملف مرفق'))
+        : normalizedText || 'رسالة جديدة';
+      const previewTime = payload.time || new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+      setRooms((prevRooms) => {
+        const roomIndex = prevRooms.findIndex((room) => room.id === roomId);
+        if (roomIndex === -1) return prevRooms;
+
+        const updatedRoom = {
+          ...prevRooms[roomIndex],
+          lastMessage: previewText,
+          time: previewTime,
+        };
+
+        const nextRooms = [...prevRooms];
+        nextRooms.splice(roomIndex, 1);
+        return [updatedRoom, ...nextRooms];
+      });
+    };
+
+    socket.on('message_received', handleIncomingMessage);
+
+    return () => {
+      socket.off('message_received', handleIncomingMessage);
+      socket.disconnect();
+    };
+  }, [accessToken]);
 
   const filteredRooms = rooms.filter((room) =>
     room.userName?.toLowerCase().includes(searchQuery.toLowerCase())

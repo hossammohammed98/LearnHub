@@ -9,13 +9,23 @@ type Stat = {
   direction: "up" | "flat";
 };
 
-const stats: Stat[] = [
-  { label: "طلاب متابعون", value: "142", trend: "+8%", direction: "up" },
-  { label: "اختبارات منشأة", value: "12", trend: "مستقر", direction: "flat" },
-  { label: "فيديوهات مرفوعة", value: "24", trend: "+12%", direction: "up" },
-];
+type TeamActivitySummaryProps = {
+  assistantCount: number;
+  activeCount: number;
+  permissionCount: number;
+};
 
-export default function TeamActivitySummary() {
+export default function TeamActivitySummary({
+  assistantCount,
+  activeCount,
+  permissionCount,
+}: TeamActivitySummaryProps) {
+  const stats: Stat[] = [
+    { label: "إجمالي المساعدين", value: String(assistantCount), trend: "من قاعدة البيانات", direction: "up" },
+    { label: "حسابات نشطة", value: String(activeCount), trend: activeCount ? "نشط" : "لا يوجد", direction: activeCount ? "up" : "flat" },
+    { label: "صلاحيات مفعلة", value: String(permissionCount), trend: permissionCount ? "محدث" : "مستقر", direction: permissionCount ? "up" : "flat" },
+  ];
+
   return (
     <div dir="rtl" className="rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
       <div className="mb-4 flex items-center justify-between">

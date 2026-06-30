@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, CreditCard, ShieldCheck, Wallet } from "lucide-react";
 import Navbar from "@/components/common/Navbar";
+import RoleGuard from "@/components/common/RoleGuard";
 import {
   ApiCourse,
   getCoursePrice,
@@ -78,7 +79,8 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f6fa]" dir="rtl">
+    <RoleGuard allowedRoles={["Student"]}>
+      <div className="min-h-screen bg-[#f5f6fa]" dir="rtl">
       <Navbar />
 
       <main className="mx-auto grid max-w-5xl grid-cols-1 gap-6 px-4 py-8 lg:grid-cols-[1fr_340px]">
@@ -118,7 +120,30 @@ export default function CheckoutPage() {
           </div>
 
           <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 p-5 text-sm text-gray-600">
-            Payment details are completed on the secure payment provider page after you confirm.
+            {paymentMethod === "card" ? (
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <label className="sm:col-span-2">
+                  <span className="mb-1 block text-xs font-semibold text-gray-500">Card number</span>
+                  <input dir="ltr" inputMode="numeric" placeholder="4242 4242 4242 4242" className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-teal-500" />
+                </label>
+                <label>
+                  <span className="mb-1 block text-xs font-semibold text-gray-500">Expiry</span>
+                  <input dir="ltr" placeholder="MM/YY" className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-teal-500" />
+                </label>
+                <label>
+                  <span className="mb-1 block text-xs font-semibold text-gray-500">CVV</span>
+                  <input dir="ltr" inputMode="numeric" placeholder="123" className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-teal-500" />
+                </label>
+              </div>
+            ) : (
+              <label>
+                <span className="mb-1 block text-xs font-semibold text-gray-500">Wallet phone number</span>
+                <input dir="ltr" inputMode="tel" placeholder="01000000000" className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-teal-500" />
+              </label>
+            )}
+            <p className="mt-3 text-xs text-gray-500">
+              سيتم تأكيد بيانات الدفع بأمان من خلال مزود الدفع عند المتابعة.
+            </p>
           </div>
 
           <label className="mt-6 flex items-start gap-3 text-sm text-gray-600">
@@ -182,6 +207,7 @@ export default function CheckoutPage() {
           )}
         </aside>
       </main>
-    </div>
+      </div>
+    </RoleGuard>
   );
 }

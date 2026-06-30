@@ -6,6 +6,7 @@ import PromoBanner from "@/features/BrowseCourses/component/PromoBanner";
 import { CourseCard } from "@/features/BrowseCourses/component/CourseCard";
 import SidebarFilter from "@/features/BrowseCourses/component/SideBarFilter";
 import StudentNavbar from "@/features/student/components/StudentNavbar";
+import { useAuthStore } from "@/store/useAuthStore";
 import SortTabs from "@/features/BrowseCourses/component/SortTabs";
 import {
   ApiCourse,
@@ -27,6 +28,7 @@ const MIN_PRICE_SLIDER_MAX = 5000;
 
 export default function BrowseCoursesPage() {
   const searchParams = useSearchParams();
+  const user = useAuthStore((state) => state.user);
   const searchQuery = (searchParams.get("search") || "").trim().toLowerCase();
 
   const [courses, setCourses] = useState<ApiCourse[]>([]);
@@ -50,21 +52,22 @@ export default function BrowseCoursesPage() {
   );
 
   useEffect(() => {
-    if (!isLoading) {
-      const nextDefaults = getDefaultFilters(maxPrice);
-      setDraftFilters(nextDefaults);
-      setAppliedFilters(nextDefaults);
-    }
-  }, [isLoading, maxPrice]);
-
-  useEffect(() => {
     let isMounted = true;
 
     const loadCourses = async () => {
       try {
         const data = await getCourses();
         if (isMounted) {
-          setCourses(data.filter((course) => course.Status !== "draft"));
+          const nextCourses = data.filter((course) => course.Status !== "draft");
+          const nextMaxPrice = Math.max(
+            MIN_PRICE_SLIDER_MAX,
+            nextCourses.reduce((max, course) => Math.max(max, getCoursePrice(course)), 0),
+          );
+          const nextDefaults = getDefaultFilters(nextMaxPrice);
+
+          setCourses(nextCourses);
+          setDraftFilters(nextDefaults);
+          setAppliedFilters(nextDefaults);
         }
       } catch (err) {
         if (isMounted) {
@@ -178,9 +181,10 @@ export default function BrowseCoursesPage() {
                   <CourseCard
                     key={course.id}
                     course={course}
-                    actionLabel={getCourseActionLabel(course)}
-                    actionHref={getCourseActionHref(course)}
-                    detailsHref={`/courses?courseId=${course.id}`}
+                    actionLabel={user?.Role === "Student" ? getCourseActionLabel(course) : "متاح للطلاب فقط"}
+                    actionHref={user?.Role === "Student" ? getCourseActionHref(course) : undefined}
+                    detailsHref={user?.Role === "Student" ? `/courses?courseId=${course.id}` : undefined}
+                    isDisabled={user?.Role !== "Student"}
                   />
                 ))}
               </div>

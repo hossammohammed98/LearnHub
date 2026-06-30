@@ -19,7 +19,10 @@ exports.register=catchAsyncHandler(async(req,res,next)=>{
         maxAge:15*60*1000,
         secure:process.env.NODE_ENV === 'production'
     })
-    return  ApiResponse.success(res,"The User Add Successfully",result.user,200);
+    return ApiResponse.success(res, "The User Add Successfully", {
+        ...result.user.toObject ? result.user.toObject() : result.user,
+        accessToken: result.accessToken
+    }, 200);
 })
 //Login
 exports.login=catchAsyncHandler(async(req,res,next)=>{
@@ -36,7 +39,10 @@ exports.login=catchAsyncHandler(async(req,res,next)=>{
         maxAge:15*60*1000,
         secure:process.env.NODE_ENV === 'production'
     })
-    return ApiResponse.success(res,"The User Logging Successfully",result.user,200);
+    return ApiResponse.success(res, "The User Logging Successfully", {
+        ...(result.user.toObject ? result.user.toObject() : result.user),
+        accessToken: result.accessToken
+    }, 200);
 })
 //Refresh Token
 exports.refreshToken=catchAsyncHandler(async(req,res,next)=>{

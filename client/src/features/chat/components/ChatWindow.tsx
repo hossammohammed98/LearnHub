@@ -54,26 +54,33 @@ function ChatWindow({ selectedChatId, chatName, chatImg, onBack }: ChatWindowPro
                         <span>جاري تحميل الرسائل...</span>
                     </div>
                 ) : (
-                    messages.map((msg: any) => {
+                    messages.map((msg: Record<string, unknown>, index: number) => {
                         let formattedTime = "";
-                        if (msg.createdAt) {
-                            formattedTime = new Date(msg.createdAt).toLocaleTimeString('ar-EG', {
+                        const createdAt = msg.createdAt;
+                        if (typeof createdAt === 'string' || createdAt instanceof Date) {
+                            formattedTime = new Date(createdAt).toLocaleTimeString('ar-EG', {
                                 hour: '2-digit',
                                 minute: '2-digit'
                             });
                         }
-                        console.log("🕵️‍♂️ RAW MESSAGE OBJECT FROM BACKEND:", msg);
+
+                        const normalizedType = (msg.type ?? msg.messageType ?? (msg.fileUrl || (msg.attachment as { fileUrl?: string } | undefined)?.fileUrl ? 'file' : 'text')).toString();
+                        const normalizedMessageText = (msg.messageText ?? msg.content ?? (normalizedType === 'file' ? '📎 ملف مرفق' : '')).toString();
+                        const normalizedFileUrl = (msg.fileUrl ?? (msg.attachment as { fileUrl?: string } | undefined)?.fileUrl)?.toString();
+                        const normalizedFileName = (msg.fileName ?? (msg.attachment as { fileName?: string } | undefined)?.fileName)?.toString();
+                        const messageId = (msg.id ?? msg._id ?? `${index}`).toString();
+                        const myMessage = Boolean(msg.myMessage);
+
                         return (
                             <MessageBubble
-                                key={msg._id || msg.id}
-                                messageText={msg.content || ""}
-                                myMessage={msg.myMessage}
-                                time={msg.time || formattedTime}
-                                imgUrl={msg.Avatar || "/images/login.jpg"}
-
-                                // 🎯 FIXED: Access keys directly from the nested attachment object!
-                                type={msg.messageType} // This is exactly "file"
-                                fileUrl={msg.attachment?.fileUrl} // Safely reads from msg.attachment.fileUrl
+                                key={messageId}
+                                messageText={normalizedMessageText}
+                                myMessage={myMessage}
+                                time={msg.time?.toString() || formattedTime}
+                                imgUrl={(msg.Avatar ?? "/images/login.jpg").toString()}
+                                type={normalizedType as 'text' | 'file'}
+                                fileUrl={normalizedFileUrl}
+                                fileName={normalizedFileName}
                             />
                         );
                     })

@@ -19,8 +19,7 @@ module.exports = (io, socket, redisClient) => {
     // Send Message
     socket.on('send_message', async (payload) => {
         // 🎯 FIXED: Added clientRefId catch parameter mapping
-        const { roomId, messageText, fileUrl, type = 'text', clientRefId } = payload;
-        console.log(payload);
+        const { roomId, messageText, fileUrl, fileName, fileSize, type = 'text', clientRefId } = payload;
         const senderId = socket.user.id;
         const chatIdStr = String(roomId);
 
@@ -28,10 +27,11 @@ module.exports = (io, socket, redisClient) => {
             let savedMessage;
             
             if (type === 'file' && fileUrl) {
-                const fileName = messageText.replace('📎 ملف مرفق:', '');
+                const attachmentFileName = fileName || messageText.replace('📎 ملف مرفق:', '').trim();
                 savedMessage = await chatService.saveUploadedChatAttachment(chatIdStr, senderId, { 
                     secureUrl: fileUrl, 
-                    fileName: fileName 
+                    fileName: attachmentFileName,
+                    fileSize
                 });
             } else {
                 // 🎯 FIXED: Removed the local 'let' keyword to correctly assign the outer variable scope
@@ -48,15 +48,17 @@ module.exports = (io, socket, redisClient) => {
 
             // Map variables perfectly back to UI interface contracts
             const formattedMessage = {
-                id: savedMessage._id.toString(), // Convert ObjectId to clear String representation
+                id: savedMessage._id.toString(),
                 chatId: chatIdStr,
-                messageText: messageText,
-                type: type,
-                fileUrl: fileUrl || null,
+                messageText: savedMessage.content,
+                type: savedMessage.messageType,
+                messageType: savedMessage.messageType,
+                fileUrl: savedMessage.attachment?.fileUrl || null,
+                attachment: savedMessage.attachment || null,
                 time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }),
-                myMessage: false, // Will be computed or fallback managed client-side
+                myMessage: senderId.toString() === socket.user.id.toString(),
                 senderId: senderId,
-                clientRefId: clientRefId || null // 🎯 FIXED: Forward back up so frontend can dismiss local skeleton bubbles
+                clientRefId: clientRefId || null
             };
 
             // Broadcast message back down onto target connection room strings

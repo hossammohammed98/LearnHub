@@ -12,6 +12,7 @@ import RecentCourseCard from '../../../features/teacher/RecentCourseCard';
 import { useAuthStore } from "@/store/useAuthStore";
 import apiClient from "@/services/apiClient";
 import { BookAIcon, GraduationCap, Loader2, Plus, TrendingUp, UsersRound } from "lucide-react";
+import RoleGuard from "@/components/common/RoleGuard";
 
 interface DashboardMetric {
   key: string;
@@ -129,7 +130,8 @@ function TeacherDashboard() {
   const displayName = dashboard?.teacherName || user?.FName || 'المعلم';
 
   return (
-    <div dir="rtl" className="min-h-screen bg-[#F6F7F9] text-slate-900">
+    <RoleGuard allowedRoles={["Teacher"]}>
+      <div dir="rtl" className="min-h-screen bg-[#F6F7F9] text-slate-900">
       <TeacherNavBar />
 
       <div className="flex">
@@ -215,7 +217,8 @@ function TeacherDashboard() {
           )}
         </main>
       </div>
-    </div>
+      </div>
+    </RoleGuard>
   );
 }
 

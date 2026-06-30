@@ -1,160 +1,261 @@
 const mongoose = require('mongoose');
+const { hashPassword } = require('./src/shared/utils/hashHelper');
 
-// 1. Import your explicit project model definitions and password hashing helper
-const Chat = require('./src/modules/chat/chat.model'); 
+const User = require('./src/modules/users/user.model');
+const Teacher = require('./src/modules/teachers/teacher.model');
+const Student = require('./src/modules/students/student.model');
+const Parent = require('./src/modules/parents/parent.model');
+const Assistant = require('./src/modules/assistants/assistant.model');
+const Course = require('./src/modules/courses/course.model');
+const Chapter = require('./src/modules/chapters/chapter.model');
+const Lesson = require('./src/modules/lessons/lesson.model');
+const Assignment = require('./src/modules/assignments/assignment.model');
+const Quiz = require('./src/modules/quizzes/quiz.model');
+const Enrollment = require('./src/modules/enrollments/enrollment.model');
+const Payment = require('./src/modules/payments/payment.model');
+const Chat = require('./src/modules/chat/chat.model');
 const ChatMember = require('./src/modules/chat/chatMember.model');
 const Message = require('./src/modules/chat/message.model');
-const { hashPassword } = require('./src/shared/utils/hashHelper'); // 🚨 Verified import path
 
-// Using your exact User schema structure directly to prevent any model mismatch errors
-const UserSchema = new mongoose.Schema({
-    FName: { type: String, required: true },
-    LName: { type: String, required: true },
-    Email: { type: String, required: true, unique: true },
-    SSN: { type: String, required: true, unique: true },
-    Password: { type: String, required: true },
-    Phone: { type: String, required: true },
-    Avatar: { type: String },
-    activeStatus: { type: Boolean },
-    Role: { type: String, enum: ['Student', 'Parent', 'Teacher', 'Admin'], required: true },
-    RefreshToken: { type: String, default: null },
-    isVerified: { type: Boolean, default: false }
-}, { timestamps: true });
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/Tellm';
+const DEFAULT_PASSWORD = '12345678';
+const REQUIRED_ROW_COUNT = 25;
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
+const createUserSeed = async (index, role, firstName, lastName) => {
+  return User.create({
+    FName: firstName,
+    LName: lastName,
+    Email: `${role.toLowerCase()}${String(index).padStart(2, '0')}@example.com`,
+    SSN: `${String(index + 10000000000000).slice(0, 14)}`,
+    Password: DEFAULT_PASSWORD,
+    Phone: `+2010${String(10000000 + index).slice(0, 8)}`,
+    Avatar: '/images/login.jpg',
+    activeStatus: true,
+    Role: role,
+    isVerified: true,
+  });
+};
 
-// 2. Map your provided User ObjectIDs explicitly
-const USER_1 = new mongoose.Types.ObjectId("6a41a49679754b2f73970423"); // احمد حسن
-const USER_2 = new mongoose.Types.ObjectId("6a41a5e679754b2f73970424"); // سارة علي
-const USER_3 = new mongoose.Types.ObjectId("6a41a67179754b2f73970425"); // محمد عمر
+const seedDatabase = async () => {
+  try {
+    console.log(`Connecting to MongoDB at ${MONGO_URI} ...`);
+    await mongoose.connect(MONGO_URI);
+    console.log('💾 Connected successfully.');
 
-async function seedDatabase() {
-    try {
-        // Connect directly to your local database URI instance
-        console.log("Connecting to MongoDB at: mongodb://127.0.0.1:27017/Tellm ...");
-        await mongoose.connect('mongodb://127.0.0.1:27017/Tellm');
-        console.log("💾 Connected successfully.");
+    console.log('🧹 Resetting database...');
+    await mongoose.connection.dropDatabase();
 
-        // Clean out previous document traces to prevent duplication issues
-        console.log("🧹 Clearing old database records...");
-        await Promise.all([
-            User.deleteMany({ _id: { $in: [USER_1, USER_2, USER_3] } }),
-            Chat.deleteMany({}),
-            ChatMember.deleteMany({}),
-            Message.deleteMany({})
-        ]);
+    const hashedPassword = await hashPassword(DEFAULT_PASSWORD);
 
-        // 🚨 Hash the clear-text password before inserting into the database
-        console.log("🔐 Generating secure password hashes...");
-        const securePassword = await hashPassword("12345678");
+    console.log('👤 Creating users and role profiles...');
+    const adminUser = await User.create({
+      FName: 'أحمد',
+      LName: 'حسن',
+      Email: 'admin@example.com',
+      SSN: '11111111111111',
+      Password: DEFAULT_PASSWORD,
+      Phone: '+201001111111',
+      Avatar: '/images/login.jpg',
+      activeStatus: true,
+      Role: 'Admin',
+      isVerified: true,
+    });
 
-        // Step 1: Seed explicit User Profiles based on your strict User Model definition
-        console.log("👤 Creating User Profiles...");
-        await User.insertMany([
-            { 
-                _id: USER_1, 
-                FName: "احمد", 
-                LName: "حسن", 
-                Email: "ahmed.hassan@example.com", 
-                SSN: "11111111111111", 
-                Password: securePassword, // Now safely hashed!
-                Phone: "01012345678",
-                Avatar: "/images/login.jpg", 
-                activeStatus: true,
-                Role: "Student",
-                isVerified: true
-            },
-            { 
-                _id: USER_2, 
-                FName: "سارة", 
-                LName: "علي", 
-                Email: "sara.ali@example.com", 
-                SSN: "22222222222222", 
-                Password: securePassword,
-                Phone: "01112345678",
-                Avatar: "/images/login.jpg", 
-                activeStatus: false,
-                Role: "Student",
-                isVerified: true
-            },
-            { 
-                _id: USER_3, 
-                FName: "محمد", 
-                LName: "عمر", 
-                Email: "mohamed.omar@example.com", 
-                SSN: "33333333333333", 
-                Password: securePassword,
-                Phone: "01212345678",
-                Avatar: "/images/login.jpg", 
-                activeStatus: true,
-                Role: "Teacher",
-                isVerified: true
-            }
-        ]);
+    const teacherUsers = [];
+    const studentUsers = [];
+    const parentUsers = [];
 
-        // Step 2: Create Chat Room instances matching your chat model parameters
-        console.log("💬 Opening Chat Rooms...");
-        const privateChat = await Chat.create({
-            type: 'private',
-            groupName: null,
-            groupAvatar: null
-        });
+    for (let i = 1; i <= REQUIRED_ROW_COUNT; i += 1) {
+      const teacherUser = await createUserSeed(i, 'Teacher', `معلم${i}`, `الاسم${i}`);
+      teacherUsers.push(teacherUser);
 
-        const groupChat = await Chat.create({
-            type: 'group',
-            groupName: 'مجموعة الدعم الدراسي - الكيمياء',
-            groupAvatar: '/images/login.jpg'
-        });
+      const studentUser = await createUserSeed(i + REQUIRED_ROW_COUNT, 'Student', `طالب${i}`, `الاسم${i}`);
+      studentUsers.push(studentUser);
 
-        // Step 3: Seed Exchange Messages linked to the respective chats
-        console.log("✉️ Seeding Messages...");
-        const textMessagePrivate = await Message.create({
-            chatId: privateChat._id,
-            senderId: USER_2, // Sent by Sara to Ahmed
-            content: "ايه الاخبار؟ هل بدأت مراجعة الكيمياء؟",
-            messageType: 'text'
-        });
+      const parentUser = await createUserSeed(i + REQUIRED_ROW_COUNT * 2, 'Parent', `ولي${i}`, `الاسم${i}`);
+      parentUsers.push(parentUser);
+    }
 
-        const textMessageGroup = await Message.create({
-            chatId: groupChat._id,
-            senderId: USER_1, // Sent by Ahmed to the group
-            content: "يا شباب، رفعت لكم ملف ملخص المحاضرة الأولى هنا",
-            messageType: 'text'
-        });
+    const teacherProfiles = [];
+    for (const teacherUser of teacherUsers) {
+      const profile = await Teacher.create({ UserId: teacherUser._id });
+      teacherProfiles.push(profile);
+    }
 
-        // Step 4: Link back the 'lastMessage' references to satisfy repository populate pipelines
-        privateChat.lastMessage = textMessagePrivate._id;
-        await privateChat.save();
+    const parentProfiles = [];
+    for (const parentUser of parentUsers) {
+      const profile = await Parent.create({ UserId: parentUser._id, ChildrenNumber: 1 + (parentProfiles.length % 3) });
+      parentProfiles.push(profile);
+    }
 
-        groupChat.lastMessage = textMessageGroup._id;
-        await groupChat.save();
+    const studentProfiles = [];
+    for (let i = 0; i < studentUsers.length; i += 1) {
+      const parentProfile = parentProfiles[i % parentProfiles.length];
+      const profile = await Student.create({ UserId: studentUsers[i]._id, ParentId: parentProfile._id });
+      studentProfiles.push(profile);
+    }
 
-        // Step 5: Establish Membership parameters ensuring unique index constraints are preserved
-        console.log("👥 Joining Members to Chat Rooms...");
-        await ChatMember.insertMany([
-            // Members of Private Chat (Ahmed & Sara)
-            { chatId: privateChat._id, userId: USER_1, unreadCount: 0 },
-            { chatId: privateChat._id, userId: USER_2, unreadCount: 1 }, 
+    const assistantProfiles = [];
+    for (let i = 0; i < teacherProfiles.length; i += 1) {
+      const assistant = await Assistant.create({
+        TeacherId: teacherProfiles[i]._id,
+        Email: `assistant${i + 1}@example.com`,
+        Password: hashedPassword,
+      });
+      assistantProfiles.push(assistant);
+    }
 
-            // Members of Group Chat (Ahmed & Mohamed)
-            { chatId: groupChat._id, userId: USER_1, unreadCount: 0 },
-            { chatId: groupChat._id, userId: USER_3, unreadCount: 2 } 
-        ]);
+    console.log('📚 Creating courses, chapters, lessons, assignments and quizzes...');
+    const courses = [];
+    for (let i = 1; i <= REQUIRED_ROW_COUNT; i += 1) {
+      const course = await Course.create({
+        TeacherId: teacherProfiles[i - 1]._id,
+        Title: `مسار ${i}`,
+        Description: `وصف مفصل للمسار ${i} لإظهار بيانات متنوعة في الواجهة.`,
+        Price: 100 + i * 10,
+        CoverImage: '/images/course.jpg',
+        Status: i % 2 === 0 ? 'published' : 'draft',
+        PublishedAt: new Date(),
+      });
+      courses.push(course);
+    }
 
-        console.log(`
+    const chapters = [];
+    for (let i = 0; i < courses.length; i += 1) {
+      const chapter = await Chapter.create({ CourseId: courses[i]._id, Title: `باب ${i + 1}` });
+      chapters.push(chapter);
+    }
+
+    const lessons = [];
+    for (let i = 0; i < chapters.length; i += 1) {
+      const lesson = await Lesson.create({
+        ChapterId: chapters[i]._id,
+        Title: `درس ${i + 1}`,
+        Content: `محتوى الدرس ${i + 1} مع تمارين ومراجع.` ,
+        Video: {
+          url: `https://example.com/video-${i + 1}.mp4`,
+          public_id: `video-${i + 1}`,
+          resourceType: 'video',
+          fileName: `lesson-${i + 1}.mp4`,
+        },
+      });
+      lessons.push(lesson);
+    }
+
+    const assignments = [];
+    for (let i = 0; i < lessons.length; i += 1) {
+      const assignment = await Assignment.create({
+        LessonId: lessons[i]._id,
+        Title: `تدريب ${i + 1}`,
+        Content: `حل التمرين ${i + 1} قبل الموعد النهائي.`,
+      });
+      assignments.push(assignment);
+    }
+
+    const quizzes = [];
+    for (let i = 0; i < courses.length; i += 1) {
+      const quiz = await Quiz.create({
+        CourseId: courses[i]._id,
+        Title: `اختبار ${i + 1}`,
+        Content: `اختبار قصير على محتوى المسار ${i + 1}.`,
+      });
+      quizzes.push(quiz);
+    }
+
+    console.log('🧑‍🎓 Creating enrollments and payments...');
+    const enrollments = [];
+    for (let i = 0; i < studentProfiles.length; i += 1) {
+      const enrollment = await Enrollment.create({
+        StudentId: studentProfiles[i]._id,
+        CourseId: courses[i % courses.length]._id,
+        Progress: 20 + (i % 5) * 10,
+      });
+      enrollments.push(enrollment);
+    }
+
+    const payments = [];
+    for (let i = 0; i < enrollments.length; i += 1) {
+      const payment = await Payment.create({
+        student: studentUsers[i % studentUsers.length]._id,
+        course: courses[i % courses.length]._id,
+        amount: 100 + i * 15,
+        currency: 'EGP',
+        status: i % 3 === 0 ? 'success' : i % 3 === 1 ? 'pending' : 'failed',
+        specialRef: `course_${i + 1}_student_${i + 1}`,
+      });
+      payments.push(payment);
+    }
+
+    console.log('💬 Creating chat data...');
+    const chats = [];
+    for (let i = 1; i <= REQUIRED_ROW_COUNT; i += 1) {
+      const chat = await Chat.create({
+        type: i % 2 === 0 ? 'group' : 'private',
+        groupName: i % 2 === 0 ? `مجموعة ${i}` : null,
+        groupAvatar: i % 2 === 0 ? '/images/login.jpg' : null,
+      });
+      chats.push(chat);
+    }
+
+    const chatMembers = [];
+    for (let i = 0; i < chats.length; i += 1) {
+      const member = await ChatMember.create({
+        chatId: chats[i]._id,
+        userId: i % 2 === 0 ? teacherUsers[i % teacherUsers.length]._id : studentUsers[i % studentUsers.length]._id,
+        unreadCount: i % 4,
+      });
+      chatMembers.push(member);
+    }
+
+    const messages = [];
+    for (let i = 0; i < chats.length; i += 1) {
+      const message = await Message.create({
+        chatId: chats[i]._id,
+        senderId: i % 2 === 0 ? teacherUsers[i % teacherUsers.length]._id : parentUsers[i % parentUsers.length]._id,
+        content: `رسالة تجريبية رقم ${i + 1} لعرض بيانات المحادثات.`,
+        messageType: 'text',
+      });
+      messages.push(message);
+    }
+
+    for (let i = 0; i < chats.length; i += 1) {
+      const lastMessage = messages[i];
+      chats[i].lastMessage = lastMessage._id;
+      await chats[i].save();
+    }
+
+    console.log(`
 🌱 Database Seeding Completed Successfully!
 --------------------------------------------------
-Available Authenticated Test Profiles:
-1. أحمد حسن -> Email: ahmed.hassan@example.com | Password: 12345678
-2. سارة علي -> Email: sara.ali@example.com      | Password: 12345678
-3. محمد عمر -> Email: mohamed.omar@example.com  | Password: 12345678
+Created rows:
+- Users: ${await User.countDocuments()}
+- Teachers: ${await Teacher.countDocuments()}
+- Students: ${await Student.countDocuments()}
+- Parents: ${await Parent.countDocuments()}
+- Assistants: ${await Assistant.countDocuments()}
+- Courses: ${await Course.countDocuments()}
+- Chapters: ${await Chapter.countDocuments()}
+- Lessons: ${await Lesson.countDocuments()}
+- Assignments: ${await Assignment.countDocuments()}
+- Quizzes: ${await Quiz.countDocuments()}
+- Enrollments: ${await Enrollment.countDocuments()}
+- Payments: ${await Payment.countDocuments()}
+- Chats: ${await Chat.countDocuments()}
+- ChatMembers: ${await ChatMember.countDocuments()}
+- Messages: ${await Message.countDocuments()}
+--------------------------------------------------
+Login credentials:
+1. Admin: admin@example.com / ${DEFAULT_PASSWORD}
+2. Teacher: teacher1@example.com / ${DEFAULT_PASSWORD}
+3. Parent: parent1@example.com / ${DEFAULT_PASSWORD}
+4. Student: student1@example.com / ${DEFAULT_PASSWORD}
         `);
-        
-        process.exit(0);
-    } catch (error) {
-        console.error("❌ Database Seeding Failed:", error);
-        process.exit(1);
-    }
-}
+
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Database Seeding Failed:', error);
+    process.exit(1);
+  }
+};
 
 seedDatabase();

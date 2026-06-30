@@ -11,6 +11,7 @@ import { PlatformPerformance } from "@/features/admin/components/PlatformPerform
 import { QuickActions } from "@/features/admin/components/QuickActions";
 import { RecentActivities } from "@/features/admin/components/RecentActivities";
 import Sidebar from "@/features/admin/components/SideBar";
+import RoleGuard from "@/components/common/RoleGuard";
 
 interface DashboardMetric {
   key: string;
@@ -88,7 +89,8 @@ export default function AdminDashboard() {
   const displayName = dashboard?.teacherName || [user?.FName, user?.LName].filter(Boolean).join(" ") || "مسؤول النظام";
 
   return (
-    <div className="flex min-h-screen bg-slate-50" dir="rtl">
+    <RoleGuard allowedRoles={["Admin"]}>
+      <div className="flex min-h-screen bg-slate-50" dir="rtl">
       <Sidebar />
 
       <div className="flex min-w-0 flex-1 flex-col">
@@ -137,6 +139,7 @@ export default function AdminDashboard() {
           )}
         </main>
       </div>
-    </div>
+      </div>
+    </RoleGuard>
   );
 }

@@ -10,6 +10,7 @@ interface BackendAssistant {
   _id: string;
   TeacherId: string;
   Email: string;
+  PermissionIds?: string[];
 }
 
 function createDisplayName(email: string) {
@@ -26,17 +27,25 @@ function mapAssistant(assistant: BackendAssistant): Assistant {
     email: assistant.Email,
     avatarInitial: (displayName[0] || assistant.Email[0] || "A").toUpperCase(),
     status: "active",
-    tags: [assistant.TeacherId ? "مرتبط بمعلم" : "بدون معلم"],
+    tags: [
+      assistant.TeacherId ? "مرتبط بمعلم" : "بدون معلم",
+      `${assistant.PermissionIds?.length || 0} صلاحيات`,
+    ],
+    permissionIds: assistant.PermissionIds || [],
   };
 }
 
 type AssistantsGridProps = {
+  refreshKey?: number;
   onAddNew?: () => void;
-  onEditPermissions?: (id: string) => void;
+  onAssistantsLoaded?: (assistants: Assistant[]) => void;
+  onEditPermissions?: (assistant: Assistant) => void;
 };
 
 export default function AssistantsGrid({
+  refreshKey = 0,
   onAddNew,
+  onAssistantsLoaded,
   onEditPermissions,
 }: AssistantsGridProps) {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
@@ -53,7 +62,9 @@ export default function AssistantsGrid({
       try {
         const response = await apiClient.get<ApiResponse<BackendAssistant[]>>("/assistant");
         if (isMounted) {
-          setAssistants((response.data.data || []).map(mapAssistant));
+          const nextAssistants = (response.data.data || []).map(mapAssistant);
+          setAssistants(nextAssistants);
+          onAssistantsLoaded?.(nextAssistants);
         }
       } catch (requestError: unknown) {
         if (isMounted) {
@@ -71,7 +82,7 @@ export default function AssistantsGrid({
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [onAssistantsLoaded, refreshKey]);
 
   const handleReactivate = (id: string) => {
     setAssistants((prev) =>
@@ -113,7 +124,14 @@ export default function AssistantsGrid({
         </div>
       ) : (
         <div className="rounded-lg border border-dashed border-gray-200 bg-gray-50 px-4 py-10 text-center text-sm text-gray-500">
-          لا يوجد مساعدون مسجلون حالياً.
+          <p>لا يوجد مساعدون مسجلون حالياً.</p>
+          <button
+            type="button"
+            onClick={onAddNew}
+            className="mt-4 rounded-lg bg-emerald-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-800"
+          >
+            إضافة مساعد جديد
+          </button>
         </div>
       )}
     </div>

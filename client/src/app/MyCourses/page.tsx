@@ -13,6 +13,7 @@ import {
   getTeacherName,
 } from "@/features/courses/services/courseService";
 import { Course } from "@/features/BrowseCourses/component/types";
+import RoleGuard from "@/components/common/RoleGuard";
 
 const toCardCourse = (course: ApiCourse): Course => ({
   id: course._id,
@@ -56,7 +57,8 @@ export default function MyCoursesPage() {
   const cardCourses = useMemo(() => courses.map(toCardCourse), [courses]);
 
   return (
-    <div className="min-h-screen bg-[#FAFCFF] font-sans">
+    <RoleGuard allowedRoles={["Student"]}>
+      <div className="min-h-screen bg-[#FAFCFF] font-sans">
       <StudentNavbar />
 
       <main className="container mx-auto px-4 py-8" dir="rtl">
@@ -107,6 +109,7 @@ export default function MyCoursesPage() {
           </div>
         )}
       </main>
-    </div>
+      </div>
+    </RoleGuard>
   );
 }

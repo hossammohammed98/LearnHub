@@ -23,6 +23,8 @@ class ChatService extends baseService {
     const chatsData = await ChatRepository.chatsWithAllData(chatIds);
 
     const formattedRooms = await Promise.all(chatsData.map(async (chat) => {
+      if (!chat) return null;
+
       let roomInfo = typeof chat.toObject === 'function' ? chat.toObject() : { ...chat };
 
       let mappedName = "مستخدم غير معروف";
@@ -32,7 +34,7 @@ class ChatService extends baseService {
         const receiverMember = await ChatRepository.getReceiverMember(chat._id, userId);
         // Now this check safely evaluates because receiverMember is an object
         if (receiverMember && receiverMember.userId) {
-          mappedName = `${receiverMember.userId.FName || ''} ${receiverMember.userId.LName || ''}`.trim();
+          mappedName = this.getUserDisplayName(receiverMember.userId);
           mappedAvatar = receiverMember.userId.Avatar || mappedAvatar;
           roomInfo.receiverId = receiverMember.userId._id;
         }
@@ -49,7 +51,9 @@ class ChatService extends baseService {
 
       if (chat.lastMessage) {
         // NOTE: Make sure your frontend checks content or messageText based on your DB schema mapping!
-        displayLastMessage = chat.lastMessage.content || chat.lastMessage.messageText || displayLastMessage;
+        displayLastMessage = chat.lastMessage.messageType === 'file'
+          ? `📎 ملف مرفق: ${chat.lastMessage.attachment?.fileName || 'ملف'}`
+          : chat.lastMessage.content || chat.lastMessage.messageText || displayLastMessage;
 
         if (chat.lastMessage.createdAt) {
           const msgDate = new Date(chat.lastMessage.createdAt);
@@ -69,21 +73,31 @@ class ChatService extends baseService {
       };
     }));
 
-    return formattedRooms.sort((a, b) => b._sortingDate - a._sortingDate);
+    return formattedRooms
+      .filter(Boolean)
+      .sort((a, b) => b._sortingDate - a._sortingDate);
+  }
+  getUserDisplayName(user) {
+    const fullName = `${user.FName || ''} ${user.LName || ''}`.trim();
+    return fullName || user.Email || user.Phone || "مستخدم غير معروف";
   }
   async getChatMessages(chatId, userId) {
     const chatMessages = await ChatRepository.getChatMessages(chatId);
     const formattedMessage = await Promise.all(chatMessages.map((message) => {
       let messageInfo = message.toObject();
-      messageInfo.userName = message.senderId.FName + " " + message.senderId.LName;
-      messageInfo.Avatar = message.senderId.Avatar;
-      messageInfo.myMessage = (message.senderId._id.toString() === userId.toString());
+      messageInfo.userName = message.senderId ? this.getUserDisplayName(message.senderId) : "مستخدم غير معروف";
+      messageInfo.Avatar = message.senderId?.Avatar;
+      messageInfo.myMessage = message.senderId ? (message.senderId._id.toString() === userId.toString()) : false;
       delete messageInfo.senderId;
       return messageInfo;
     }))
     return formattedMessage;
   }
   async getChatAttachmentToken(chatId, fileType) {
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      throw new Error('Cloudinary configuration is missing');
+    }
+
     const folderPath = `tallem/chat/${chatId}/attachments`;
     let resourceType = 'raw';
     if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileType?.toLowerCase())) {
@@ -102,7 +116,6 @@ class ChatService extends baseService {
 
   async saveUploadedChatAttachment(chatId, senderId, cloudinaryData) {
     const { secureUrl, fileName, fileSize, isText = false } = cloudinaryData;
-    console.log(chatId, fileName)
     let newMessageData;
     if (!isText) {
       newMessageData = {

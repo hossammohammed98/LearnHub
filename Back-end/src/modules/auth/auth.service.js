@@ -3,7 +3,10 @@ const {createRefreshToken}=require('../../shared/utils/createRefreshToken')
 const authRepository=require('../auth/auth.repository')
 const ApiError=require('../../shared/core/ApiError')
 const { comparePassword } = require('../../shared/utils/hashHelper')
-const { insertOne } = require('../users/user.model')
+const User = require('../users/user.model')
+const Teacher = require('../teachers/teacher.model')
+const Student = require('../students/student.model')
+const Parent = require('../parents/parent.model')
 const emailService=require('../emails/email.service')
 const crypto=require('crypto');
 const sanitizeUser=(user)=>{
@@ -12,15 +15,38 @@ const sanitizeUser=(user)=>{
     delete userObj.RefreshToken;
     return userObj;
 }
+const createRoleProfile = async (role, userId) => {
+    switch (role) {
+        case 'Teacher':
+            await Teacher.create({ UserId: userId });
+            break;
+        case 'Parent':
+            await Parent.create({ UserId: userId });
+            break;
+        case 'Student':
+            await Student.create({ UserId: userId });
+            break;
+        default:
+            break;
+    }
+};
+
 //Register
 exports.register=async(data)=>{
     if(data.Password!=data.ConfirmPassword)
         throw new ApiError(400,"Password Not Match ConfirmPassword");
     delete data.ConfirmPassword;
     const newUser= await authRepository.createUser(data);
-    console.log(newUser);
     if(!newUser)
         throw new ApiError(400,"Can Not Create New User"); 
+
+    try {
+        await createRoleProfile(newUser.Role, newUser._id);
+    } catch (error) {
+        await User.findByIdAndDelete(newUser._id);
+        throw new ApiError(400,"Can Not Create New User Profile");
+    }
+
     const accessToken= createAccessToken({id:newUser._id,role:newUser.Role});
     const refreshToken=createRefreshToken({id:newUser._id,role:newUser.Role});
     await authRepository.updateRefreshToken(newUser._id,refreshToken);

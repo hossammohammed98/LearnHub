@@ -23,6 +23,7 @@ type CourseCardProps = {
   detailsHref?: string;
   onAction?: () => void;
   isLoading?: boolean;
+  isDisabled?: boolean;
 };
 
 export const CourseCard: React.FC<CourseCardProps> = ({
@@ -32,6 +33,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
   detailsHref,
   onAction,
   isLoading = false,
+  isDisabled = false,
 }) => {
   const actionClasses =
     "h-10 min-w-10 px-3 flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 disabled:bg-teal-300 text-white rounded-lg transition-colors duration-200 text-xs font-bold";
@@ -106,12 +108,12 @@ export const CourseCard: React.FC<CourseCardProps> = ({
       </div>
 
       <div className="border-t border-gray-50 pt-3 flex items-center justify-between gap-3 w-full">
-        {actionHref ? (
+        {actionHref && !isDisabled ? (
           <Link href={actionHref} className={actionClasses}>
             {actionContent}
           </Link>
         ) : (
-          <button type="button" onClick={onAction} disabled={isLoading} className={actionClasses}>
+          <button type="button" onClick={onAction} disabled={isLoading || isDisabled} className={actionClasses}>
             {actionContent}
           </button>
         )}

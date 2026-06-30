@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { getApiBaseUrl } from './runtimeConfig';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export const apiClient: AxiosInstance = axios.create({
     baseURL: getApiBaseUrl(),
@@ -13,6 +14,16 @@ export const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+        const accessToken = useAuthStore.getState().accessToken;
+        const requestUrl = config.url || '';
+        const isAuthRoute = requestUrl.startsWith('/auth/');
+
+        if (accessToken && !config.headers?.Authorization && !isAuthRoute) {
+            config.headers = {
+                ...(config.headers || {}),
+                Authorization: `Bearer ${accessToken}`,
+            };
+        }
         return config;
     },
     (error: AxiosError) => {
@@ -33,10 +44,15 @@ apiClient.interceptors.response.use(
                 console.warn('🔄 Access Token expired. Attempting global refresh token handshake...');
                 
                 // Fire refresh call using vanilla axios instance
-                await axios.post('/auth/refresh-token', {}, {
+                const refreshResponse = await axios.post('/auth/refresh-token', {}, {
                     baseURL: getApiBaseUrl(),
                     withCredentials: true
                 });
+                const refreshedToken = refreshResponse?.data?.data ?? refreshResponse?.data;
+
+                if (typeof refreshedToken === 'string' && refreshedToken) {
+                    useAuthStore.getState().setAccessToken(refreshedToken);
+                }
                 
                 return apiClient(originalRequest);
             }

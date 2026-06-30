@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { LoginFormValues, loginSchema } from "@/features/auth/validation/loginValidation";
@@ -12,28 +12,13 @@ import { authService } from "@/features/auth/services/authService";
 import { GraduationCap } from "lucide-react"; // Kept in case you want to use it in the logo box
 import { useAuthStore } from "@/store/useAuthStore";
 import { normalizeAuthUser } from "@/features/auth/utils/normalizeAuthUser";
+import { getRoleHome } from "@/features/auth/utils/roleRoutes";
 
 export default function LoginPage() {
   const [serverError, setServerError] = useState<string | null>(null);
   const setUser=useAuthStore((state)=>state.setUser);
-  const user = useAuthStore((state) => state.user);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const router = useRouter();
-
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-
-    const destination = user.Role === "Admin"
-      ? "/admin"
-      : user.Role === "Teacher"
-        ? "/teacher"
-        : user.Role === "Parent"
-          ? "/parent"
-          : "/student";
-
-    router.replace(destination);
-  }, [router, user]);
 
   const {
     register,
@@ -45,22 +30,17 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormValues) => {
     setServerError(null);
+    setAccessToken(null);
     try {
       const response = await authService.loginUser({
         Email: data.email,
         Password: data.password,
       });
       if (response.success) {
-        setUser(normalizeAuthUser(response.data));
-        const destination = response.data.Role === "Admin"
-          ? "/admin"
-          : response.data.Role === "Teacher"
-            ? "/teacher"
-            : response.data.Role === "Parent"
-              ? "/parent"
-              : "/student";
-
-        router.push(destination);
+        const nextUser = normalizeAuthUser(response.data);
+        setUser(nextUser);
+        setAccessToken(response.accessToken ?? null);
+        router.push(getRoleHome(nextUser.Role));
       }
     } catch (err: unknown) {
       setServerError(err instanceof Error ? err.message : "حدث خطأ ما");

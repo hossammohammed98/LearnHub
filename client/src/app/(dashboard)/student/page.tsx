@@ -18,6 +18,7 @@ import Calender from '@/features/student/components/Calender';
 import CalenderItem from '@/features/student/components/CalenderItem';
 import { useAuthStore } from '@/store/useAuthStore';
 import { userService, DashboardSummaryData } from '@/features/student/services/userService';
+import RoleGuard from '@/components/common/RoleGuard';
 
 function StudentDashboard() {
   const router = useRouter();
@@ -84,7 +85,8 @@ function StudentDashboard() {
   const displayName = profile?.firstName || user?.FName || 'طالب';
 
   return (
-    <div dir="rtl" className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <RoleGuard allowedRoles={['Student']}>
+      <div dir="rtl" className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans">
       <StudentNavbar
         centerContent={
           <form onSubmit={handleSearchSubmit} className="w-full">
@@ -191,7 +193,8 @@ function StudentDashboard() {
           </section>
         </main>
       </div>
-    </div>
+      </div>
+    </RoleGuard>
   );
 }
 

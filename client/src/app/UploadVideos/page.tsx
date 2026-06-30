@@ -16,6 +16,7 @@ import UploadSidebar from "@/features/UploadVideos/component/UploadSidebar";
 import UploadFooter from "@/features/UploadVideos/component/UploadFooter";
 import { useAuthStore } from "@/store/useAuthStore";
 import apiClient from "@/services/apiClient";
+import RoleGuard from "@/components/common/RoleGuard";
 import {
   CloudinaryAsset,
   CourseDraftPayload,
@@ -434,14 +435,17 @@ export default function UploadPage() {
 
   if (!user || !canManageUploads || isLoadingDraft) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 text-sm text-gray-500">
-        {isLoadingDraft ? "جاري تحميل بيانات الدورة..." : "جاري التحقق من الصلاحيات..."}
-      </div>
+      <RoleGuard allowedRoles={["Teacher"]}>
+        <div className="flex min-h-screen items-center justify-center bg-gray-50 text-sm text-gray-500">
+          {isLoadingDraft ? "جاري تحميل بيانات الدورة..." : "جاري التحقق من الصلاحيات..."}
+        </div>
+      </RoleGuard>
     );
   }
 
   return (
-    <div dir="rtl" className="flex min-h-screen flex-col bg-gray-50">
+    <RoleGuard allowedRoles={["Teacher"]}>
+      <div dir="rtl" className="flex min-h-screen flex-col bg-gray-50">
       <UploadNavbar />
       <div className="flex flex-1 flex-col lg:flex-row">
         <UploadSidebar />
@@ -698,6 +702,7 @@ export default function UploadPage() {
         </main>
       </div>
       <UploadFooter />
-    </div>
+      </div>
+    </RoleGuard>
   );
 }

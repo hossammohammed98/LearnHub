@@ -10,6 +10,7 @@ import { normalizeAuthUser } from "../utils/normalizeAuthUser";
 export const useRegister = () => {
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export const useRegister = () => {
     try {
       const response = await authService.registerUser(userData);
       setUser(normalizeAuthUser(response.data));
+      setAccessToken(response.accessToken ?? null);
 
       if (response.data.Role === "Student") router.push("/student");
       else if (response.data.Role === "Teacher") router.push("/teacher");

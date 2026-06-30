@@ -7,11 +7,7 @@ class ChatRepository extends BaseRepository{
         super(chatModel);
     }
     async isUserInChat(chatId,userId){
-        const chat = await chatMember.findOne({chatId:chatId});
-        if(!chat && chat.userId!==userId)
-            return false;
-        else
-            return true;
+        return Boolean(await chatMember.findOne({ chatId: chatId, userId: userId }));
     }
     async getCurrentMemberData(chatId,userId){
         return await chatMember.findOne({chatId,userId});
@@ -21,12 +17,12 @@ class ChatRepository extends BaseRepository{
     }
     async chatsWithAllData(chatIds){
         return await chatModel.find({_id:{$in:chatIds}})
-        .populate({path:'lastMessage',select:'content messageType createdAt senderId'})
+        .populate({path:'lastMessage',select:'content messageType attachment createdAt senderId'})
         .sort({createdAt:-1})
     }
     async getReceiverMember(chatId,userId){
         return await chatMember.findOne({chatId:chatId,userId:{$ne:userId}})
-        .populate({path:"userId",select:"FName LName Avatar activeStatus"});
+        .populate({path:"userId",select:"FName LName Email Phone Avatar activeStatus Role"});
     }
     async getChatMessages(chatId){
         return await messageModel.find({chatId:chatId})

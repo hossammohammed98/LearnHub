@@ -9,11 +9,12 @@ export type Assistant = {
   avatarInitial: string;
   status: "active" | "inactive";
   tags: string[];
+  permissionIds: string[];
 };
 
 type AssistantCardProps = {
   assistant: Assistant;
-  onEditPermissions?: (id: string) => void;
+  onEditPermissions?: (assistant: Assistant) => void;
   onReactivate?: (id: string) => void;
 };
 
@@ -79,7 +80,7 @@ export default function AssistantCard({
         {isActive ? (
           <button
             type="button"
-            onClick={() => onEditPermissions?.(id)}
+            onClick={() => onEditPermissions?.(assistant)}
             className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
           >
             <Pencil className="h-3.5 w-3.5" />

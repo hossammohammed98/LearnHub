@@ -7,6 +7,7 @@ import { CourseSidebar } from "../../features/courses/components/CourseSidebar";
 import { LessonDetails } from "../../features/courses/components/LessonDetails";
 import { CourseData, Lesson, mockCourse } from "../../features/courses/types";
 import { getCourseDetails, toCourseContent } from "@/features/courses/services/courseService";
+import RoleGuard from "@/components/common/RoleGuard";
 
 const getFirstOpenLesson = (course: CourseData) =>
   course.units.flatMap((unit) => unit.lessons).find((lesson) => !lesson.isLocked);
@@ -79,15 +80,18 @@ export default function CoursePage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-500" dir="rtl">
-        Loading course content...
-      </div>
+      <RoleGuard allowedRoles={["Student"]}>
+        <div className="flex min-h-screen items-center justify-center bg-gray-50 text-gray-500" dir="rtl">
+          Loading course content...
+        </div>
+      </RoleGuard>
     );
   }
 
   if (error || !currentLesson) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 text-center" dir="rtl">
+      <RoleGuard allowedRoles={["Student"]}>
+        <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 text-center" dir="rtl">
         <div className="rounded-lg border border-gray-100 bg-white p-8 shadow-sm">
           <h1 className="text-xl font-bold text-gray-900">Course content is not available</h1>
           <p className="mt-2 text-sm text-gray-500">{error || "No lessons were found."}</p>
@@ -95,15 +99,17 @@ export default function CoursePage() {
             Back to My Courses
           </Link>
         </div>
-      </div>
+        </div>
+      </RoleGuard>
     );
   }
 
   return (
-    <div
-      className="flex h-screen bg-gray-50 overflow-hidden"
-      style={{ direction: "rtl" }}
-    >
+    <RoleGuard allowedRoles={["Student"]}>
+      <div
+        className="flex h-screen bg-gray-50 overflow-hidden"
+        style={{ direction: "rtl" }}
+      >
       <CourseSidebar
         course={course}
         currentLessonId={currentLesson.id}
@@ -133,6 +139,7 @@ export default function CoursePage() {
           hasNext={hasNext}
         />
       </div>
-    </div>
+      </div>
+    </RoleGuard>
   );
 }

@@ -14,8 +14,8 @@ import Link from "next/link";
 const navItems = [
   { label: "لوحة التحكم", icon: LayoutGrid, active: false, href: "/teacher" },
   { label: "فصولي", icon: GraduationCap, active: true, href: "/UploadVideos" },
-  { label: "المناهج", icon: BookOpen, active: false, href: "/courses" },
-  { label: "التقارير", icon: BarChart2, active: false, href: "/admin" },
+  { label: "المناهج", icon: BookOpen, active: false, href: "/teacher" },
+  { label: "التقارير", icon: BarChart2, active: false, href: "/teacher" },
   { label: "المكتبة", icon: Library, active: false, href: "/BrowescorsesPage" },
 ];
 
@@ -79,7 +79,7 @@ export default function UploadSidebar() {
 
       <div className="hidden lg:flex lg:flex-col lg:gap-3">
         <Link
-          href="/courses"
+          href="/UploadVideos"
           className="flex items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-800"
         >
           <Plus className="h-4 w-4" />

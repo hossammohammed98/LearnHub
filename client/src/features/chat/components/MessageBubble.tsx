@@ -12,6 +12,7 @@ interface MessageBubbleProps {
     myMessage: boolean; // true = sent by current user, false = received from other user
     type?: 'text' | 'file';
     fileUrl?: string;
+    fileName?: string;
 }
 
 export default function MessageBubble({ 
@@ -20,10 +21,14 @@ export default function MessageBubble({
     imgUrl, 
     myMessage = true, 
     type = 'text', 
-    fileUrl 
+    fileUrl,
+    fileName,
 }: MessageBubbleProps) {
     
-    const isFile = type === 'file' && fileUrl;
+    const isFile = type === 'file' && Boolean(fileUrl);
+    const normalizedFileName = fileName || (messageText || '')
+        .replace(/^📎\s*ملف\s*مرفق:\s*/u, '')
+        .trim() || 'ملف مرفق';
 
     return (
         <div className={`flex items-end gap-2 max-w-[75%] ${
@@ -45,8 +50,8 @@ export default function MessageBubble({
                 {isFile ? (
                     /* 📁 RENDER ATTACHMENT NODE */
                     <AttachmentMessage
-                        fileName={messageText.replace('📎 ملف مرفق: ', '')}
-                        fileUrl={fileUrl}
+                        fileName={normalizedFileName}
+                        fileUrl={fileUrl || ''}
                         myMessage={myMessage}
                     />
                 ) : (

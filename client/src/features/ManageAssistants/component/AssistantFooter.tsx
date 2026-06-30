@@ -6,7 +6,7 @@ const footerLinks = [
   { label: "اتصل بنا", href: "/chat" },
   { label: "من نحن", href: "/landingpage" },
   { label: "سياسة الخصوصية", href: "/settings" },
-  { label: "شروط الاستخدام", href: "/courses" },
+  { label: "شروط الاستخدام", href: "/landingpage" },
 ];
 
 export default function AssistantsFooter() {

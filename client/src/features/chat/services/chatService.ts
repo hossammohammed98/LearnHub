@@ -10,6 +10,12 @@ interface CloudinaryTokenData {
     folder: string;
     resourceType: string;
     api_key: string;
+    cloud_name: string;
+}
+
+function getErrorMessage(error: unknown, fallback: string) {
+    if (error instanceof Error) return error.message;
+    return fallback;
 }
 
 export const chatService = {
@@ -18,9 +24,10 @@ export const chatService = {
             const response = await apiClient.get<ApiResponse<Conversation[]>>('/chat/getAllChats');
             console.log("Rooms Response:", response.data);
             return response.data.data || [];
-        } catch (error: any) {
-            console.error('Failed to fetch chat rooms inside chatService:', error.message);
-            throw new Error(error?.response?.data?.message || 'تعذر تحميل المحادثات. يرجى المحاولة مرة أخرى.');
+        } catch (error: unknown) {
+            const message = getErrorMessage(error, 'تعذر تحميل المحادثات. يرجى المحاولة مرة أخرى.');
+            console.error('Failed to fetch chat rooms inside chatService:', message);
+            throw new Error(message);
         }
     },
     
@@ -28,9 +35,10 @@ export const chatService = {
         try {
             const response = await apiClient.get<ApiResponse<Message[]>>(`/chat/getChatMessages/${roomId}`);
             return response.data.data || [];
-        } catch (error: any) {
-            console.error('Failed to fetch messages for room inside chatService:', error.message);
-            throw new Error(error?.response?.data?.message || 'تعذر تحميل الرسائل. يرجى المحاولة مرة أخرى.');
+        } catch (error: unknown) {
+            const message = getErrorMessage(error, 'تعذر تحميل الرسائل. يرجى المحاولة مرة أخرى.');
+            console.error('Failed to fetch messages for room inside chatService:', message);
+            throw new Error(message);
         }
     },
     
@@ -44,7 +52,11 @@ export const chatService = {
             );
             
             // 2. FIXED: Safely destructure keys directly from tokenResponse.data.data 
-            const { signature, timestamp, folder, resourceType, api_key } = tokenResponse.data.data;
+            const { signature, timestamp, folder, resourceType, api_key, cloud_name } = tokenResponse.data.data;
+
+            if (!cloud_name) {
+                throw new Error('Cloudinary cloud name is missing from upload signature.');
+            }
             
             const formData = new FormData();
             formData.append('file', file);
@@ -53,7 +65,7 @@ export const chatService = {
             formData.append('folder', folder);
             formData.append('api_key', api_key);
             
-            const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`;
+            const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloud_name}/${resourceType}/upload`;
             
             const uploadResponse = await axios.post(cloudinaryUrl, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
@@ -69,9 +81,10 @@ export const chatService = {
                 secureUrl: uploadResponse.data.secure_url,
                 fileName: file.name
             };
-        } catch (error: any) {
-            console.error('Failed to Upload File via chatService:', error.message);
-            throw new Error(error?.response?.data?.message || 'تعذر تحميل الملف. يرجى المحاولة مرة أخرى.');
+        } catch (error: unknown) {
+            const message = getErrorMessage(error, 'تعذر تحميل الملف. يرجى المحاولة مرة أخرى.');
+            console.error('Failed to Upload File via chatService:', message);
+            throw new Error(message);
         }
     },
     
@@ -79,9 +92,10 @@ export const chatService = {
         try {
             await apiClient.patch<ApiResponse<void>>(`/chat/updateChatReadStatus/${roomId}`); 
             return;
-        } catch (error: any) {
-            console.error('Failed to patch chat room status read inside chatService:', error.message);
-            throw new Error(error?.response?.data?.message || 'تعذر تحديث حالة القراءة. يرجى المحاولة مرة أخرى.');
+        } catch (error: unknown) {
+            const message = getErrorMessage(error, 'تعذر تحديث حالة القراءة. يرجى المحاولة مرة أخرى.');
+            console.error('Failed to patch chat room status read inside chatService:', message);
+            throw new Error(message);
         }
     }
 };

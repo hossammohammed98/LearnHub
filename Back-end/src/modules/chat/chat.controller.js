@@ -2,6 +2,7 @@ const ApiResponse = require('../../shared/core/ApiResponse');
 const BaseController = require('../../shared/core/BaseController');
 const catchAsyncHandler = require('../../shared/utils/catchAsyncHandler');
 const ChatService = require('./chat.service');
+const ApiError = require('../../shared/core/ApiError');
 class ChatController extends BaseController {
     constructor() {
         super(BaseController);
@@ -19,7 +20,10 @@ class ChatController extends BaseController {
     })
     getChatAttachmentToken = catchAsyncHandler(async (req, res, next) => {
         const { fileType } = req.body;
-        console.log(fileType);
+        const hasAccess = await ChatService.isUserInChat(req.params.id, req.user.id);
+        if (!hasAccess) {
+            throw new ApiError(403, "Forbidden: You do not have permission to upload to this chat");
+        }
         const result = await ChatService.getChatAttachmentToken(req.params.id, fileType);
         return ApiResponse.success(res, "Signature Created Successfully", result, 200);
     })

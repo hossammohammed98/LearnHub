@@ -14,6 +14,12 @@ export interface Message{
     time:string;
     type?: 'text' | 'file';
     fileUrl?: string;
+    fileName?: string;
+    attachment?: {
+        fileUrl?: string;
+        fileName?: string;
+        fileSize?: string;
+    };
     
 }
 

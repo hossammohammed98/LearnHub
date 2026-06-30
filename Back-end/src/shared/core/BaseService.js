@@ -2,7 +2,7 @@ class BaseService{
     constructor(repository){
         this.repository=repository;
     }
-    async getAll(filter='',populateOption=null){
+    async getAll(filter={},populateOption=null){
         return await this.repository.getAll(filter,populateOption);
     }
     async getById(id,populateOption=null){

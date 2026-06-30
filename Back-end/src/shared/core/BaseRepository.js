@@ -3,8 +3,8 @@ class BaseRepository {
     constructor(model) {
         this.model = model;
     }
-    async getAll(filter = '', populateOption = null) {
-        const data = await this.model.find().populate(populateOption)
+    async getAll(filter = {}, populateOption = null) {
+        const data = await this.model.find(filter).populate(populateOption);
         return data;
 
     }
